@@ -15,10 +15,8 @@ export default class Grid {
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
         this.grid[i][j] = new Tile(this.game, i*64+6, j*64+6, 'empty', state.nextTile);
-        console.log(this.grid[i][j]);
       }
     }
-
 
   }
 
@@ -27,7 +25,14 @@ export default class Grid {
     console.log('Update');
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
-        // console.log(this.grid[i, j]);
+        // Loop through grid array
+        // check matches, and collapse
+        // into last clicked/set tile.
+
+
+        if (this.grid[i][j].tilestate.level > 0) {
+
+        }
 
 
       }
