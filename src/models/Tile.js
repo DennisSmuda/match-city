@@ -1,7 +1,7 @@
 
 export default class Tile extends Phaser.Sprite {
 
-  constructor(game, x, y, frame, nextTile) {
+  constructor(game, x, y, frame, nextTile, gamestate) {
     super(game, x, y, frame);
     this.game = game;
     this.isPlaced = false;
@@ -9,11 +9,13 @@ export default class Tile extends Phaser.Sprite {
 
     this.nextTile = nextTile;
     this.xPos = (x-6)/64;
-    this.yPos = (y-6)/64;
+    this.yPos = (y-4)/64;
     this.tilestate = {
       'level': 0,
       'type' : 'empty'
     }
+
+    this.gamestate = gamestate;
 
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
     this.body.collideWorldBounds = true;
@@ -36,14 +38,10 @@ export default class Tile extends Phaser.Sprite {
 
   }
 
-  icon_click(url) { console.log(url); }
-
-
   onInputOver() {
     // console.log('hover: ' + this.xPos + ' ' + this.yPos);
     this.loadTexture(this.nextTile, 0, false);
     this.label_score.text = '1';
-
   }
 
   onInputOut() {
@@ -55,7 +53,14 @@ export default class Tile extends Phaser.Sprite {
 
   update() {
     // this.handleInput();
+  }
 
+  resetToEmpty() {
+    console.log('reset');
+    this.loadTexture('empty', 0, false);
+    this.label_score.text = ' ';
+    this.tilestate.type = 'empty';
+    this.tilestate.level = 0;
   }
 
 
@@ -64,5 +69,7 @@ export default class Tile extends Phaser.Sprite {
     console.log('click: ' + this.xPos + ' ' + this.yPos);
     this.tilestate.level = 1;
     this.tilestate.type  = this.nextTile;
+    this.gamestate.lastClicked.x = this.xPos;
+    this.gamestate.lastClicked.y = this.yPos;
   }
 }

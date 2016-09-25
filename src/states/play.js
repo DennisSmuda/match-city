@@ -6,7 +6,7 @@ import Grid from '../models/Grid';
 export default class Play extends Phaser.State {
 
   create() {
-    this.state = {
+    this.gamestate = {
       lastClicked: {
         x: null,
         y: null
@@ -17,7 +17,7 @@ export default class Play extends Phaser.State {
     this.gameBackground = this.add.sprite(0, 0, 'game-background');
 
     // this.tile = new Tile(this.game, 4, 4, 'blue');
-    this.grid = new Grid(this.game, this.state);
+    this.grid = new Grid(this.game, this.gamestate);
 
   }
 
