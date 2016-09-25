@@ -9,7 +9,7 @@ export default class Tile extends Phaser.Sprite {
 
     this.nextTile = nextTile;
     this.xPos = (x-6)/64;
-    this.yPos = (y-4)/64;
+    this.yPos = (y)/64;
     this.tilestate = {
       'level': 0,
       'type' : 'empty'
@@ -42,6 +42,7 @@ export default class Tile extends Phaser.Sprite {
     // console.log('hover: ' + this.xPos + ' ' + this.yPos);
     this.loadTexture(this.nextTile, 0, false);
     this.label_score.text = '1';
+    this.gamestate.hovering = {x: this.xPos, y: this.yPos};
   }
 
   onInputOut() {
@@ -61,15 +62,19 @@ export default class Tile extends Phaser.Sprite {
     this.label_score.text = ' ';
     this.tilestate.type = 'empty';
     this.tilestate.level = 0;
+    this.y -= 8;
+    console.log(this.y);
   }
 
 
 
   onClick() {
-    console.log('click: ' + this.xPos + ' ' + this.yPos);
+    // console.log('click: ' + this.xPos + ' ' + this.yPos);
     this.tilestate.level = 1;
     this.tilestate.type  = this.nextTile;
     this.gamestate.lastClicked.x = this.xPos;
     this.gamestate.lastClicked.y = this.yPos;
-  }
+    this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
+
+   }
 }

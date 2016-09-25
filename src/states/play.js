@@ -11,6 +11,10 @@ export default class Play extends Phaser.State {
         x: null,
         y: null
       },
+      hovering: {
+        x: null,
+        y: null
+      },
       nextTile: 'blue'
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }

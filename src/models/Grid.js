@@ -21,7 +21,7 @@ export default class Grid {
 
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
-        this.grid[i][j] = new Tile(this.game, i*64+6, j*64+4, 'empty', this.nextTile, this.gamestate);
+        this.grid[i][j] = new Tile(this.game, i*64+6, j*64, 'empty', this.nextTile, this.gamestate);
       }
     }
   }
@@ -37,17 +37,20 @@ export default class Grid {
     // Loop through grid array
     // check matches, and collapse
     // into last clicked/set tile.
-    for (let i = 0; i < this.cols; i++) {
+    for (let i = 0; i < (this.cols-2); i++) {
       for (let j = 0; j < this.rows; j++) {
         // Check for last clicked tile
 
         // console.log(this.grid[i][j].tilestate.level);
         if (this.grid[i][j].tilestate.level > 0) {
           let currentType = this.grid[i][j].tilestate.type;
-          // console.log(currentType);
 
-          if (this.grid[i][j+1] && this.grid[i][j+1].tilestate.type == currentType) {
-            console.log('down match');
+          if (this.grid[i][j+1].tilestate.type == currentType) {
+            if (this.grid[i][j+2].tilestate.type == currentType) {
+              this.tripleDownMatch(i, j);
+            } else {
+              this.doubleDownMatch(i, j);
+            }
 
             // console.log(this.grid[i][j-1]);
             let toDelete = this.grid[i][j];
@@ -59,6 +62,15 @@ export default class Grid {
         }
       }
     }
+  }
+
+  doubleDownMatch(i, j) {
+    console.log(this.gamestate.lastClicked);
+
+  }
+
+  tripleDownMatch(i, j) {
+
   }
 
 
