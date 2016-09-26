@@ -48,16 +48,19 @@ export default class Grid {
   }
 
   clearWiggles() {
-    for (let i = 0; i <= this.possibleMatches.length; i++) {
-      console.log('Stop wiggling')
-      let current = this.possibleMatches[i];
-      if (current !== undefined) {
+    let numMatches = this.possibleMatches.length;
+    while (numMatches > 0) {
+      // Go Backwards through possibleMatches
+      // this.possibleMatches[numMatches].stopWiggle();
+      this.possibleMatches[numMatches-1].stopWiggling();
+      console.log(numMatches);
+      numMatches--;
 
-      current.stopWiggle();
-      }
-      // this.possibleMatches[i].stopWiggle();
-      // console.log(this.possibleMatches);
+
     }
+
+    // this.possibleMatches = new Array();
+
   }
 
   findPossibleMatches() {
@@ -92,7 +95,8 @@ export default class Grid {
 
       if (this.check(x+1, y)) {
         console.log('match to the left');
-        this.grid[x+1][y].wiggle('left');
+        // console.log((this.grid[x+1][y]).addWiggle);
+        this.grid[x+1][y].startWiggling('left');
         this.possibleMatches.push(this.grid[x+1][y]);
 
         if (y < 6) {

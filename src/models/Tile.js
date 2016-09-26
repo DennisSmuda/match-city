@@ -9,13 +9,16 @@ export default class Tile extends Phaser.Sprite {
     this.wiggling   = false;
 
     this.nextTile = nextTile;
+    this.originalX = x;
+    this.originalY = y;
     this.xPos = (x-6)/64;
     this.yPos = (y)/64;
     this.tilestate = {
       'level': 0,
       'type' : 'empty'
-    }
+    };
 
+    this.wiggle = null;
     this.gamestate = gamestate;
 
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -80,14 +83,14 @@ export default class Tile extends Phaser.Sprite {
 
    }
 
-   wiggle(dir) {
-     let wiggle;
+   startWiggling(dir) {
+
     switch(dir) {
       case 'left':
-        wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
+        this.wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
         break;
       case 'right':
-        wiggle = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
+        this.wiggle = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
         break;
 
       default:
@@ -97,7 +100,12 @@ export default class Tile extends Phaser.Sprite {
     this.wiggling = true;
    }
 
-   stopWiggle() {
-     wiggle = null;
+   stopWiggling() {
+
+     console.log('Remove Wiggle: ' + this.xPos + ' ' + this.yPos);
+     this.wiggle.pause();
+     this.x = this.originalX;
+     this.Y = this.originalY;
+
    }
 }
