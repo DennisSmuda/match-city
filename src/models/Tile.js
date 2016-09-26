@@ -6,6 +6,7 @@ export default class Tile extends Phaser.Sprite {
     this.game = game;
     this.isPlaced = false;
     this.enableBody = true;
+    this.wiggling   = false;
 
     this.nextTile = nextTile;
     this.xPos = (x-6)/64;
@@ -62,7 +63,8 @@ export default class Tile extends Phaser.Sprite {
     this.label_score.text = ' ';
     this.tilestate.type = 'empty';
     this.tilestate.level = 0;
-    this.y -= 8;
+    this.game.add.tween(this).to( { y: this.y-4 }, 0.1, Phaser.Easing.Bounce.Out, true);
+    // this.y -= 8;
     console.log(this.y);
   }
 
@@ -76,5 +78,26 @@ export default class Tile extends Phaser.Sprite {
     this.gamestate.lastClicked.y = this.yPos;
     this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
 
+   }
+
+   wiggle(dir) {
+     let wiggle;
+    switch(dir) {
+      case 'left':
+        wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
+        break;
+      case 'right':
+        wiggle = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
+        break;
+
+      default:
+        break;
+     }
+
+    this.wiggling = true;
+   }
+
+   stopWiggle() {
+     wiggle = null;
    }
 }

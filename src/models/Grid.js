@@ -8,6 +8,11 @@ export default class Grid {
     this.grid = new Array(this.rows);
     this.nextTile = gamestate.nextTile;
     this.gamestate = gamestate;
+    this.possibleMatches = [];
+    this.lastHovered = {
+      x: null,
+      y: null
+    };
 
     this.initGrid();
 
@@ -29,38 +34,95 @@ export default class Grid {
 
   update() {
     // console.log('Update');
-    this.findMatches();
+    this.findPossibleMatches();
+    // console.log(this.possibleMatches);
 
   }
 
-  findMatches() {
-    // Loop through grid array
-    // check matches, and collapse
-    // into last clicked/set tile.
-    for (let i = 0; i < (this.cols-2); i++) {
-      for (let j = 0; j < this.rows; j++) {
-        // Check for last clicked tile
+  check(x, y) {
+    if (this.grid[x][y].tilestate.type == this.nextTile) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
-        // console.log(this.grid[i][j].tilestate.level);
-        if (this.grid[i][j].tilestate.level > 0) {
-          let currentType = this.grid[i][j].tilestate.type;
+  clearWiggles() {
+    for (let i = 0; i <= this.possibleMatches.length; i++) {
+      console.log('Stop wiggling')
+      let current = this.possibleMatches[i];
+      if (current !== undefined) {
 
-          if (this.grid[i][j+1].tilestate.type == currentType) {
-            if (this.grid[i][j+2].tilestate.type == currentType) {
-              this.tripleDownMatch(i, j);
-            } else {
-              this.doubleDownMatch(i, j);
-            }
+      current.stopWiggle();
+      }
+      // this.possibleMatches[i].stopWiggle();
+      // console.log(this.possibleMatches);
+    }
+  }
 
-            // console.log(this.grid[i][j-1]);
-            let toDelete = this.grid[i][j];
-            toDelete.resetToEmpty();
+  findPossibleMatches() {
+    // Check all possible matches on
+    // the current hovered tile.
+    if (this.gamestate.hovering.x === null) {
+      return;
+    }
 
+    // Currently Hovering
+    let x           = this.gamestate.hovering.x;
+    let y           = this.gamestate.hovering.y;
+    let currentType = this.nextTile;
+
+    if (this.lastHovered.x === null) {
+      this.lastHovered.x = x;
+      this.lastHovered.y = y;
+    }
+
+    if (this.lastHovered.x == x && this.lastHovered.y == y) {
+      // Only do the checks once
+      return;
+    } else {
+      // New Hover position
+      this.lastHovered.x = x;
+      this.lastHovered.y = y;
+      this.clearWiggles();
+    }
+
+
+    if (x < 6) {
+
+      if (this.check(x+1, y)) {
+        console.log('match to the left');
+        this.grid[x+1][y].wiggle('left');
+        this.possibleMatches.push(this.grid[x+1][y]);
+
+        if (y < 6) {
+          if (this.check(x, y+1)) {
+            console.log('match down');
           }
 
+          if (y < 5) {
+            if (this.check(x, y+2)) {
+              console.log('double match down');
+            }
+          }
 
         }
+
+
+      // if (this.grid[i][j+1].tilestate.type == currentType) {
+      //   if (this.grid[i][j+2].tilestate.type == currentType) {
+      //     this.tripleDownMatch(i, j);
+      //   } else {
+      //     this.doubleDownMatch(i, j);
+      //   }
+      //
+      //   // console.log(this.grid[i][j-1]);
+      //   let toDelete = this.grid[i][j];
+      //   toDelete.resetToEmpty();
+      //
       }
+
+
     }
   }
 
