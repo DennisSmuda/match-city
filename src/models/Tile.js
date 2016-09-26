@@ -7,6 +7,7 @@ export default class Tile extends Phaser.Sprite {
     this.isPlaced = false;
     this.enableBody = true;
     this.wiggling   = false;
+    this.direction  = null;
 
     this.nextTile = nextTile;
     this.originalX = x;
@@ -80,12 +81,11 @@ export default class Tile extends Phaser.Sprite {
     this.gamestate.lastClicked.x = this.xPos;
     this.gamestate.lastClicked.y = this.yPos;
     this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
-
    }
 
-   startWiggling(dir) {
+   startWiggling() {
 
-    switch(dir) {
+    switch(this.direction) {
       case 'left':
         this.wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
         break;

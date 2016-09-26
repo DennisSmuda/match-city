@@ -33,9 +33,11 @@ export default class Grid {
 
 
   update() {
-    // console.log('Update');
+    // Finds possible Matches on
+    // every new hovered tile
     this.findPossibleMatches();
     // console.log(this.possibleMatches);
+
 
   }
 
@@ -48,16 +50,18 @@ export default class Grid {
   }
 
   clearWiggles() {
+    console.log('Clear wiggles');
     let numMatches = this.possibleMatches.length;
     while (numMatches > 0) {
       // Go Backwards through possibleMatches
       // this.possibleMatches[numMatches].stopWiggle();
       this.possibleMatches[numMatches-1].stopWiggling();
-      console.log(numMatches);
+      this.possibleMatches.splice(numMatches-1, 1);
       numMatches--;
 
 
     }
+    console.log(this.possibleMatches);
 
     // this.possibleMatches = new Array();
 
@@ -96,8 +100,9 @@ export default class Grid {
       if (this.check(x+1, y)) {
         console.log('match to the left');
         // console.log((this.grid[x+1][y]).addWiggle);
-        this.grid[x+1][y].startWiggling('left');
+        this.grid[x+1][y].direction = 'left';
         this.possibleMatches.push(this.grid[x+1][y]);
+        console.log('add match')
 
         if (y < 6) {
           if (this.check(x, y+1)) {
@@ -124,9 +129,17 @@ export default class Grid {
       //   let toDelete = this.grid[i][j];
       //   toDelete.resetToEmpty();
       //
+
       }
+    }
 
+    this.startWiggles();
+  }
 
+  startWiggles() {
+    console.log('Start wiggle');
+    for (let match of this.possibleMatches) {
+      match.startWiggling();
     }
   }
 
