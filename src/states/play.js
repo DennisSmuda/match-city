@@ -15,7 +15,8 @@ export default class Play extends Phaser.State {
         x: null,
         y: null
       },
-      nextTile: 'blue'
+      nextTile: 'blue',
+      clickHandled: false
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
     this.gameBackground = this.add.sprite(0, 0, 'game-background');

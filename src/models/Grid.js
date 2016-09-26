@@ -38,7 +38,16 @@ export default class Grid {
     this.findPossibleMatches();
     // console.log(this.possibleMatches);
 
+    if (!this.gamestate.clickHandled && this.gamestate.lastClicked.x !== null) {
+      this.handleClick();
+    }
 
+
+  }
+
+  handleClick() {
+    console.log('Handle Click')
+    this.gamestate.clickHandled = true;
   }
 
   check(x, y) {
@@ -50,21 +59,15 @@ export default class Grid {
   }
 
   clearWiggles() {
-    console.log('Clear wiggles');
+    // console.log('Clear wiggles');
     let numMatches = this.possibleMatches.length;
     while (numMatches > 0) {
       // Go Backwards through possibleMatches
-      // this.possibleMatches[numMatches].stopWiggle();
+      // and empty the possible Matches
       this.possibleMatches[numMatches-1].stopWiggling();
       this.possibleMatches.splice(numMatches-1, 1);
       numMatches--;
-
-
     }
-    console.log(this.possibleMatches);
-
-    // this.possibleMatches = new Array();
-
   }
 
   findPossibleMatches() {
@@ -133,7 +136,10 @@ export default class Grid {
       }
     }
 
-    this.startWiggles();
+    // TODO: Replace with > 2 to have at least three matching tiles.
+    if (this.possibleMatches.length >= 1) {
+      this.startWiggles();
+    }
   }
 
   startWiggles() {
@@ -142,15 +148,5 @@ export default class Grid {
       match.startWiggling();
     }
   }
-
-  doubleDownMatch(i, j) {
-    console.log(this.gamestate.lastClicked);
-
-  }
-
-  tripleDownMatch(i, j) {
-
-  }
-
 
 }

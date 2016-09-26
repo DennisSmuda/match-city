@@ -80,6 +80,8 @@ export default class Tile extends Phaser.Sprite {
     this.tilestate.type  = this.nextTile;
     this.gamestate.lastClicked.x = this.xPos;
     this.gamestate.lastClicked.y = this.yPos;
+    this.gamestate.clickHandled  = false;
+    
     this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
    }
 
@@ -103,7 +105,9 @@ export default class Tile extends Phaser.Sprite {
    stopWiggling() {
 
      console.log('Remove Wiggle: ' + this.xPos + ' ' + this.yPos);
-     this.wiggle.pause();
+     if (this.wiggle) {
+       this.wiggle.pause();
+     }
      this.x = this.originalX;
      this.Y = this.originalY;
 
