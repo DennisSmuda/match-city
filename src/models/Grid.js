@@ -35,6 +35,13 @@ export default class Grid {
 
 
   update() {
+
+    if (!this.gamestate.matchesHandled &&
+      !this.gamestate.clickHandled) {
+        console.log('Nothing handled');
+        return;
+      }
+
     // Finds possible Matches on
     // every new hovered tile
     if (this.gamestate.matchesHandled) {
@@ -78,10 +85,10 @@ export default class Grid {
 
 
     while (numMatches > 0 && !this.gamestate.matchesHandled) {
-    // while (numMatches > 0 ) {
+      console.log(this.possibleMatches[numMatches-1]);
       // Go Backwards through possibleMatches
       // and empty the possible Matches
-      this.possibleMatches[numMatches-1].collapse(numMatches-1);
+      (this.possibleMatches[numMatches-1]).collapse(numMatches-1);
       // this.possibleMatches.splice(numMatches-1, 1);
       numMatches--;
     }

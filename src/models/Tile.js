@@ -2,17 +2,22 @@
 export default class Tile extends Phaser.Sprite {
 
   constructor(game, x, y, frame, nextTile, gamestate) {
-    super(game, x, y, frame);
+    super(game, x+32, y+32, frame);
+    this.anchor.setTo(0.5, 0.5);
+    // console.log(this.x, this.y);
     this.game = game;
     this.isHovered = false;
     this.isPlaced = false;
     this.enableBody = true;
-    this.wiggling   = false;
+    // this.anchor.setTo(0.5, 0.5);
+	  // game.add.tween(this.scale).to( { x: 0.9, y: 0.9 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+
+
     this.direction  = null;
 
     this.nextTile = nextTile;
-    this.originalX = x;
-    this.originalY = y;
+    this.originalX = x+32;
+    this.originalY = y+32;
     this.xPos = (x-6)/64;
     this.yPos = (y)/64;
     this.tilestate = {
@@ -34,7 +39,7 @@ export default class Tile extends Phaser.Sprite {
 
     // Points
     const style = { font: "20px Roboto Mono", fill: "#ffffff", textalign: "center" };
-    this.label_score = this.game.add.text(32, 32, this.tilestate.level, style);
+    this.label_score = this.game.add.text(0, 0, this.tilestate.level, style);
     this.label_score.anchor.setTo(0.5, 0.5);
     this.label_score.text = ' ';
     this.addChild(this.label_score);
@@ -63,47 +68,34 @@ export default class Tile extends Phaser.Sprite {
   }
 
   update() {
-    // this.handleInput();
-    // console.log('Sprite update');
+
   }
 
 
-
-
-
   onClick() {
-    // console.log('click: ' + this.xPos + ' ' + this.yPos);
-    this.tilestate.level = 1;
-    this.tilestate.type  = this.nextTile;
-    this.gamestate.lastClicked.x = this.xPos;
-    this.gamestate.lastClicked.y = this.yPos;
-    this.gamestate.clickHandled  = false;
-    this.gamestate.tilesOnGrid++;
+    if (!this.gamestate.clickHandled &&
+        !this.gamestate.matchesHandled) {
+      return;
+    }
 
-    this.drop = this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
+    if (this.tilestate.level == 0 && this.tilestate.type == 'empty') {
+      this.tilestate.level = 1;
+      this.tilestate.type  = this.nextTile;
+      this.gamestate.lastClicked.x = this.xPos;
+      this.gamestate.lastClicked.y = this.yPos;
+      this.gamestate.clickHandled  = false;
+      this.gamestate.tilesOnGrid++;
+
+      this.drop = this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
+    }
    }
 
    startWiggling() {
-    //  console.log('Start Wiggling');
-
-    switch(this.direction) {
-      case 'left':
-        // this.wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
-        this.wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true);
-        break;
-      case 'right':
-        this.wiggle = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
-        break;
-
-      default:
-        break;
-     }
-
-    this.wiggling = true;
+    this.wiggle = this.game.add.tween(this.scale).to( { x: 0.9, y: 0.9 }, 200, Phaser.Easing.Linear.None, true);
    }
 
    resetToEmpty() {
-     // console.log('reset to empty');
+     console.log('Reste to empty');
      /*
       Load Empty Texture and reset tilelevel
       */
@@ -111,29 +103,19 @@ export default class Tile extends Phaser.Sprite {
      this.label_score.text = ' ';
      this.tilestate.type = 'empty';
      this.tilestate.level = 0;
-     this.y -= 4;
+     // Offset y position because new element
+     // will be slightly hovering above
+     this.y = this.originalY;
+     this.x = this.originalX;
 
-     // this.game.add.tween(this).to( { y: this.originalY, x: this.originalX }, 0.1, Phaser.Easing.Bounce.Out, true);
+     console.log(this.x, this.y);
      this.stopWiggling();
    }
 
    stopWiggling() {
-
-    //  console.log('Remove Wiggle: ' + this.xPos + ' ' + this.yPos);
-     if (this.wiggle !== undefined) {
-       this.wiggle.pause();
-       console.log('WIGGLE RESET');
+     if (this.wiggle ) {
+        this.wiggle = this.game.add.tween(this.scale).to( { x: 1, y: 1 }, 200, Phaser.Easing.Linear.None, true);
      }
-    //  this.wiggle = null;
-    //  this.game.tweens.remove(this.wiggle);
-    //  console.log(this.wiggle);
-    this.x = this.originalX;
-    this.Y = this.originalY;
-    // this.gamestate.matchesHandled = true;
-    // this.gamestate.clickHandled = true;
-
-     this.wiggling = false;
-
    }
 
    collapse(index) {
@@ -141,28 +123,22 @@ export default class Tile extends Phaser.Sprite {
      console.log('COllapse');
      switch(this.direction) {
        case 'left':
-         this.wiggle = this.game.add.tween(this).to( { x: this.x-60 }, 500, Phaser.Easing.Cubic.InOut, true, 0, 0, false);
-         this.wiggle.onComplete.add(this.resetPosition, this);
+         this.collapse = this.game.add.tween(this).to( { x: this.x-60 }, 500, Phaser.Easing.Cubic.InOut, true, 0, 0, false);
+         this.collapse.onComplete.add(this.resetPosition, this);
          break;
        case 'right':
-         this.wiggle = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
+         this.collapse = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
          break;
 
        default:
          break;
       }
-
-      // reset tile
-      // this.wiggle = this.game.add.tween(this).to( { x: this.originalX, y: this.originalY }, 500, Phaser.Easing.Cubic.InOut, true, 0, -1, false);
    }
 
    resetPosition() {
       if (this.index == 0) {
-      // console.log('MATCHES HANDLED');
         this.gamestate.matchesHandled = true;
-        // this.gamestate.clickHandled = true;
       }
-      // console.log('Reset position');
       this.resetToEmpty();
       // this.stopWiggling();
    }
