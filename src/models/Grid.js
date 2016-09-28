@@ -48,7 +48,8 @@ export default class Grid {
       this.handleClick();
     }
 
-    console.log(this.gamestate.matchesHandled);
+    // console.log(this.gamestate.matchesHandled);
+    // console.log(this.possibleMatches.length);
     // this.gamestate.matchesHandled = false;
 
 
@@ -67,12 +68,13 @@ export default class Grid {
     this.gamestate.clickHandled = false;
     this.gamestate.matchesHandled = false;
 
-    // if (numMatches = 0) {
-    //   console.log('No matches')
-    //   this.gamestate.matchesHandled = true;
-    //   this.gamestate.clickHandled   = true;
-    //   return;
-    // }
+
+    if (numMatches == 0) {
+      console.log('No matches')
+      this.gamestate.matchesHandled = true;
+      this.gamestate.clickHandled   = true;
+      return;
+    }
 
 
     while (numMatches > 0 && !this.gamestate.matchesHandled) {
@@ -134,6 +136,7 @@ export default class Grid {
 
     if (this.lastHovered.x == x && this.lastHovered.y == y) {
       // Only do the checks once
+
       return;
     } else {
       // New Hover position
@@ -142,6 +145,7 @@ export default class Grid {
       this.clearPossibleMatches();
     }
 
+    console.log('New Hover');
 
     if (x < 6) {
 

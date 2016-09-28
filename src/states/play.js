@@ -17,7 +17,7 @@ export default class Play extends Phaser.State {
       },
       nextTile: 'blue',
       clickHandled: false,
-      matchesHandled: true,
+      matchesHandled: false,
       tilesOnGrid: 0,
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }

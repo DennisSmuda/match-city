@@ -45,7 +45,9 @@ export default class Tile extends Phaser.Sprite {
   }
 
   onInputOver() {
+    // Gets called once, when hover is first entered
     this.isHovered = true;
+
     // console.log('hover: ' + this.xPos + ' ' + this.yPos);
     this.loadTexture(this.nextTile, 0, false);
     this.label_score.text = '1';
@@ -62,6 +64,7 @@ export default class Tile extends Phaser.Sprite {
 
   update() {
     // this.handleInput();
+    // console.log('Sprite update');
   }
 
 
@@ -77,15 +80,16 @@ export default class Tile extends Phaser.Sprite {
     this.gamestate.clickHandled  = false;
     this.gamestate.tilesOnGrid++;
 
-    this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
+    this.drop = this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
    }
 
    startWiggling() {
-     console.log('Start Wiggling');
+    //  console.log('Start Wiggling');
 
     switch(this.direction) {
       case 'left':
-        this.wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
+        // this.wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
+        this.wiggle = this.game.add.tween(this).to( { x: this.x-4 }, 500, Phaser.Easing.Bounce.InOut, true);
         break;
       case 'right':
         this.wiggle = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
@@ -100,12 +104,14 @@ export default class Tile extends Phaser.Sprite {
 
    resetToEmpty() {
      // console.log('reset to empty');
+     /*
+      Load Empty Texture and reset tilelevel
+      */
      this.loadTexture('empty', 0, false);
      this.label_score.text = ' ';
      this.tilestate.type = 'empty';
      this.tilestate.level = 0;
-    // this.gamestate.matchesHandled = true;
-
+     this.y -= 4;
 
      // this.game.add.tween(this).to( { y: this.originalY, x: this.originalX }, 0.1, Phaser.Easing.Bounce.Out, true);
      this.stopWiggling();
@@ -117,15 +123,14 @@ export default class Tile extends Phaser.Sprite {
      if (this.wiggle !== undefined) {
        this.wiggle.pause();
        console.log('WIGGLE RESET');
-       this.gamestate.clickHandled = true;
      }
     //  this.wiggle = null;
     //  this.game.tweens.remove(this.wiggle);
     //  console.log(this.wiggle);
     this.x = this.originalX;
     this.Y = this.originalY;
-      // this.wiggle = this.game.add.tween(this).to( { y: this.y-4 }, 500, Phaser.Easing.Cubic.InOut, true, 0, 0, false);
-    this.gamestate.matchesHandled = true;
+    // this.gamestate.matchesHandled = true;
+    // this.gamestate.clickHandled = true;
 
      this.wiggling = false;
 
@@ -153,7 +158,7 @@ export default class Tile extends Phaser.Sprite {
 
    resetPosition() {
       if (this.index == 0) {
-      console.log('MATCHES HANDLED');
+      // console.log('MATCHES HANDLED');
         this.gamestate.matchesHandled = true;
         // this.gamestate.clickHandled = true;
       }
