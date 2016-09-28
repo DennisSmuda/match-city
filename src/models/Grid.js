@@ -14,6 +14,8 @@ export default class Grid {
       y: null
     };
 
+    this.tilesOnGrid = 0;
+
     this.initGrid();
 
   }
@@ -35,19 +37,60 @@ export default class Grid {
   update() {
     // Finds possible Matches on
     // every new hovered tile
-    this.findPossibleMatches();
+    if (this.gamestate.matchesHandled) {
+      this.findPossibleMatches();
+    }
+
     // console.log(this.possibleMatches);
 
-    if (!this.gamestate.clickHandled && this.gamestate.lastClicked.x !== null) {
+    if (!this.gamestate.clickHandled &&
+         this.gamestate.lastClicked.x !== null) {
       this.handleClick();
     }
+
+    console.log(this.gamestate.matchesHandled);
+    // this.gamestate.matchesHandled = false;
 
 
   }
 
   handleClick() {
-    console.log('Handle Click')
+    // console.log('Handle Click')
+
+    if (this.gamestate.tilesOnGrid == 1) {
+      this.gamestate.clickHandled = true;
+      this.gamestate.matchesHandled = true;
+      return;
+    }
+    let numMatches = this.possibleMatches.length;
+
+    this.gamestate.clickHandled = false;
+    this.gamestate.matchesHandled = false;
+
+    // if (numMatches = 0) {
+    //   console.log('No matches')
+    //   this.gamestate.matchesHandled = true;
+    //   this.gamestate.clickHandled   = true;
+    //   return;
+    // }
+
+
+    while (numMatches > 0 && !this.gamestate.matchesHandled) {
+    // while (numMatches > 0 ) {
+      // Go Backwards through possibleMatches
+      // and empty the possible Matches
+      this.possibleMatches[numMatches-1].collapse(numMatches-1);
+      // this.possibleMatches.splice(numMatches-1, 1);
+      numMatches--;
+    }
+
+
+
+    // this.gamestate.matchesHandled = true;
+    console.log('CLICK HANDLED')
+
     this.gamestate.clickHandled = true;
+
   }
 
   check(x, y) {
@@ -58,7 +101,7 @@ export default class Grid {
     }
   }
 
-  clearWiggles() {
+  clearPossibleMatches() {
     // console.log('Clear wiggles');
     let numMatches = this.possibleMatches.length;
     while (numMatches > 0) {
@@ -71,6 +114,8 @@ export default class Grid {
   }
 
   findPossibleMatches() {
+    // console.log('Find Possible');
+
     // Check all possible matches on
     // the current hovered tile.
     if (this.gamestate.hovering.x === null) {
@@ -94,7 +139,7 @@ export default class Grid {
       // New Hover position
       this.lastHovered.x = x;
       this.lastHovered.y = y;
-      this.clearWiggles();
+      this.clearPossibleMatches();
     }
 
 
@@ -119,34 +164,15 @@ export default class Grid {
           }
 
         }
-
-
-      // if (this.grid[i][j+1].tilestate.type == currentType) {
-      //   if (this.grid[i][j+2].tilestate.type == currentType) {
-      //     this.tripleDownMatch(i, j);
-      //   } else {
-      //     this.doubleDownMatch(i, j);
-      //   }
-      //
-      //   // console.log(this.grid[i][j-1]);
-      //   let toDelete = this.grid[i][j];
-      //   toDelete.resetToEmpty();
-      //
-
       }
     }
 
     // TODO: Replace with > 2 to have at least three matching tiles.
     if (this.possibleMatches.length >= 1) {
-      this.startWiggles();
+    // console.log('Start wiggle');
+      for (let match of this.possibleMatches) {
+        match.startWiggling();
+      }
     }
   }
-
-  startWiggles() {
-    console.log('Start wiggle');
-    for (let match of this.possibleMatches) {
-      match.startWiggling();
-    }
-  }
-
 }
