@@ -9,6 +9,7 @@ export default class Tile extends Phaser.Sprite {
     this.isHovered = false;
     this.isPlaced = false;
     this.enableBody = true;
+    this.collapseTween = null;
     // this.anchor.setTo(0.5, 0.5);
 	  // game.add.tween(this.scale).to( { x: 0.9, y: 0.9 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
@@ -107,6 +108,7 @@ export default class Tile extends Phaser.Sprite {
      // will be slightly hovering above
      this.y = this.originalY;
      this.x = this.originalX;
+     this.alpha = 1;
 
      console.log(this.x, this.y);
      this.stopWiggling();
@@ -123,11 +125,11 @@ export default class Tile extends Phaser.Sprite {
      console.log('COllapse');
      switch(this.direction) {
        case 'left':
-         this.collapse = this.game.add.tween(this).to( { x: this.x-60 }, 500, Phaser.Easing.Cubic.InOut, true, 0, 0, false);
-         this.collapse.onComplete.add(this.resetPosition, this);
+         this.collapseTween = this.game.add.tween(this).to( { x: this.x-64, alpha: 0 }, 500, Phaser.Easing.Cubic.Out, true, 0, 0, false);
+         this.collapseTween.onComplete.add(this.resetPosition, this);
          break;
        case 'right':
-         this.collapse = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
+         this.collapseTween = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
          break;
 
        default:
@@ -140,6 +142,5 @@ export default class Tile extends Phaser.Sprite {
         this.gamestate.matchesHandled = true;
       }
       this.resetToEmpty();
-      // this.stopWiggling();
    }
 }

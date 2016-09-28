@@ -89,7 +89,7 @@ export default class Grid {
       // Go Backwards through possibleMatches
       // and empty the possible Matches
       (this.possibleMatches[numMatches-1]).collapse(numMatches-1);
-      // this.possibleMatches.splice(numMatches-1, 1);
+      this.possibleMatches.splice(numMatches-1, 1);
       numMatches--;
     }
 
