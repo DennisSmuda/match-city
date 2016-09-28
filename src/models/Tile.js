@@ -3,34 +3,26 @@ export default class Tile extends Phaser.Sprite {
 
   constructor(game, x, y, frame, nextTile, gamestate) {
     super(game, x+32, y+32, frame);
+    this.game           = game;
+    this.enableBody     = true;
+
+    this.gamestate      = gamestate;
+    this.nextTile       = nextTile;
+
+    this.collapseTween  = null;
+    this.wiggle         = null;
     this.anchor.setTo(0.5, 0.5);
-    // console.log(this.x, this.y);
-    this.game = game;
-    this.isHovered = false;
-    this.isPlaced = false;
-    this.enableBody = true;
-    this.collapseTween = null;
-    // this.anchor.setTo(0.5, 0.5);
-	  // game.add.tween(this.scale).to( { x: 0.9, y: 0.9 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+    this.originalX      = x+32;
+    this.originalY      = y+32;
+    this.xPos           = (x-6)/64;
+    this.yPos           = (y)/64;
+    this.level          = 0;
+    this.type           = 'empty';
 
-
-    this.direction  = null;
-
-    this.nextTile = nextTile;
-    this.originalX = x+32;
-    this.originalY = y+32;
-    this.xPos = (x-6)/64;
-    this.yPos = (y)/64;
     this.tilestate = {
       'level': 0,
       'type' : 'empty'
     };
-
-    this.wiggle = null;
-    this.gamestate = gamestate;
-
-    this.game.physics.enable(this, Phaser.Physics.ARCADE);
-    this.body.collideWorldBounds = true;
 
     // Input & Events
     this.inputEnabled = true;
@@ -40,7 +32,7 @@ export default class Tile extends Phaser.Sprite {
 
     // Points
     const style = { font: "20px Roboto Mono", fill: "#ffffff", textalign: "center" };
-    this.label_score = this.game.add.text(0, 0, this.tilestate.level, style);
+    this.label_score = this.game.add.text(0, 0, this.level, style);
     this.label_score.anchor.setTo(0.5, 0.5);
     this.label_score.text = ' ';
     this.addChild(this.label_score);
@@ -51,27 +43,21 @@ export default class Tile extends Phaser.Sprite {
   }
 
   onInputOver() {
-    // Gets called once, when hover is first entered
-    this.isHovered = true;
-
-    // console.log('hover: ' + this.xPos + ' ' + this.yPos);
+    /**
+     * Gets called once on initial Hover-Enter Event.
+     * TODO: Check future level if collapsing...
+     */
     this.loadTexture(this.nextTile, 0, false);
     this.label_score.text = '1';
-    this.gamestate.hovering = {x: this.xPos, y: this.yPos};
+    this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
   }
 
   onInputOut() {
-    this.isHovered = false;
-    if (this.tilestate.level == 0 && this.tilestate.type == 'empty') {
+    if (this.level == 0 && this.type == 'empty') {
       this.loadTexture('empty', 0, false);
       this.label_score.text = ' ';
     }
   }
-
-  update() {
-
-  }
-
 
   onClick() {
     if (!this.gamestate.clickHandled &&
@@ -79,9 +65,12 @@ export default class Tile extends Phaser.Sprite {
       return;
     }
 
-    if (this.tilestate.level == 0 && this.tilestate.type == 'empty') {
-      this.tilestate.level = 1;
-      this.tilestate.type  = this.nextTile;
+    if (this.level == 0 && this.type == 'empty') {
+      this.z = 100;
+
+      this.bringToTop();
+      this.level = 1;
+      this.type  = this.nextTile;
       this.gamestate.lastClicked.x = this.xPos;
       this.gamestate.lastClicked.y = this.yPos;
       this.gamestate.clickHandled  = false;
@@ -96,22 +85,17 @@ export default class Tile extends Phaser.Sprite {
    }
 
    resetToEmpty() {
-     console.log('Reste to empty');
-     /*
-      Load Empty Texture and reset tilelevel
+     /**
+      * Load initial texture, reset position and level
       */
      this.loadTexture('empty', 0, false);
      this.label_score.text = ' ';
-     this.tilestate.type = 'empty';
-     this.tilestate.level = 0;
-     // Offset y position because new element
-     // will be slightly hovering above
+     this.type = 'empty';
+     this.level = 0;
      this.y = this.originalY;
      this.x = this.originalX;
-     this.alpha = 1;
-
-     console.log(this.x, this.y);
-     this.stopWiggling();
+     this.gamestate.matchesHandled = true;
+     this.wiggle = this.game.add.tween(this.scale).to( { x: 1, y: 1 }, 200, Phaser.Easing.Linear.None, true);
    }
 
    stopWiggling() {
@@ -120,27 +104,19 @@ export default class Tile extends Phaser.Sprite {
      }
    }
 
-   collapse(index) {
-     this.index = index;
-     console.log('COllapse');
-     switch(this.direction) {
-       case 'left':
-         this.collapseTween = this.game.add.tween(this).to( { x: this.x-64, alpha: 0 }, 500, Phaser.Easing.Cubic.Out, true, 0, 0, false);
-         this.collapseTween.onComplete.add(this.resetPosition, this);
-         break;
-       case 'right':
-         this.collapseTween = this.game.add.tween(this).to( { x: this.x+4 }, 500, Phaser.Easing.Bounce.InOut, true, 0, -1, true);
-         break;
+   collapse() {
+     /**
+      * Self calculating collapse tween.
+      * Values based on lasclicked tile, and current position
+      */
+     let xDistance = (this.gamestate.lastClicked.x - this.xPos)*64;
+     let yDistance = (this.gamestate.lastClicked.y - this.yPos)*64;
 
-       default:
-         break;
-      }
-   }
+     this.collapseTween = this.game.add.tween(this).to( {
+       x: (this.x + xDistance),
+       y: (this.y + yDistance)
+      }, 300, Phaser.Easing.Cubic.Out, true, 0, 0, false);
+      this.collapseTween.onComplete.add(this.resetToEmpty, this);
 
-   resetPosition() {
-      if (this.index == 0) {
-        this.gamestate.matchesHandled = true;
-      }
-      this.resetToEmpty();
    }
 }

@@ -1,11 +1,14 @@
 import Tile from './Tile';
 
+
+
 export default class Grid {
   constructor(game, gamestate) {
     this.game = game;
     this.rows = 7;
     this.cols = 7;
     this.grid = new Array(this.rows);
+    this.tiles = this.game.add.group();
     this.nextTile = gamestate.nextTile;
     this.gamestate = gamestate;
     this.possibleMatches = [];
@@ -21,7 +24,10 @@ export default class Grid {
   }
 
   initGrid() {
-    // Initialize 2D Grid Array
+    /**
+     * Initialize 2D array for easier referencing '[][]' - style
+     * Additional grouping to control render order (zIndex)
+     */
     for (let i = 0; i < this.cols; i++) {
       this.grid[i] = new Array(this.cols)
     }
@@ -29,6 +35,7 @@ export default class Grid {
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
         this.grid[i][j] = new Tile(this.game, i*64+6, j*64, 'empty', this.nextTile, this.gamestate);
+        this.tiles.add(this.grid[i][j]);
       }
     }
   }
@@ -36,11 +43,12 @@ export default class Grid {
 
   update() {
 
+    // Return if there are still matches/clicks being handled
     if (!this.gamestate.matchesHandled &&
-      !this.gamestate.clickHandled) {
-        console.log('Nothing handled');
+        !this.gamestate.clickHandled) {
         return;
       }
+
 
     // Finds possible Matches on
     // every new hovered tile
@@ -48,67 +56,41 @@ export default class Grid {
       this.findPossibleMatches();
     }
 
-    // console.log(this.possibleMatches);
-
+    // Handle Click
     if (!this.gamestate.clickHandled &&
          this.gamestate.lastClicked.x !== null) {
       this.handleClick();
     }
 
-    // console.log(this.gamestate.matchesHandled);
-    // console.log(this.possibleMatches.length);
-    // this.gamestate.matchesHandled = false;
-
-
   }
 
   handleClick() {
     // console.log('Handle Click')
-
-    if (this.gamestate.tilesOnGrid == 1) {
-      this.gamestate.clickHandled = true;
-      this.gamestate.matchesHandled = true;
-      return;
-    }
     let numMatches = this.possibleMatches.length;
 
-    this.gamestate.clickHandled = false;
-    this.gamestate.matchesHandled = false;
-
-
     if (numMatches == 0) {
-      console.log('No matches')
       this.gamestate.matchesHandled = true;
       this.gamestate.clickHandled   = true;
       return;
     }
 
+    // Toggle control variables
+    this.gamestate.clickHandled = false;
+    this.gamestate.matchesHandled = false;
 
+
+    // Loop through array and collapse all matching (surrounding tiles)
     while (numMatches > 0 && !this.gamestate.matchesHandled) {
-      console.log(this.possibleMatches[numMatches-1]);
       // Go Backwards through possibleMatches
       // and empty the possible Matches
-      (this.possibleMatches[numMatches-1]).collapse(numMatches-1);
+      (this.possibleMatches[numMatches-1]).collapse();
       this.possibleMatches.splice(numMatches-1, 1);
       numMatches--;
     }
 
-
-
-    // this.gamestate.matchesHandled = true;
-    console.log('CLICK HANDLED')
-
     this.gamestate.clickHandled = true;
-
   }
 
-  check(x, y) {
-    if (this.grid[x][y].tilestate.type == this.nextTile) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   clearPossibleMatches() {
     // console.log('Clear wiggles');
@@ -123,13 +105,9 @@ export default class Grid {
   }
 
   findPossibleMatches() {
-    // console.log('Find Possible');
-
     // Check all possible matches on
     // the current hovered tile.
-    if (this.gamestate.hovering.x === null) {
-      return;
-    }
+    if (this.gamestate.hovering.x === null) { return; }
 
     // Currently Hovering
     let x           = this.gamestate.hovering.x;
@@ -152,8 +130,7 @@ export default class Grid {
       this.clearPossibleMatches();
     }
 
-    console.log('New Hover');
-
+    // CHeck to the right
     if (x < 6) {
 
       if (this.check(x+1, y)) {
@@ -161,11 +138,13 @@ export default class Grid {
         // console.log((this.grid[x+1][y]).addWiggle);
         this.grid[x+1][y].direction = 'left';
         this.possibleMatches.push(this.grid[x+1][y]);
-        console.log('add match')
+
 
         if (y < 6) {
           if (this.check(x, y+1)) {
             console.log('match down');
+            this.grid[x][y+1].direction = 'up';
+            this.possibleMatches.push(this.grid[x][y+1]);
           }
 
           if (y < 5) {
@@ -184,6 +163,14 @@ export default class Grid {
       for (let match of this.possibleMatches) {
         match.startWiggling();
       }
+    }
+  }
+
+  check(x, y) {
+    if (this.grid[x][y].type == this.nextTile) {
+      return true;
+    } else {
+      return false;
     }
   }
 }
