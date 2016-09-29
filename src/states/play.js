@@ -25,13 +25,9 @@ export default class Play extends Phaser.State {
 
     // this.tile = new Tile(this.game, 4, 4, 'blue');
     this.grid = new Grid(this.game, this.gamestate);
-
   }
 
   update() {
-
     this.grid.update();
-
-
   }
 }

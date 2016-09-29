@@ -68,7 +68,7 @@ export default class Grid {
     // console.log('Handle Click')
     let numMatches = this.possibleMatches.length;
 
-    if (numMatches == 0) {
+    if (numMatches <= 1) {
       this.gamestate.matchesHandled = true;
       this.gamestate.clickHandled   = true;
       return;
@@ -130,36 +130,109 @@ export default class Grid {
       this.clearPossibleMatches();
     }
 
-    // CHeck to the right
+    // Check right
     if (x < 6) {
-
       if (this.check(x+1, y)) {
-        console.log('match to the left');
-        // console.log((this.grid[x+1][y]).addWiggle);
-        this.grid[x+1][y].direction = 'left';
         this.possibleMatches.push(this.grid[x+1][y]);
 
+        if (x < 5) {
+          if (this.check(x+2, y)) {
+            this.possibleMatches.push(this.grid[x+2][y]);
+          }
+        }
 
+        // Right Top
+        if (y > 0) {
+          if (this.check(x+1, y-1)) {
+            this.possibleMatches.push(this.grid[x+1][y-1]);
+          }
+        }
+        // Right Bot
         if (y < 6) {
-          if (this.check(x, y+1)) {
-            console.log('match down');
-            this.grid[x][y+1].direction = 'up';
-            this.possibleMatches.push(this.grid[x][y+1]);
+          if (this.check(x+1, y+1)) {
+            this.possibleMatches.push(this.grid[x+1][y+1]);
           }
+        }
+      }
+    }
 
-          if (y < 5) {
-            if (this.check(x, y+2)) {
-              console.log('double match down');
-            }
+    // Check left
+    if (x > 0) {
+      if (this.check(x-1, y)) {
+        this.possibleMatches.push(this.grid[x-1][y]);
+
+        if (x > 1) {
+          if (this.check(x-2, y)) {
+            this.possibleMatches.push(this.grid[x-2][y]);
           }
+        }
+        // Left Top
+        if (y > 0) {
+          if (this.check(x-1, y-1)) {
+            this.possibleMatches.push(this.grid[x-1][y-1]);
+          }
+        }
+        // Left Down
+        if (y < 6) {
+          if (this.check(x-1, y+1)) {
+            this.possibleMatches.push(this.grid[x-1][y+1]);
+          }
+        }
+      }
+    }
 
+    // Check down
+    if (y < 6) {
+      if (this.check(x, y+1)) {
+        this.possibleMatches.push(this.grid[x][y+1]);
+        // Double Down
+        if (y < 5) {
+          if (this.check(x, y+2)) {
+            this.possibleMatches.push(this.grid[x][y+2]);
+          }
+        }
+        // Down-Left
+        if (x > 0) {
+          if (this.check(x-1, y+1)) {
+            this.possibleMatches.push(this.grid[x-1][y+1]);
+          }
+        }
+        // Down-Right
+        if (x < 6) {
+          if (this.check(x+1, y+1)) {
+            this.possibleMatches.push(this.grid[x+1][y+1]);
+          }
+        }
+      }
+    }
+
+    // Check upwards
+    if (y > 0) {
+      if (this.check(x, y-1)) {
+        this.possibleMatches.push(this.grid[x][y-1]);
+
+        if (y > 1) {
+          if (this.check(x, y-2)) {
+            this.possibleMatches.push(this.grid[x][y-2]);
+          }
+        }
+        // UP-Left
+        if (x > 0) {
+          if (this.check(x-1, y-1)) {
+            this.possibleMatches.push(this.grid[x-1][y-1]);
+          }
+        }
+        // Up-Right
+        if (x < 6) {
+          if (this.check(x+1, y-1)) {
+            this.possibleMatches.push(this.grid[x+1][y-1]);
+          }
         }
       }
     }
 
     // TODO: Replace with > 2 to have at least three matching tiles.
-    if (this.possibleMatches.length >= 1) {
-    // console.log('Start wiggle');
+    if (this.possibleMatches.length >= 2) {
       for (let match of this.possibleMatches) {
         match.startWiggling();
       }
@@ -167,6 +240,7 @@ export default class Grid {
   }
 
   check(x, y) {
+    // console.log('checking: ' +);
     if (this.grid[x][y].type == this.nextTile) {
       return true;
     } else {
