@@ -20,10 +20,6 @@ export default class Play extends Phaser.State {
       matchesHandled: true,
       tilesOnGrid: 0,
       nextTiles: [
-        'blue',
-        'red',
-        'blue',
-        'red'
       ]
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
