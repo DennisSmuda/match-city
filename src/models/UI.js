@@ -10,9 +10,8 @@ export default class UI {
 
     this.graphics = game.add.graphics(0, 0);
     // set a fill and line style
-    this.graphics.beginFill(0x878787);
-    this.graphics.drawRect(20, 475, 82, 140);
     this.graphics.beginFill(0x3C3C3C);
+    this.graphics.drawRect(20, 475, 82, 140);
     this.graphics.drawRect(112, 475, 165, 140);
     this.graphics.drawRect(288, 475, 154, 140);
 

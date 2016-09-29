@@ -47,7 +47,6 @@ export default class Tile extends Phaser.Sprite {
     if (this.level == 0 && this.type == 'empty') {
       this.loadTexture(this.gamestate.nextTiles[0], 0, false);
       this.label_score.text = ' ';
-      this.label_score.text = '1';
       this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
     }
   }
@@ -67,7 +66,9 @@ export default class Tile extends Phaser.Sprite {
 
     if (this.level == 0 && this.type == 'empty') {
       this.bringToTop();
+
       this.level = 1;
+      this.label_score.text = this.level;
       this.type  = this.gamestate.nextTiles[0];
       this.gamestate.lastClicked.x = this.xPos;
       this.gamestate.lastClicked.y = this.yPos;
@@ -112,7 +113,7 @@ export default class Tile extends Phaser.Sprite {
      this.gamestate.matchesHandled = true;
      this.wiggle = this.game.add.tween(this.scale).to( { x: 1, y: 1 }, 200, Phaser.Easing.Linear.None, true);
 
-
+     this.gamestate.needLevelUp = true;
 
    }
 
@@ -130,6 +131,8 @@ export default class Tile extends Phaser.Sprite {
      let xDistance = (this.gamestate.lastClicked.x - this.xPos)*64;
      let yDistance = (this.gamestate.lastClicked.y - this.yPos)*64;
      this.gamestate.tilesOnGrid--;
+
+     this.gamestate.connectingLevels[this.level]++;
 
      this.collapseTween = this.game.add.tween(this).to( {
        x: (this.x + xDistance),

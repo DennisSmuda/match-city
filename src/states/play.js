@@ -7,6 +7,14 @@ export default class Play extends Phaser.State {
 
   create() {
     this.gamestate = {
+      minimumConnecting: 2,
+      connectingLevels: {
+        1: 0,
+        3: 0,
+        6: 0,
+        9: 0
+      },
+      needLevelUp: false,
       lastClicked: {
         x: null,
         y: null

@@ -42,7 +42,17 @@ export default class Grid {
     }
   }
 
+  updateLevel() {
+    console.log(this.gamestate.lastClicked);
+    console.log(this.gamestate.connectingLevels);
+    this.gamestate.needLevelUp = false;
+  }
+
   update() {
+
+    if (this.gamestate.needLevelUp) {
+      this.updateLevel();
+    }
     // Generate next tile randomly
     if (this.gamestate.nextTiles.length < 3) {
       newNextTiles(this.gamestate.nextTiles);
@@ -61,6 +71,11 @@ export default class Grid {
 
     }
 
+    // Handle Click
+    if (!this.gamestate.clickHandled &&
+        this.gamestate.lastClicked.x !== null) {
+      this.handleClick();
+    }
     // Return if there are still matches/clicks being handled
     if (!this.gamestate.matchesHandled &&
         !this.gamestate.clickHandled) {
@@ -73,11 +88,6 @@ export default class Grid {
       this.findPossibleMatches();
     }
 
-    // Handle Click
-    if (!this.gamestate.clickHandled &&
-         this.gamestate.lastClicked.x !== null) {
-      this.handleClick();
-    }
 
   }
 
@@ -89,7 +99,7 @@ export default class Grid {
     let numMatches = this.possibleMatches.length;
 
     // Have at least 2 Matching tiles ready
-    if (numMatches <= 1) {
+    if (numMatches < this.gamestate.minimumConnecting) {
       this.gamestate.matchesHandled = true;
       this.gamestate.clickHandled   = true;
       return;
@@ -100,7 +110,6 @@ export default class Grid {
     this.gamestate.clickHandled = false;
     this.gamestate.matchesHandled = false;
     this.gamestate.matches++;
-
 
     // Loop through array and collapse all matching (surrounding tiles)
     while (numMatches > 0 && !this.gamestate.matchesHandled) {
@@ -113,6 +122,7 @@ export default class Grid {
     }
 
     this.UI.updateInfo();
+    // console.log(this.gamestate.connectingLevels);
 
     this.gamestate.clickHandled = true;
   }
@@ -257,7 +267,7 @@ export default class Grid {
     }
 
     // TODO: Replace with > 2 to have at least three matching tiles.
-    if (this.possibleMatches.length >= 2) {
+    if (this.possibleMatches.length >= this.gamestate.minimumConnecting) {
       for (let match of this.possibleMatches) {
         match.startWiggling();
       }
