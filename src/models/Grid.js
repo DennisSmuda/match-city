@@ -294,12 +294,35 @@ export default class Grid {
 
       console.log('Double Threes')
 
+      if (ones < 2) {
+        // Delete Threes
+        let numMatches = this.possibleMatches.length;
+        while (numMatches > 0) {
+          // Go Backwards through possibleMatches
+          // and empty the possible Matches
+          if (this.possibleMatches[numMatches-1].level == 3) {
+            this.possibleMatches.splice(numMatches-1, 1);
+          }
+          numMatches--;
+        }
+      }
+
     } else if (threes > 0 && threes < 2) {
       console.log('three')
+      // Delete Threes
+      let numMatches = this.possibleMatches.length;
+      while (numMatches > 0) {
+        // Go Backwards through possibleMatches
+        // and empty the possible Matches
+        if (this.possibleMatches[numMatches-1].level == 3) {
+          this.possibleMatches.splice(numMatches-1, 1);
+        }
+        numMatches--;
+      }
 
-      if (ones < 2) {
-      console.log('ONes')
-        this.possibleMatches = [];
+      if (ones < 3) {
+
+
       }
 
     }
