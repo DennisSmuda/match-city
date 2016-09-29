@@ -9,12 +9,21 @@ export default class Play extends Phaser.State {
     this.gamestate = {
       minimumConnecting: 2,
       connectingLevels: {
-        1: 0,
-        3: 0,
-        6: 0,
-        9: 0
+        1: [],
+        3: [],
+        6: [],
+        9: [],
+        12:[],
+        15:[],
+      },
+      softMatch: {
+        left: false,
+        right: false,
+        top: false,
+        bottom: false
       },
       needLevelUp: false,
+      nextLevel: 1,
       lastClicked: {
         x: null,
         y: null
@@ -32,7 +41,7 @@ export default class Play extends Phaser.State {
       turns: 0,
       matches: 0,
       individualMatches: 0,
-      numRand: 3
+      numRand: 15
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
     this.gameBackground = this.add.sprite(0, 0, 'game-background');

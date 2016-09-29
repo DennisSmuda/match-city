@@ -34,8 +34,6 @@ export function newRandomTiles(gamestate) {
   let num         = gamestate.numRand;
   let randomTiles = gamestate.nextRandoms;
 
-  console.log(randomTiles);
-
   for (let i = 0; i <= num; i++) {
     let k = Math.random();
 
@@ -55,6 +53,5 @@ export function newRandomTiles(gamestate) {
       randomTiles.push('green');
     }
     else randomTiles.push('orange');
-    console.log(randomTiles);
   }
 }

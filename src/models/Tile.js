@@ -91,7 +91,7 @@ export default class Tile extends Phaser.Sprite {
       this.gamestate.lastClicked.y = this.yPos;
       this.gamestate.clickHandled  = false;
       this.gamestate.tilesOnGrid++;
-      this.label_score.text = '1';
+      this.label_score.text = this.level;
 
       this.drop = this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
    }
@@ -114,7 +114,11 @@ export default class Tile extends Phaser.Sprite {
      this.wiggle = this.game.add.tween(this.scale).to( { x: 1, y: 1 }, 200, Phaser.Easing.Linear.None, true);
 
      this.gamestate.needLevelUp = true;
+   }
 
+   updateLevel(level) {
+      this.level = level;
+      this.label_score.text = this.level;
    }
 
    stopWiggling() {
@@ -131,8 +135,6 @@ export default class Tile extends Phaser.Sprite {
      let xDistance = (this.gamestate.lastClicked.x - this.xPos)*64;
      let yDistance = (this.gamestate.lastClicked.y - this.yPos)*64;
      this.gamestate.tilesOnGrid--;
-
-     this.gamestate.connectingLevels[this.level]++;
 
      this.collapseTween = this.game.add.tween(this).to( {
        x: (this.x + xDistance),

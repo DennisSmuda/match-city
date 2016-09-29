@@ -40,12 +40,31 @@ export default class Grid {
         this.tileGroup.add(this.grid[i][j]);
       }
     }
+      newRandomTiles(this.gamestate);
+      this.spawnRandomTiles();
   }
 
   updateLevel() {
     console.log(this.gamestate.lastClicked);
     console.log(this.gamestate.connectingLevels);
+    let newLevel = 1;
+
+    if (this.gamestate.connectingLevels['1'].length >= this.gamestate.minimumConnecting) {
+      newLevel = 3;
+    }
+    if (this.gamestate.connectingLevels['3'].length >= this.gamestate.minimumConnecting) {
+      newLevel = 6;
+    }
+    if (this.gamestate.connectingLevels['6'] >= this.gamestate.minimumConnecting-1) {
+      newLevel = 9;
+    }
+
+
+    this.grid[this.gamestate.lastClicked.x][this.gamestate.lastClicked.y].updateLevel(newLevel);
+
+
     this.gamestate.needLevelUp = false;
+    this.gamestate.connectingLevels = {1:[],3:[],6:[],9:[],12:[],15:[]};
   }
 
   update() {
@@ -138,6 +157,7 @@ export default class Grid {
       this.possibleMatches.splice(numMatches-1, 1);
       numMatches--;
     }
+    this.gamestate.connectingLevels = {1:[],3:[],6:[],9:[],12:[],15:[]};
   }
 
   findPossibleMatches() {
@@ -167,24 +187,24 @@ export default class Grid {
 
     // Check right
     if (x < 6) {
-      if (this.check(x+1, y)) {
+      if (this.check(x+1, y, currentType)) {
         this.possibleMatches.push(this.grid[x+1][y]);
-
+        // Check double right
         if (x < 5) {
-          if (this.check(x+2, y)) {
+          if (this.check(x+2, y, currentType)) {
             this.possibleMatches.push(this.grid[x+2][y]);
           }
         }
 
         // Right Top
         if (y > 0) {
-          if (this.check(x+1, y-1)) {
+          if (this.check(x+1, y-1, currentType)) {
             this.possibleMatches.push(this.grid[x+1][y-1]);
           }
         }
         // Right Bot
         if (y < 6) {
-          if (this.check(x+1, y+1)) {
+          if (this.check(x+1, y+1, currentType)) {
             this.possibleMatches.push(this.grid[x+1][y+1]);
           }
         }
@@ -193,78 +213,108 @@ export default class Grid {
 
     // Check left
     if (x > 0) {
-      if (this.check(x-1, y)) {
+      if (this.check(x-1, y, currentType)) {
         this.possibleMatches.push(this.grid[x-1][y]);
 
+        // Check double Left
         if (x > 1) {
-          if (this.check(x-2, y)) {
+          if (this.check(x-2, y, currentType)) {
             this.possibleMatches.push(this.grid[x-2][y]);
           }
         }
         // Left Top
         if (y > 0) {
-          if (this.check(x-1, y-1)) {
+          if (this.check(x-1, y-1, currentType)) {
             this.possibleMatches.push(this.grid[x-1][y-1]);
           }
         }
         // Left Down
         if (y < 6) {
-          if (this.check(x-1, y+1)) {
+          if (this.check(x-1, y+1, currentType)) {
             this.possibleMatches.push(this.grid[x-1][y+1]);
           }
         }
       }
     }
+    // Check upwards
+    if (y > 0) {
+      if (this.check(x, y-1, currentType)) {
+        this.possibleMatches.push(this.grid[x][y-1]);
 
-    // Check down
+        // Double Up
+        if (y > 1) {
+          if (this.check(x, y-2, currentType)) {
+            this.possibleMatches.push(this.grid[x][y-2]);
+          }
+        }
+        // UP-Left
+        if (x > 0) {
+          if (this.check(x-1, y-1, currentType)) {
+            this.possibleMatches.push(this.grid[x-1][y-1]);
+          }
+        }
+        // Up-Right
+        if (x < 6) {
+          if (this.check(x+1, y-1, currentType)) {
+            this.possibleMatches.push(this.grid[x+1][y-1]);
+          }
+        }
+      }
+    }
+
     if (y < 6) {
-      if (this.check(x, y+1)) {
+      if (this.check(x, y+1, currentType)) {
         this.possibleMatches.push(this.grid[x][y+1]);
-        // Double Down
+         // Double Down
         if (y < 5) {
-          if (this.check(x, y+2)) {
+          if (this.check(x, y+2, currentType)) {
             this.possibleMatches.push(this.grid[x][y+2]);
           }
         }
         // Down-Left
         if (x > 0) {
-          if (this.check(x-1, y+1)) {
+          if (this.check(x-1, y+1, currentType)) {
             this.possibleMatches.push(this.grid[x-1][y+1]);
           }
         }
         // Down-Right
         if (x < 6) {
-          if (this.check(x+1, y+1)) {
+          if (this.check(x+1, y+1, currentType)) {
             this.possibleMatches.push(this.grid[x+1][y+1]);
           }
         }
       }
     }
 
-    // Check upwards
-    if (y > 0) {
-      if (this.check(x, y-1)) {
-        this.possibleMatches.push(this.grid[x][y-1]);
 
-        if (y > 1) {
-          if (this.check(x, y-2)) {
-            this.possibleMatches.push(this.grid[x][y-2]);
-          }
-        }
-        // UP-Left
-        if (x > 0) {
-          if (this.check(x-1, y-1)) {
-            this.possibleMatches.push(this.grid[x-1][y-1]);
-          }
-        }
-        // Up-Right
-        if (x < 6) {
-          if (this.check(x+1, y-1)) {
-            this.possibleMatches.push(this.grid[x+1][y-1]);
-          }
-        }
+    let ones = this.gamestate.connectingLevels['1'].length;
+    let threes = this.gamestate.connectingLevels['3'].length;
+
+    if (threes >= 2) {
+
+      console.log('Double Threes')
+
+    } else if (threes > 0 && threes < 2) {
+      console.log('three')
+
+      if (ones < 2) {
+      console.log('ONes')
+        this.possibleMatches = [];
       }
+
     }
+      // for (match of this.possibleMatches) {
+        // console.
+
+      // }
+
+
+
+
+
+    console.log(this.gamestate.connectingLevels);
+
+
 
     // TODO: Replace with > 2 to have at least three matching tiles.
     if (this.possibleMatches.length >= this.gamestate.minimumConnecting) {
@@ -274,28 +324,38 @@ export default class Grid {
     }
   }
 
-  check(x, y) {
+  check(x, y, currentType) {
     // console.log('checking: ' +);
-    if (this.grid[x][y].type == this.gamestate.nextTiles[0]) {
-      return true;
-    } else {
-      return false;
+    if (this.grid[x][y].type == currentType) {
+
+      if (this.grid[x][y].level == 1) {
+          this.gamestate.connectingLevels[1].push({x: x, y: y});
+        return true;
+
+      } else if (this.grid[x][y].level == 3) {
+          this.gamestate.connectingLevels[3].push({x: x, y: y});
+          return true;
+
+      } else {
+          return false;
+      }
+
     }
   }
-  // spawnRandomTiles() {
-  //   let randX = getRandomInt(0, 6);
-  //   let randY = getRandomInt(0, 6);
-  //   let counter = this.gamestate.numRand;
-  //
-  //   while (counter) {
-  //     if (this.grid[randX][randY].type == 'empty') {
-  //       // console.log('Spawning ' +  this.gamestate.nextRandoms[counter])
-  //       this.grid[randX][randY].spawn(counter);
-  //       counter--;
-  //     } else {
-  //       randX = getRandomInt(0, 6);
-  //       randY = getRandomInt(0, 6);
-  //     }
-  //   }
-  // }
+  spawnRandomTiles() {
+    let randX = getRandomInt(0, 6);
+    let randY = getRandomInt(0, 6);
+    let counter = this.gamestate.numRand;
+
+    while (counter) {
+      if (this.grid[randX][randY].type == 'empty') {
+        // console.log('Spawning ' +  this.gamestate.nextRandoms[counter])
+        this.grid[randX][randY].spawn(counter);
+        counter--;
+      } else {
+        randX = getRandomInt(0, 6);
+        randY = getRandomInt(0, 6);
+      }
+    }
+  }
 }
