@@ -112,6 +112,8 @@ export default class Grid {
       numMatches--;
     }
 
+    this.UI.updateInfo();
+
     this.gamestate.clickHandled = true;
   }
 
