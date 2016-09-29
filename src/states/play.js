@@ -19,8 +19,12 @@ export default class Play extends Phaser.State {
       clickHandled: true,
       matchesHandled: true,
       tilesOnGrid: 0,
-      nextTiles: [
-      ]
+      nextTiles: [],
+      nextRandoms: [],
+      turns: 0,
+      matches: 0,
+      individualMatches: 0,
+      numRand: 3
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
     this.gameBackground = this.add.sprite(0, 0, 'game-background');

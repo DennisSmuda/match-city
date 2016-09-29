@@ -1,7 +1,7 @@
 import Tile from './Tile';
 import UI from './UI';
 
-import { newNextTile } from '../util/helper';
+import { newNextTiles, newRandomTiles, getRandomInt } from '../util/helper';
 
 
 export default class Grid {
@@ -9,15 +9,17 @@ export default class Grid {
     this.game = game;
     this.rows = 7;
     this.cols = 7;
-    this.grid = new Array(this.rows);
-    this.tiles = this.game.add.group();
-    this.nextTile = gamestate.nextTile;
-    this.gamestate = gamestate;
+    this.grid       = new Array(this.rows);
+    this.tileGroup  = this.game.add.group();
+    this.nextTile   = gamestate.nextTile;
+    this.gamestate  = gamestate;
     this.possibleMatches = [];
     this.lastHovered = {
       x: null,
       y: null
     };
+
+    this.UI = new UI(this.game, this.gamestate);
 
     this.tilesOnGrid = 0;
     this.initGrid();
@@ -35,15 +37,28 @@ export default class Grid {
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
         this.grid[i][j] = new Tile(this.game, i*64+6, j*64, 'empty', this.gamestate);
-        this.tiles.add(this.grid[i][j]);
+        this.tileGroup.add(this.grid[i][j]);
       }
     }
   }
 
   update() {
     // Generate next tile randomly
-    if (this.gamestate.nextTiles.length <= 3) {
-      newNextTile(this.gamestate.nextTiles);
+    if (this.gamestate.nextTiles.length < 3) {
+      newNextTiles(this.gamestate.nextTiles);
+      this.UI.updateNextTiles();
+    }
+
+    // Spawn Random tiles
+    if (this.gamestate.counter == 0 &&
+        this.gamestate.matchesHandled && this.gamestate.clickHandled) {
+
+      // newRandomTiles(this.gamestate);
+      // this.spawnRandomTiles();
+      //
+      // this.gamestate.numRand = getRandomInt(3, 6);
+      // this.gamestate.counter = getRandomInt(2, 8);
+
     }
 
     // Return if there are still matches/clicks being handled
@@ -67,6 +82,10 @@ export default class Grid {
   }
 
   handleClick() {
+    // Decrease counter each click
+    this.gamestate.turns++;
+    this.UI.updateInfo();
+
     let numMatches = this.possibleMatches.length;
 
     // Have at least 2 Matching tiles ready
@@ -80,6 +99,7 @@ export default class Grid {
     // Toggle control variables
     this.gamestate.clickHandled = false;
     this.gamestate.matchesHandled = false;
+    this.gamestate.matches++;
 
 
     // Loop through array and collapse all matching (surrounding tiles)
@@ -88,6 +108,7 @@ export default class Grid {
       // and empty the possible Matches
       (this.possibleMatches[numMatches-1]).collapse();
       this.possibleMatches.splice(numMatches-1, 1);
+      this.gamestate.individualMatches++;
       numMatches--;
     }
 
@@ -249,4 +270,20 @@ export default class Grid {
       return false;
     }
   }
+  // spawnRandomTiles() {
+  //   let randX = getRandomInt(0, 6);
+  //   let randY = getRandomInt(0, 6);
+  //   let counter = this.gamestate.numRand;
+  //
+  //   while (counter) {
+  //     if (this.grid[randX][randY].type == 'empty') {
+  //       // console.log('Spawning ' +  this.gamestate.nextRandoms[counter])
+  //       this.grid[randX][randY].spawn(counter);
+  //       counter--;
+  //     } else {
+  //       randX = getRandomInt(0, 6);
+  //       randY = getRandomInt(0, 6);
+  //     }
+  //   }
+  // }
 }

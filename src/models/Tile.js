@@ -66,8 +66,6 @@ export default class Tile extends Phaser.Sprite {
     }
 
     if (this.level == 0 && this.type == 'empty') {
-      this.z = 100;
-
       this.bringToTop();
       this.level = 1;
       this.type  = this.gamestate.nextTiles[0];
@@ -82,6 +80,19 @@ export default class Tile extends Phaser.Sprite {
       this.gamestate.nextTiles.shift();
 
     }
+   }
+
+   spawn(index) {
+      this.level = 1;
+      this.type  = this.gamestate.nextRandoms[index];
+      this.loadTexture(this.gamestate.nextRandoms[index], 0, false);
+      this.gamestate.lastClicked.x = this.xPos;
+      this.gamestate.lastClicked.y = this.yPos;
+      this.gamestate.clickHandled  = false;
+      this.gamestate.tilesOnGrid++;
+      this.label_score.text = '1';
+
+      this.drop = this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
    }
 
    startWiggling() {
@@ -118,6 +129,7 @@ export default class Tile extends Phaser.Sprite {
       */
      let xDistance = (this.gamestate.lastClicked.x - this.xPos)*64;
      let yDistance = (this.gamestate.lastClicked.y - this.yPos)*64;
+     this.gamestate.tilesOnGrid--;
 
      this.collapseTween = this.game.add.tween(this).to( {
        x: (this.x + xDistance),

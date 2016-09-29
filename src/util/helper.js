@@ -8,7 +8,7 @@ export function square(x) {
 
 
 // Helper function to generate next upcoming tile.
-export function newNextTile(nextTiles) {
+export function newNextTiles(nextTiles) {
   let k = Math.random();
 
   if (k < 0.16) {
@@ -27,5 +27,34 @@ export function newNextTile(nextTiles) {
     nextTiles.push('green');
   }
   else nextTiles.push('orange');
+}
 
+
+export function newRandomTiles(gamestate) {
+  let num         = gamestate.numRand;
+  let randomTiles = gamestate.nextRandoms;
+
+  console.log(randomTiles);
+
+  for (let i = 0; i <= num; i++) {
+    let k = Math.random();
+
+    if (k < 0.16) {
+      randomTiles.push('blue');
+    }
+    else if (k < 0.32) {
+      randomTiles.push('red');
+    }
+    else if (k < 0.48) {
+      randomTiles.push('yellow');
+    }
+    else if (k < 0.64) {
+      randomTiles.push('purple');
+    }
+    else if (k < 0.80) {
+      randomTiles.push('green');
+    }
+    else randomTiles.push('orange');
+    console.log(randomTiles);
+  }
 }
