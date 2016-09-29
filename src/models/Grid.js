@@ -1,5 +1,7 @@
 import Tile from './Tile';
+import UI from './UI';
 
+import { newNextTile } from '../util/helper';
 
 
 export default class Grid {
@@ -18,9 +20,7 @@ export default class Grid {
     };
 
     this.tilesOnGrid = 0;
-
     this.initGrid();
-
   }
 
   initGrid() {
@@ -34,21 +34,23 @@ export default class Grid {
 
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
-        this.grid[i][j] = new Tile(this.game, i*64+6, j*64, 'empty', this.nextTile, this.gamestate);
+        this.grid[i][j] = new Tile(this.game, i*64+6, j*64, 'empty', this.gamestate);
         this.tiles.add(this.grid[i][j]);
       }
     }
   }
 
-
   update() {
+    // Generate next tile randomly
+    if (this.gamestate.nextTiles.length <= 3) {
+      newNextTile(this.gamestate.nextTiles);
+    }
 
     // Return if there are still matches/clicks being handled
     if (!this.gamestate.matchesHandled &&
         !this.gamestate.clickHandled) {
         return;
-      }
-
+    }
 
     // Finds possible Matches on
     // every new hovered tile
@@ -65,14 +67,15 @@ export default class Grid {
   }
 
   handleClick() {
-    // console.log('Handle Click')
     let numMatches = this.possibleMatches.length;
 
+    // Have at least 2 Matching tiles ready
     if (numMatches <= 1) {
       this.gamestate.matchesHandled = true;
       this.gamestate.clickHandled   = true;
       return;
     }
+
 
     // Toggle control variables
     this.gamestate.clickHandled = false;
@@ -112,16 +115,15 @@ export default class Grid {
     // Currently Hovering
     let x           = this.gamestate.hovering.x;
     let y           = this.gamestate.hovering.y;
-    let currentType = this.nextTile;
+    let currentType = this.gamestate.nextTiles[0];
 
     if (this.lastHovered.x === null) {
       this.lastHovered.x = x;
       this.lastHovered.y = y;
     }
 
+    // Only check once per hover
     if (this.lastHovered.x == x && this.lastHovered.y == y) {
-      // Only do the checks once
-
       return;
     } else {
       // New Hover position
@@ -241,7 +243,7 @@ export default class Grid {
 
   check(x, y) {
     // console.log('checking: ' +);
-    if (this.grid[x][y].type == this.nextTile) {
+    if (this.grid[x][y].type == this.gamestate.nextTiles[0]) {
       return true;
     } else {
       return false;

@@ -1,17 +1,17 @@
 
 export default class Tile extends Phaser.Sprite {
 
-  constructor(game, x, y, frame, nextTile, gamestate) {
+  constructor(game, x, y, frame, gamestate) {
     super(game, x+32, y+32, frame);
+    this.anchor.setTo(0.5, 0.5);
     this.game           = game;
     this.enableBody     = true;
 
     this.gamestate      = gamestate;
-    this.nextTile       = nextTile;
+    this.nextTile       = this.gamestate.nextTiles[0];
 
     this.collapseTween  = null;
     this.wiggle         = null;
-    this.anchor.setTo(0.5, 0.5);
     this.originalX      = x+32;
     this.originalY      = y+32;
     this.xPos           = (x-6)/64;
@@ -19,10 +19,6 @@ export default class Tile extends Phaser.Sprite {
     this.level          = 0;
     this.type           = 'empty';
 
-    this.tilestate = {
-      'level': 0,
-      'type' : 'empty'
-    };
 
     // Input & Events
     this.inputEnabled = true;
@@ -47,9 +43,13 @@ export default class Tile extends Phaser.Sprite {
      * Gets called once on initial Hover-Enter Event.
      * TODO: Check future level if collapsing...
      */
-    this.loadTexture(this.nextTile, 0, false);
-    this.label_score.text = '1';
-    this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
+
+    if (this.level == 0 && this.type == 'empty') {
+      this.loadTexture(this.gamestate.nextTiles[0], 0, false);
+      this.label_score.text = ' ';
+      this.label_score.text = '1';
+      this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
+    }
   }
 
   onInputOut() {
@@ -70,13 +70,17 @@ export default class Tile extends Phaser.Sprite {
 
       this.bringToTop();
       this.level = 1;
-      this.type  = this.nextTile;
+      this.type  = this.gamestate.nextTiles[0];
       this.gamestate.lastClicked.x = this.xPos;
       this.gamestate.lastClicked.y = this.yPos;
       this.gamestate.clickHandled  = false;
       this.gamestate.tilesOnGrid++;
 
+
       this.drop = this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
+            //  console.log('Update queue');
+      this.gamestate.nextTiles.shift();
+
     }
    }
 
@@ -96,6 +100,9 @@ export default class Tile extends Phaser.Sprite {
      this.x = this.originalX;
      this.gamestate.matchesHandled = true;
      this.wiggle = this.game.add.tween(this.scale).to( { x: 1, y: 1 }, 200, Phaser.Easing.Linear.None, true);
+
+
+
    }
 
    stopWiggling() {
