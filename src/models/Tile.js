@@ -54,6 +54,7 @@ export default class Tile extends Phaser.Sprite {
 
   onInputOut() {
     if (this.level == 0 && this.type == 'empty') {
+      this.potentialLevel = 1;
       this.loadTexture('empty', 0, false);
       this.label_score.text = ' ';
     }
@@ -69,8 +70,6 @@ export default class Tile extends Phaser.Sprite {
       this.bringToTop();
       this.level = 1;
 
-      // this.label_score.text = `${this.potentialLevel}`;
-      // this.level = this.potentialLevel;
       this.type  = this.gamestate.nextTiles[0];
       this.gamestate.lastClicked.x = this.xPos;
       this.gamestate.lastClicked.y = this.yPos;
@@ -104,11 +103,12 @@ export default class Tile extends Phaser.Sprite {
 
    resetToEmpty() {
      /**
-      * Load initial texture, reset position and level
-      */
+     * Load initial texture, reset position and level
+     */
      this.loadTexture('empty', 0, false);
      this.label_score.text = ' ';
      this.type = 'empty';
+     this.potentialLevel = 1;
      this.level = 0;
      this.y = this.originalY;
      this.x = this.originalX;
@@ -118,13 +118,15 @@ export default class Tile extends Phaser.Sprite {
      this.gamestate.needLevelUp = true;
    }
 
-   updateLevel(level) {
+   updateLevel() {
      console.log(this.potentialLevel);
       this.level = this.potentialLevel;
-      this.label_score.text = `${level}`;
+      this.potentialLevel = 1;
+      this.label_score.text = `${this.level}`;
    }
    updatePotentialLevel(level) {
-      this.label_score.text = `${level}`;
+     this.potentialLevel = level;
+     this.label_score.text = `${level}`;
    }
 
    stopWiggling() {

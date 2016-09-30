@@ -118,7 +118,6 @@ export default class Grid {
       }
     }
     this.grid[this.gamestate.hovering.x][this.gamestate.hovering.y].updatePotentialLevel(this.newLevel);
-    this.grid[this.gamestate.hovering.x][this.gamestate.hovering.y].newLevel = this.newLevel;
 
 
     console.log(this.gamestate.connectingLevels);
@@ -130,7 +129,6 @@ export default class Grid {
 
     this.generateNewLevel();
 
-    console.log(this.newLevel);
     this.grid[this.gamestate.lastClicked.x][this.gamestate.lastClicked.y].updateLevel(this.newLevel);
 
     this.gamestate.needLevelUp = false;
@@ -155,7 +153,7 @@ export default class Grid {
     // Spawn Random tiles
     if (this.gamestate.randomCounter == 0 &&
         this.gamestate.matchesHandled && this.gamestate.clickHandled) {
-        console.log('spawn randoms')
+        // console.log('spawn randoms')
         // newRandomTiles(this.gamestate);
         // this.spawnRandomTiles()
       //
@@ -281,11 +279,9 @@ export default class Grid {
   }
 
   checkLevel(x, y) {
-    console.log( this.grid[x][y]);
     // Check Levels
     if (this.grid[x][y].level == 1) {
       this.gamestate.connectingLevels['1']++;
-      console.log(this.gamestate.connectingLevels['1']);
     } else if (this.grid[x][y].level == 3) {
       this.gamestate.connectingLevels['3']++;
     } else if (this.grid[x][y].level == 6) {
@@ -315,13 +311,10 @@ export default class Grid {
      if (x < 6) {
       if (this.checkType(x+1, y, currentType)) {
         this.checkLevel(x+1, y);
-      console.log('One right');
         this.possibleMatches.push(this.grid[x+1][y]);
         if (x < 5) {
           if (this.checkType(x+2, y, currentType)) {
             this.checkLevel(x+2, y);
-      console.log('two right');
-
             this.possibleMatches.push(this.grid[x+2][y]);
             if (x < 4) {
               if (this.checkType(x+3, y, currentType)) {
@@ -426,11 +419,38 @@ export default class Grid {
      *      []--[]
      */
      // Check Up-Left
-
      if(x > 0 && y > 0) {
        if (this.checkType(x-1, y, currentType) || this.checkType(x, y-1, currentType)) {
          if (this.checkType(x-1, y-1, currentType)) {
+           this.checkLevel(x-1, y-1);
            this.possibleMatches.push(this.grid[x-1][y-1]);
+         }
+       }
+     }
+     // Check Up-Right x+1 y-1
+     if (x < 6 && y > 0) {
+       if (this.checkType(x+1, y, currentType) || this.checkType(x, y-1, currentType)) {
+         if (this.checkType(x+1, y-1, currentType)) {
+           this.checkLevel(x+1, y-1);
+           this.possibleMatches.push(this.grid[x+1][y-1]);
+         }
+       }
+     }
+     // Check Down-Right x+1 y+1
+     if (x < 6 && y < 6) {
+       if (this.checkType(x+1, y, currentType) || this.checkType(x, y+1, currentType)) {
+         if (this.checkType(x+1, y+1, currentType)) {
+           this.checkLevel(x+1, y+1);
+           this.possibleMatches.push(this.grid[x+1][y+1]);
+         }
+       }
+     }
+     // Check Down-Left x-1 y+1
+     if (x > 0 && y < 6) {
+       if (this.checkType(x-1, y, currentType) || this.checkType(x, y+1, currentType)) {
+         if (this.checkType(x-1, y+1, currentType)) {
+           this.checkLevel(x-1, y+1);
+           this.possibleMatches.push(this.grid[x-1][y+1]);
          }
        }
      }
