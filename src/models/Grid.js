@@ -62,7 +62,6 @@ export default class Grid {
 
     this.grid[this.gamestate.lastClicked.x][this.gamestate.lastClicked.y].updateLevel(newLevel);
 
-
     this.gamestate.needLevelUp = false;
     this.gamestate.connectingLevels = {1:[],3:[],6:[],9:[],12:[],15:[]};
   }
@@ -79,15 +78,14 @@ export default class Grid {
     }
 
     // Spawn Random tiles
-    if (this.gamestate.counter == 0 &&
+    if (this.gamestate.randomCounter == 0 &&
         this.gamestate.matchesHandled && this.gamestate.clickHandled) {
-
-      // newRandomTiles(this.gamestate);
-      // this.spawnRandomTiles();
+        console.log('spawn randoms')
+        // newRandomTiles(this.gamestate);
+        // this.spawnRandomTiles()
       //
       // this.gamestate.numRand = getRandomInt(3, 6);
-      // this.gamestate.counter = getRandomInt(2, 8);
-
+      // this.gamestate.randomCounter = 3;
     }
 
     // Handle Click
@@ -113,6 +111,7 @@ export default class Grid {
   handleClick() {
     // Decrease counter each click
     this.gamestate.turns++;
+    this.gamestate.randomCounter--;
     this.UI.updateInfo();
 
     let numMatches = this.possibleMatches.length;
@@ -123,7 +122,6 @@ export default class Grid {
       this.gamestate.clickHandled   = true;
       return;
     }
-
 
     // Toggle control variables
     this.gamestate.clickHandled = false;
@@ -287,12 +285,41 @@ export default class Grid {
     }
 
 
-    let ones = this.gamestate.connectingLevels['1'].length;
-    let threes = this.gamestate.connectingLevels['3'].length;
+    let ones    = this.gamestate.connectingLevels['1'].length;
+    let threes  = this.gamestate.connectingLevels['3'].length;
+    let sixes   = this.gamestate.connectingLevels['6'].length;
+
+    if (sixes >= 2 && threes >= 2) {
+      console.log('Sixes')
+
+    }
+
 
     if (threes >= 2) {
-
       console.log('Double Threes')
+
+      // Remove dublicate t
+      console.log(this.possibleMatches.length);
+        let numMatches = this.possibleMatches;
+
+        while (numMatches > 0) {
+          // Go Backwards through possibleMatches
+          // and remove duplicate threes
+          if (this.possibleMatches[numMatches-1].level == 3) {
+            matchingThrees.push(this.possibleMatches[numMatches-1]);
+            console.log(matchingThrees);
+            // console.log(matchingThrees[this.possibleMatches[numMatches-1].x][this.possibleMatches[numMatches-1].y]);
+
+            // if (matchingThrees[this.possibleMatches[numMatches-1].x][this.possibleMatches.possibleMatches[numMatches-1].y] == false) {
+            //   matchingThrees[this.possibleMatches[numMatches-1].x][this.possibleMatches.possibleMatches[numMatches-1].y] = true;
+            // };
+            // this.possibleMatches.splice(numMatches-1, 1);
+          }
+          numMatches--;
+        }
+    }
+
+    if (threes >= 2) {
 
       if (ones < 2) {
         // Delete Threes
@@ -335,7 +362,7 @@ export default class Grid {
 
 
 
-    console.log(this.gamestate.connectingLevels);
+    // console.log(this.gamestate.connectingLevels);
 
 
 
@@ -359,6 +386,8 @@ export default class Grid {
           this.gamestate.connectingLevels[3].push({x: x, y: y});
           return true;
 
+      } else if (this.grid[x][y].level == 6) {
+          this.gamestate.connectingLevels[6].push({x: x, y: y});
       } else {
           return false;
       }

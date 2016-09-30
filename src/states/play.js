@@ -16,12 +16,6 @@ export default class Play extends Phaser.State {
         12:[],
         15:[],
       },
-      softMatch: {
-        left: false,
-        right: false,
-        top: false,
-        bottom: false
-      },
       needLevelUp: false,
       nextLevel: 1,
       lastClicked: {
@@ -41,7 +35,8 @@ export default class Play extends Phaser.State {
       turns: 0,
       matches: 0,
       individualMatches: 0,
-      numRand: 15
+      numRand: 12,
+      randomCounter: 10,
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
     this.gameBackground = this.add.sprite(0, 0, 'game-background');
