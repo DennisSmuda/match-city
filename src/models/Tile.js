@@ -119,7 +119,6 @@ export default class Tile extends Phaser.Sprite {
    }
 
    updateLevel() {
-     console.log(this.potentialLevel);
       this.level = this.potentialLevel;
       this.potentialLevel = 1;
       this.label_score.text = `${this.level}`;
@@ -147,7 +146,7 @@ export default class Tile extends Phaser.Sprite {
      this.collapseTween = this.game.add.tween(this).to( {
        x: (this.x + xDistance),
        y: (this.y + yDistance)
-      }, 300, Phaser.Easing.Cubic.Out, true, 0, 0, false);
+     }, 150, Phaser.Easing.Cubic.Out, true, 0, 0, false);
       this.collapseTween.onComplete.add(this.resetToEmpty, this);
 
    }

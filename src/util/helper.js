@@ -10,7 +10,7 @@ export function square(x) {
 // Helper function to generate next upcoming tile.
 export function newNextTiles(nextTiles) {
   let k = getRandomInt(1, 10);
-  k = (k-8)/10;
+  k = (k-4)/10;
 
   if (k < 0.16) {
     nextTiles.push('blue');
@@ -38,7 +38,7 @@ export function newRandomTiles(gamestate) {
 
   for (let i = 0; i <= num; i++) {
     let k = getRandomInt(1, 10);
-    k =(k)/10;
+    k =(k-4)/10;
     console.log(k);
 
     if (k < 0.16) {
