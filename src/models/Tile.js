@@ -18,13 +18,14 @@ export default class Tile extends Phaser.Sprite {
     this.yPos           = (y)/64;
     this.level          = 0;
     this.type           = 'empty';
+    this.potentialLevel = 1;
 
 
     // Input & Events
     this.inputEnabled = true;
-    this.events.onInputOver.add(this.onInputOver, this);
-    this.events.onInputOut.add(this.onInputOut, this);
-    this.events.onInputDown.add(() => { this.onClick(); }, this);
+    this.events.onInputOut.add(()  => { this.onInputOut(); } , this);
+    this.events.onInputOver.add(() => { this.onInputOver(); }, this);
+    this.events.onInputDown.add(() => { this.onClick(); }    , this);
 
     // Points
     const style = { font: "20px Roboto Mono", fill: "#ffffff", textalign: "center" };
@@ -46,7 +47,7 @@ export default class Tile extends Phaser.Sprite {
 
     if (this.level == 0 && this.type == 'empty') {
       this.loadTexture(this.gamestate.nextTiles[0], 0, false);
-      this.label_score.text = ' ';
+      this.label_score.text = `${this.potentialLevel}`;
       this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
     }
   }
@@ -64,11 +65,12 @@ export default class Tile extends Phaser.Sprite {
       return;
     }
 
-    if (this.level == 0 && this.type == 'empty') {
+    if (this.type == 'empty') {
       this.bringToTop();
-
       this.level = 1;
-      this.label_score.text = this.level;
+
+      // this.label_score.text = `${this.potentialLevel}`;
+      // this.level = this.potentialLevel;
       this.type  = this.gamestate.nextTiles[0];
       this.gamestate.lastClicked.x = this.xPos;
       this.gamestate.lastClicked.y = this.yPos;
@@ -117,8 +119,12 @@ export default class Tile extends Phaser.Sprite {
    }
 
    updateLevel(level) {
-      this.level = level;
-      this.label_score.text = this.level;
+     console.log(this.potentialLevel);
+      this.level = this.potentialLevel;
+      this.label_score.text = `${level}`;
+   }
+   updatePotentialLevel(level) {
+      this.label_score.text = `${level}`;
    }
 
    stopWiggling() {

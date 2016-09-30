@@ -9,12 +9,12 @@ export default class Play extends Phaser.State {
     this.gamestate = {
       minimumConnecting: 2,
       connectingLevels: {
-        1: [],
-        3: [],
-        6: [],
-        9: [],
-        12:[],
-        15:[],
+        1: 0,
+        3: 0,
+        6: 0,
+        9: 0,
+        12:0,
+        15:0,
       },
       needLevelUp: false,
       nextLevel: 1,
@@ -35,7 +35,7 @@ export default class Play extends Phaser.State {
       turns: 0,
       matches: 0,
       individualMatches: 0,
-      numRand: 12,
+      numRand: 0,
       randomCounter: 10,
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
