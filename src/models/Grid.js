@@ -397,12 +397,14 @@ export default class Grid {
     }
     // Check Down-Left x-1 y+1
     // if (x > 0 && y < 6) {
-      if (this.checkType(x-1, y, currentType) || this.checkType(x, y+1, currentType)) {
-        if (this.checkType(x-1, y+1, currentType)) {
-          this.checkLevel(x-1, y+1);
-          this.possibleMatches.push(this.grid[x-1][y+1]);
-        }
+    if (this.checkType(x-1, y, currentType) || this.checkType(x, y+1, currentType)) {
+      if (this.checkType(x-1, y+1, currentType)) {
+        this.checkLevel(x-1, y+1);
+        this.possibleMatches.push(this.grid[x-1][y+1]);
       }
+    }
+
+
     // }
 
 
@@ -422,6 +424,50 @@ export default class Grid {
 
 
     // }
+
+
+    /**
+     * You can only match same level tiles,
+     * and tiles one level below.
+     *
+     * So 9 can only match with 6, 6 with 3
+     * all other possible matches need to be removed.
+     *
+     */
+
+    if (this.possibleMatches.length == 2) {
+      // console.log('Check for fuckmatches' + this.gamestate.maxLevel);
+      let higher = 1;
+      let lower = 1;
+
+      for (let i = this.gamestate.maxLevel; i >= 0;  i--) {
+
+        if (i == 0) {
+          console.log('Ones: ' + this.gamestate.connectingLevels[1]);
+
+        } else {
+          if (higher == 1 && this.gamestate.connectingLevels[i*3] > 0) {
+            console.log('higher')
+            higher = i*3;
+          } else if (lower == 1 && this.gamestate.connectingLevels[i*3] > 0) {
+            lower = i*3;
+          }
+          // console.log('higher Level: ' + i);
+          console.log(i*3 + ' : ' + this.gamestate.connectingLevels[i*3]);
+        }
+
+      }
+      console.log('Higer Number : ' + higher);
+      console.log('Lower Number : ' + lower);
+      if ((higher - lower) !== 3
+        && (higher - lower) !== 2
+        && (higher - lower) !== 0) {
+          console.log('Not Possible : ' + (higher - lower));
+          this.clearPossibleMatches();
+      }
+    }
+
+    // Check 3 Matching tiles
 
   }
 
