@@ -9,54 +9,64 @@ export function square(x) {
 
 // Helper function to generate next upcoming tile.
 export function newNextTiles(gamestate) {
-  let k = getRandomInt(1, gamestate.numTiles);
   let nextTiles = gamestate.nextTiles;
-  k = k/gamestate.numTiles;
-
-  if (k < 0.16) {
-    nextTiles.push('blue');
-  }
-  else if (k < 0.32) {
+  let k = getRandomInt(0, gamestate.numTiles-1);
+  // console.log(k);
+  if (k == 0) {
     nextTiles.push('red');
   }
-  else if (k < 0.48) {
+  else if (k == 1) {
+    nextTiles.push('blue');
+  }
+  else if (k == 2) {
     nextTiles.push('yellow');
   }
-  else if (k < 0.64) {
-    nextTiles.push('orange');
-  }
-  else if (k < 0.80) {
+  else if (k == 3) {
     nextTiles.push('green');
   }
-  else nextTiles.push('purple');
+  else if (k == 4) {
+    nextTiles.push('orange');
+  }
+  else if (k == 5) {
+    nextTiles.push('purple');
+  }
 }
 
-
+/**
+ * Generate new Random placed tiles.
+ * - Go through amount of tiles to be spawned.
+ * - Calculate factor k -> k = random(0,numTiles)/10
+ */
 export function newRandomTiles(gamestate) {
   let num         = gamestate.numRand;
   let randomTiles = gamestate.nextRandoms;
-  let differentTiles  = gamestate.numTiles;
+  let differentTiles = gamestate.numTiles;
   gamestate.randomCounter = getRandomInt(4, 7);
 
   for (let i = 0; i <= num; i++) {
-    let k = getRandomInt(1, differentTiles);
-    k = k / differentTiles;
-
-    if (k < 0.16) {
-      randomTiles.push('blue');
-    }
-    else if (k < 0.32) {
+    let k = getRandomInt(0, gamestate.numTiles-1);
+    console.log(k);
+    // k = k / gamestate.numTiles;
+    /**
+     *
+     */
+    if (k == 0) {
       randomTiles.push('red');
     }
-    else if (k < 0.48) {
+    else if (k == 1) {
+      randomTiles.push('blue');
+    }
+    else if (k == 2) {
       randomTiles.push('yellow');
     }
-    else if (k < 0.64) {
-      randomTiles.push('orange');
-    }
-    else if (k < 0.80) {
+    else if (k == 3) {
       randomTiles.push('green');
     }
-    else randomTiles.push('purple');
+    else if (k == 4) {
+      randomTiles.push('orange');
+    }
+    else if (k == 5) {
+      randomTiles.push('purple');
+    }
   }
 }

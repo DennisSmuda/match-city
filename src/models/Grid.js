@@ -203,6 +203,8 @@ export default class Grid {
 
     // Only check once per hover
     if (this.lastHovered.x == x && this.lastHovered.y == y) {
+      console.log('No new Match needs to be found');
+      this.clearPossibleMatches();
       return;
     } else {
       // New Hover position

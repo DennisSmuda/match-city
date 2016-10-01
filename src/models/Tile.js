@@ -47,6 +47,7 @@ export default class Tile extends Phaser.Sprite {
 
     if (this.level == 0 && this.type == 'empty') {
       this.loadTexture(this.gamestate.nextTiles[0], 0, false);
+    console.log('CHeck new shit')
       this.label_score.text = `${this.potentialLevel}`;
       this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
       // this.gamestate.updateMatches = true;
