@@ -16,7 +16,7 @@ export default class Tile extends Phaser.Sprite {
     this.originalY      = y+32;
     this.xPos           = (x-6)/64;
     this.yPos           = (y)/64;
-    this.level          = 0;
+    this.level          = 1;
     this.type           = 'empty';
     this.potentialLevel = 1;
 
@@ -42,21 +42,21 @@ export default class Tile extends Phaser.Sprite {
   onInputOver() {
     /**
      * Gets called once on initial Hover-Enter Event.
-     * Shows the potential Level, if there is a match
+     * TODO: Check future level if collapsing...
      */
 
     if (this.type == 'empty') {
       this.loadTexture(this.gamestate.nextTiles[0], 0, false);
-      this.label_score.text = `${this.potentialLevel}`;
       this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
       this.gamestate.updateMatches = true;
+
+      this.label_score.text = `${this.potentialLevel}`;
     }
   }
 
   onInputOut() {
     if (this.type == 'empty') {
       this.loadTexture('empty', 0, false);
-      this.potentialLevel = 1;
       this.label_score.text = ' ';
     }
   }
@@ -69,7 +69,7 @@ export default class Tile extends Phaser.Sprite {
 
     if (this.type == 'empty') {
       this.bringToTop();
-      this.level = 1;
+      // this.level = 1;
 
       this.type  = this.gamestate.nextTiles[0];
       this.gamestate.lastClicked.x = this.xPos;
@@ -79,7 +79,6 @@ export default class Tile extends Phaser.Sprite {
 
 
       this.drop = this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
-            //  console.log('Update queue');
       this.gamestate.nextTiles.shift();
 
     }
@@ -109,8 +108,8 @@ export default class Tile extends Phaser.Sprite {
      this.loadTexture('empty', 0, false);
      this.label_score.text = ' ';
      this.type = 'empty';
-     this.potentialLevel = 1;
-     this.level = 0;
+    //  this.potentialLevel = 1;
+     this.level = 1;
      this.y = this.originalY;
      this.x = this.originalX;
      this.gamestate.matchesHandled = true;
@@ -123,6 +122,7 @@ export default class Tile extends Phaser.Sprite {
       this.level = this.potentialLevel;
       this.potentialLevel = 1;
       this.label_score.text = `${this.level}`;
+      // TODO: Check if special effect should be done..
    }
    updatePotentialLevel(level) {
      this.potentialLevel = level;

@@ -45,6 +45,14 @@ export default class Grid {
       this.spawnRandomTiles();
   }
 
+  resetPotentialLevels() {
+    for (let i = 0; i < this.cols; i++) {
+      for (let j = 0; j < this.rows; j++) {
+        this.grid[i][j].potentialLevel = 1;
+      }
+    }
+  }
+
 
   generateNewLevel() {
     this.newLevel = 1;
@@ -88,6 +96,7 @@ export default class Grid {
 
     this.gamestate.needLevelUp = false;
     this.resetConnecting();
+    this.resetPotentialLevels();
   }
 
   resetConnecting() {
@@ -111,11 +120,12 @@ export default class Grid {
     // Spawn Random tiles
     if (this.gamestate.randomCounter == 0 &&
         this.gamestate.matchesHandled && this.gamestate.clickHandled) {
-        // console.log('spawn randoms')
-        newRandomTiles(this.gamestate);
-        this.spawnRandomTiles()
-      //
-      this.gamestate.randomCounter = getRandomInt(5, 10);
+          if (this.gamestate.tilesOnGrid > 40) {
+            return;
+          } else {
+            newRandomTiles(this.gamestate);
+            this.spawnRandomTiles();
+          }
     }
 
     // Handle Click
@@ -166,10 +176,15 @@ export default class Grid {
     this.gamestate.matchesHandled = false;
     this.gamestate.matches++;
 
+    // if (numMatches >= 2 && this.gamestate.randomCounter < 20) {
+    //   this.gamestate.randomCounter+= numMatches;
+    // }
+
     // Loop through array and collapse all matching (surrounding tiles)
     while (numMatches > 0 && !this.gamestate.matchesHandled) {
       // Go Backwards through possibleMatches
       // and empty the possible Matches
+      // Delay next random counter
       (this.possibleMatches[numMatches-1]).collapse();
       this.possibleMatches.splice(numMatches-1, 1);
       this.gamestate.individualMatches++;
@@ -433,7 +448,6 @@ export default class Grid {
 
   gameOver() {
     console.log('Game Over');
-    // this.game.state.start('GameOver');
-
+    this.game.state.start('GameOver');
   }
 }

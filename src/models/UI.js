@@ -33,12 +33,12 @@ export default class UI {
     });
     this.counter      = this.game.add.text(405, 515, `${this.gamestate.turns}`, {
       font: '15px Roboto Mono',
-      fill: '#C2C2C2',
+      fill: '#858585',
       align: 'center'
     });
     this.matchcounter = this.game.add.text(310, 515, `${this.gamestate.matches} (${this.gamestate.individualMatches})`, {
       font: '15px Roboto Mono',
-      fill: '#C2C2C2',
+      fill: '#858585',
       align: 'center'
     });
 
@@ -49,7 +49,7 @@ export default class UI {
     });
     this.nextRandsText = this.game.add.text(345, 575, `${this.gamestate.numRand} / ${this.gamestate.randomCounter}`, {
       font: '15px Roboto Mono',
-      fill: '#C2C2C2',
+      fill: '#858585',
       align: 'center'
     });
 

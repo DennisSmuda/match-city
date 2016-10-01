@@ -41,7 +41,6 @@ export function newRandomTiles(gamestate) {
   let num         = gamestate.numRand;
   let randomTiles = gamestate.nextRandoms;
   let differentTiles = gamestate.numTiles;
-  gamestate.randomCounter = getRandomInt(4, 7);
 
   for (let i = 0; i <= num; i++) {
     let k = getRandomInt(0, gamestate.numTiles-1);
@@ -68,4 +67,8 @@ export function newRandomTiles(gamestate) {
       randomTiles.push('purple');
     }
   }
+
+  gamestate.randomCounter = getRandomInt(gamestate.minTurns, gamestate.maxTurns);
+  gamestate.numRand       = getRandomInt(gamestate.minNumRand, gamestate.maxNumRand);
+
 }
