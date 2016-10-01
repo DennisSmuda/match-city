@@ -102,7 +102,7 @@ export default class Grid {
     }
     // Generate next tile randomly
     if (this.gamestate.nextTiles.length < 3) {
-      newNextTiles(this.gamestate.nextTiles);
+      newNextTiles(this.gamestate);
       this.UI.updateNextTiles();
     }
 
@@ -113,7 +113,6 @@ export default class Grid {
         newRandomTiles(this.gamestate);
         this.spawnRandomTiles()
       //
-      this.gamestate.randomCounter = getRandomInt(5, 10);
     }
 
     // Handle Click
@@ -129,7 +128,7 @@ export default class Grid {
 
     // Finds possible Matches on
     // every new hovered tile
-    if (this.gamestate.matchesHandled) {
+    if (this.gamestate.matchesHandled || this.gamestate.updateMatches) {
       this.findPossibleMatches();
     }
 
@@ -187,6 +186,7 @@ export default class Grid {
   }
 
   findPossibleMatches() {
+      this.gamestate.updateMatches = false;
     // Check all possible matches on
     // the current hovered tile.
     if (this.gamestate.hovering.x === null) { return; }

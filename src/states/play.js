@@ -23,6 +23,7 @@ export default class Play extends Phaser.State {
       nextTile: 'blue',
       clickHandled: true,
       matchesHandled: true,
+      updateMatches: false,
       tilesOnGrid: 0,
       nextTiles: [],
       nextRandoms: [],
@@ -30,7 +31,9 @@ export default class Play extends Phaser.State {
       matches: 0,
       individualMatches: 0,
       numRand: 5,
+      numTiles: 6,
       randomCounter: 3,
+      score: 0,
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
     this.gameBackground = this.add.sprite(0, 0, 'game-background');

@@ -49,6 +49,7 @@ export default class Tile extends Phaser.Sprite {
       this.loadTexture(this.gamestate.nextTiles[0], 0, false);
       this.label_score.text = `${this.potentialLevel}`;
       this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
+      // this.gamestate.updateMatches = true;
     }
   }
 

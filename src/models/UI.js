@@ -31,15 +31,21 @@ export default class UI {
       fill: '#C2C2C2',
       align: 'left'
     });
-    this.counter      = this.game.add.text(405, 545, `${this.gamestate.turns}`, {
+    this.counter      = this.game.add.text(405, 515, `${this.gamestate.turns}`, {
       font: '15px Roboto Mono',
       fill: '#C2C2C2',
       align: 'center'
     });
-    this.matchcounter = this.game.add.text(310, 545, `${this.gamestate.matches} (${this.gamestate.individualMatches})`, {
+    this.matchcounter = this.game.add.text(310, 515, `${this.gamestate.matches} (${this.gamestate.individualMatches})`, {
       font: '15px Roboto Mono',
       fill: '#C2C2C2',
       align: 'center'
+    });
+
+    this.randomCounter = this.game.add.text(310, 550, 'Rands / Turns', {
+      font: '15px Roboto Mono',
+      fill: '#C2C2C2',
+      align: 'left'
     });
 
     this.nextTiles    = this.game.add.group();
