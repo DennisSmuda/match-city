@@ -80,9 +80,8 @@ export default class Grid {
         if (amount >= 2 && amount < 4) { this.newLevel += level ;}
         if (amount >= 4) { this.newLevel += level ;}
       }
-
     }
-    if (ones <= 2 && this.newLevel >= 6) this.newLevel -= 3;
+    // if (this.possibleMatches.length == 2 && ones <= 2 && this.newLevel >= 6) this.newLevel -= 3;
     // if (this.possibleMatches.length <= 2 && this.newLevel >= 6) this.newLevel -= 3;
     // console.log('Possible Matches: ' + this.possibleMatches.length)
 
@@ -158,7 +157,7 @@ export default class Grid {
 
     if (this.gamestate.randomCounter > 0) {
       this.gamestate.randomCounter--;
-    } 
+    }
     this.UI.updateInfo();
 
     let numMatches = this.possibleMatches.length;

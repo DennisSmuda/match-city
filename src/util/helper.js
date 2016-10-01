@@ -25,10 +25,10 @@ export function newNextTiles(gamestate) {
     nextTiles.push('green');
   }
   else if (k == 4) {
-    nextTiles.push('orange');
+    nextTiles.push('purple');
   }
   else if (k == 5) {
-    nextTiles.push('purple');
+    nextTiles.push('orange');
   }
 }
 
@@ -44,7 +44,7 @@ export function newRandomTiles(gamestate) {
 
   if (gamestate.tilesOnGrid > 34) {
     gamestate.randomCounter = 0;
-    gamestate.numRand       = 0;
+    // gamestate.numRand       = 0;
     return false;
   } else if (gamestate.randomCounter == 0 && gamestate.numRand < 1) {
     gamestate.randomCounter = getRandomInt(gamestate.minTurns, gamestate.maxTurns);
@@ -70,10 +70,10 @@ export function newRandomTiles(gamestate) {
       randomTiles.push('green');
     }
     else if (k == 4) {
-      randomTiles.push('orange');
+      randomTiles.push('purple');
     }
     else if (k == 5) {
-      randomTiles.push('purple');
+      randomTiles.push('orange');
     }
   }
 
