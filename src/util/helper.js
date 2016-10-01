@@ -42,6 +42,15 @@ export function newRandomTiles(gamestate) {
   let randomTiles = gamestate.nextRandoms;
   let differentTiles = gamestate.numTiles;
 
+  if (gamestate.tilesOnGrid > 34) {
+    gamestate.randomCounter = 0;
+    gamestate.numRand       = 0;
+    return false;
+  } else if (gamestate.randomCounter == 0 && gamestate.numRand < 1) {
+    gamestate.randomCounter = getRandomInt(gamestate.minTurns, gamestate.maxTurns);
+    gamestate.numRand       = getRandomInt(gamestate.minNumRand, gamestate.maxNumRand);
+  }
+
   for (let i = 0; i <= num; i++) {
     let k = getRandomInt(0, gamestate.numTiles-1);
     // k = k / gamestate.numTiles;
@@ -70,5 +79,6 @@ export function newRandomTiles(gamestate) {
 
   gamestate.randomCounter = getRandomInt(gamestate.minTurns, gamestate.maxTurns);
   gamestate.numRand       = getRandomInt(gamestate.minNumRand, gamestate.maxNumRand);
+  return true;
 
 }

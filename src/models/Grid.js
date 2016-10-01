@@ -97,6 +97,7 @@ export default class Grid {
     this.gamestate.needLevelUp = false;
     this.resetConnecting();
     this.resetPotentialLevels();
+    // this.gamestate.randomCounter += this.newLevel / 3;
   }
 
   resetConnecting() {
@@ -120,10 +121,7 @@ export default class Grid {
     // Spawn Random tiles
     if (this.gamestate.randomCounter == 0 &&
         this.gamestate.matchesHandled && this.gamestate.clickHandled) {
-          if (this.gamestate.tilesOnGrid > 40) {
-            return;
-          } else {
-            newRandomTiles(this.gamestate);
+          if (newRandomTiles(this.gamestate)) {
             this.spawnRandomTiles();
           }
     }
@@ -158,8 +156,9 @@ export default class Grid {
       this.gameOver();
     }
 
-    // console.log(this.gamestate.tilesOnGrid);
-    this.gamestate.randomCounter--;
+    if (this.gamestate.randomCounter > 0) {
+      this.gamestate.randomCounter--;
+    } 
     this.UI.updateInfo();
 
     let numMatches = this.possibleMatches.length;
@@ -176,9 +175,9 @@ export default class Grid {
     this.gamestate.matchesHandled = false;
     this.gamestate.matches++;
 
-    // if (numMatches >= 2 && this.gamestate.randomCounter < 20) {
-    //   this.gamestate.randomCounter+= numMatches;
-    // }
+    if (numMatches >= 2 && this.gamestate.randomCounter < 20) {
+      this.gamestate.randomCounter++;
+    }
 
     // Loop through array and collapse all matching (surrounding tiles)
     while (numMatches > 0 && !this.gamestate.matchesHandled) {
