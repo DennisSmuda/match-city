@@ -75,6 +75,8 @@ export default class Grid {
 
     }
     if (ones <= 2 && this.newLevel >= 6) this.newLevel -= 3;
+    // if (this.possibleMatches.length <= 2 && this.newLevel >= 6) this.newLevel -= 3;
+    // console.log('Possible Matches: ' + this.possibleMatches.length)
 
     this.grid[this.gamestate.hovering.x][this.gamestate.hovering.y].updatePotentialLevel(this.newLevel);
   }
@@ -113,6 +115,7 @@ export default class Grid {
         newRandomTiles(this.gamestate);
         this.spawnRandomTiles()
       //
+      this.gamestate.randomCounter = getRandomInt(5, 10);
     }
 
     // Handle Click
@@ -128,8 +131,10 @@ export default class Grid {
 
     // Finds possible Matches on
     // every new hovered tile
-    if (this.gamestate.matchesHandled || this.gamestate.updateMatches) {
-      this.findPossibleMatches();
+    if (this.gamestate.matchesHandled) {
+      if (this.gamestate.updateMatches) {
+        this.findPossibleMatches();
+      }
     }
 
 
@@ -138,6 +143,12 @@ export default class Grid {
   handleClick() {
     // Decrease counter each click
     this.gamestate.turns++;
+    if (this.gamestate.tilesOnGrid >= (this.cols * this.rows)) {
+      console.log('Loose');
+      this.gameOver();
+    }
+
+    // console.log(this.gamestate.tilesOnGrid);
     this.gamestate.randomCounter--;
     this.UI.updateInfo();
 
@@ -186,7 +197,7 @@ export default class Grid {
   }
 
   findPossibleMatches() {
-      this.gamestate.updateMatches = false;
+    this.gamestate.updateMatches = false;
     // Check all possible matches on
     // the current hovered tile.
     if (this.gamestate.hovering.x === null) { return; }
@@ -203,8 +214,6 @@ export default class Grid {
 
     // Only check once per hover
     if (this.lastHovered.x == x && this.lastHovered.y == y) {
-      console.log('No new Match needs to be found');
-      this.clearPossibleMatches();
       return;
     } else {
       // New Hover position
@@ -419,5 +428,12 @@ export default class Grid {
         randY = getRandomInt(0, 6);
       }
     }
+  }
+
+
+  gameOver() {
+    console.log('Game Over');
+    // this.game.state.start('GameOver');
+
   }
 }

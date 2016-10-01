@@ -42,10 +42,15 @@ export default class UI {
       align: 'center'
     });
 
-    this.randomCounter = this.game.add.text(310, 550, 'Rands / Turns', {
+    this.randomCounter = this.game.add.text(310, 550, 'Rands / Count', {
       font: '15px Roboto Mono',
       fill: '#C2C2C2',
       align: 'left'
+    });
+    this.nextRandsText = this.game.add.text(345, 575, `${this.gamestate.numRand} / ${this.gamestate.randomCounter}`, {
+      font: '15px Roboto Mono',
+      fill: '#C2C2C2',
+      align: 'center'
     });
 
     this.nextTiles    = this.game.add.group();
@@ -67,6 +72,15 @@ export default class UI {
   updateInfo() {
     this.matchcounter.setText(`${this.gamestate.matches} (${this.gamestate.individualMatches})`);
     this.counter.setText(`${this.gamestate.turns}`);
+
+    if (this.gamestate.randomCounter == 1) {
+      this.nextRandsText.fill = '#ffffff';
+      this.nextRandsText.setText(`${this.gamestate.numRand} / ${this.gamestate.randomCounter}`);
+    } else {
+      this.nextRandsText.fill = '#858585';
+      this.nextRandsText.fontWeight = 'normal';
+      this.nextRandsText.setText(`${this.gamestate.numRand} / ${this.gamestate.randomCounter}`);
+    }
   }
 
 

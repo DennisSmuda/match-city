@@ -45,7 +45,6 @@ export function newRandomTiles(gamestate) {
 
   for (let i = 0; i <= num; i++) {
     let k = getRandomInt(0, gamestate.numTiles-1);
-    console.log(k);
     // k = k / gamestate.numTiles;
     /**
      *

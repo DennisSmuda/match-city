@@ -42,22 +42,21 @@ export default class Tile extends Phaser.Sprite {
   onInputOver() {
     /**
      * Gets called once on initial Hover-Enter Event.
-     * TODO: Check future level if collapsing...
+     * Shows the potential Level, if there is a match
      */
 
-    if (this.level == 0 && this.type == 'empty') {
+    if (this.type == 'empty') {
       this.loadTexture(this.gamestate.nextTiles[0], 0, false);
-    console.log('CHeck new shit')
       this.label_score.text = `${this.potentialLevel}`;
       this.gamestate.hovering = {x: this.xPos, y: this.yPos, state: this.type};
-      // this.gamestate.updateMatches = true;
+      this.gamestate.updateMatches = true;
     }
   }
 
   onInputOut() {
-    if (this.level == 0 && this.type == 'empty') {
-      this.potentialLevel = 1;
+    if (this.type == 'empty') {
       this.loadTexture('empty', 0, false);
+      this.potentialLevel = 1;
       this.label_score.text = ' ';
     }
   }
