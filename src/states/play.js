@@ -41,8 +41,7 @@ export default class Play extends Phaser.State {
 
       score: 0,
       // Min: 1 - Max: 6 || boring under 4?
-      // numTiles:   4,
-      numTiles: 5,
+      numTiles:   5
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
     this.gameBackground = this.add.sprite(0, 0, 'game-background');

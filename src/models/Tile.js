@@ -143,12 +143,12 @@ export default class Tile extends Phaser.Sprite {
      let xDistance = (this.gamestate.lastClicked.x - this.xPos)*64;
      let yDistance = (this.gamestate.lastClicked.y - this.yPos)*64;
      this.gamestate.tilesOnGrid--;
+     this.gamestate.score += this.level;
 
      this.collapseTween = this.game.add.tween(this).to( {
        x: (this.x + xDistance),
        y: (this.y + yDistance)
      }, 150, Phaser.Easing.Cubic.Out, true, 0, 0, false);
       this.collapseTween.onComplete.add(this.resetToEmpty, this);
-
    }
 }

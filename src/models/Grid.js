@@ -81,7 +81,7 @@ export default class Grid {
         if (amount >= 4) { this.newLevel += level ;}
       }
     }
-    // if (this.possibleMatches.length == 2 && ones <= 2 && this.newLevel >= 6) this.newLevel -= 3;
+        // if (this.possibleMatches.length == 2 && ones <= 2 && this.newLevel >= 6) this.newLevel -= 3;
     // if (this.possibleMatches.length <= 2 && this.newLevel >= 6) this.newLevel -= 3;
     // console.log('Possible Matches: ' + this.possibleMatches.length)
 
