@@ -3,6 +3,10 @@ import play from './states/play';
 import preload from './states/preload';
 import gameover from './states/gameover';
 
+Array.max = function( array ){
+    return Math.max.apply( Math, array );
+};
+
 class Game extends Phaser.Game {
 // 563 - 736
   constructor() {

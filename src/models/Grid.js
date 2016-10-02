@@ -121,7 +121,9 @@ export default class Grid {
     if (this.gamestate.randomCounter == 0 &&
         this.gamestate.matchesHandled && this.gamestate.clickHandled) {
           if (newRandomTiles(this.gamestate)) {
-            this.spawnRandomTiles();
+            if (!this.gamestate.debug) {
+              this.spawnRandomTiles();
+            }
           }
     }
 
@@ -196,14 +198,23 @@ export default class Grid {
   }
 
 
-  clearPossibleMatches() {
+  clearPossibleMatches(level) {
     // console.log('Clear wiggles');
     let numMatches = this.possibleMatches.length;
+    console.log('Delete Level: ' + level);
     while (numMatches > 0) {
       // Go Backwards through possibleMatches
       // and empty the possible Matches
-      this.possibleMatches[numMatches-1].stopWiggling();
-      this.possibleMatches.splice(numMatches-1, 1);
+      console.log('Checking level: ' + this.possibleMatches[numMatches-1].level);
+      if (level && this.possibleMatches[numMatches-1].level == level) {
+      console.log('Deleting level: ' + this.possibleMatches[numMatches-1].level);
+        this.possibleMatches[numMatches-1].stopWiggling();
+        this.possibleMatches.splice(numMatches-1, 1);
+      }
+      else if (level == undefined) {
+        this.possibleMatches[numMatches-1].stopWiggling();
+        this.possibleMatches.splice(numMatches-1, 1);
+      }
       numMatches--;
     }
     this.resetConnecting();
@@ -427,47 +438,102 @@ export default class Grid {
 
 
     /**
-     * You can only match same level tiles,
-     * and tiles one level below.
-     *
-     * So 9 can only match with 6, 6 with 3
-     * all other possible matches need to be removed.
-     *
-     */
+    * You can only match same level tiles,
+    * and tiles one level below.
+    *
+    * So 9 can only match with 6, 6 with 3
+    * all other possible matches need to be removed.
+    *
+    */
+
+    // Highest matching level
 
     if (this.possibleMatches.length == 2) {
-      // console.log('Check for fuckmatches' + this.gamestate.maxLevel);
-      let higher = 1;
+      let highest = 1;
+      // Lower of Two
       let lower = 1;
+      let justOnes = true;
 
-      for (let i = this.gamestate.maxLevel; i >= 0;  i--) {
+      let first = this.possibleMatches[0].level;
+      let second = this.possibleMatches[1].level;
 
-        if (i == 0) {
-          console.log('Ones: ' + this.gamestate.connectingLevels[1]);
-
-        } else {
-          if (higher == 1 && this.gamestate.connectingLevels[i*3] > 0) {
-            console.log('higher')
-            higher = i*3;
-          } else if (lower == 1 && this.gamestate.connectingLevels[i*3] > 0) {
-            lower = i*3;
-          }
-          // console.log('higher Level: ' + i);
-          console.log(i*3 + ' : ' + this.gamestate.connectingLevels[i*3]);
-        }
-
+      if (first > second) {
+        highest = first;
+        lower   = second;
+        justOnes = false;
+      } else {
+        highest = second;
+        lower   = first;
       }
-      console.log('Higer Number : ' + higher);
-      console.log('Lower Number : ' + lower);
-      if ((higher - lower) !== 3
-        && (higher - lower) !== 2
-        && (higher - lower) !== 0) {
-          console.log('Not Possible : ' + (higher - lower));
+      // console.log('Possible Match Difference : ' + (highest - lower));
+
+      if ((highest - lower) !== 3
+        // && (highest - lower) !== 2
+        && (highest - lower) !== 0) {
+        // console.log('Not Possible because difference ==' + (highest - lower));
           this.clearPossibleMatches();
       }
     }
 
     // Check 3 Matching tiles
+    if (this.possibleMatches.length == 3) {
+      let highest = 1;
+
+      let levels = [];
+      levels.push(this.possibleMatches[0].level);
+      levels.push(this.possibleMatches[1].level);
+      levels.push(this.possibleMatches[2].level);
+
+      levels.sort((a, b) => {return a-b;})
+      levels.reverse();
+      console.log(levels);
+
+      let max = levels[0];
+      let mid = levels[1];
+      let low = levels[2];
+
+      if (max == mid == low == 1) { return; }
+      if (max == mid) { return; }
+
+      // One High with two Low-levels
+      if (mid == low) {
+        if ((max - mid) !== 2 &&
+            (max - mid) !== 3) {
+          this.clearPossibleMatches(max);
+        }
+      }
+      // Three different Levels match.
+      else {
+        this.clearPossibleMatches();
+      }
+    }
+
+    // Check for more than 4 Matches
+    if (this.possibleMatches.length >= 4) {
+      let highest = 1;
+
+      let levels = [];
+
+      for (let i = 0; i < this.possibleMatches.length; i++) {
+        levels.push(this.possibleMatches[i].level);
+
+      }
+
+      levels.sort((a, b) => {return a-b;})
+      levels.reverse();
+      console.log(levels);
+
+      let max = levels[0];
+      let topmid = levels[1];
+      let lowmid = levels[2];
+      let low = levels[3];
+
+
+
+      if (max == topmid == lowmid == low == 1) { return; }
+
+    }
+
 
   }
 

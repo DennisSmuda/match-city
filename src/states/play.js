@@ -7,6 +7,7 @@ export default class Play extends Phaser.State {
 
   create() {
     this.gamestate = {
+      debug: true,
       minimumConnecting: 2,
       // 33 * 3 = 99
       maxLevel: 6,

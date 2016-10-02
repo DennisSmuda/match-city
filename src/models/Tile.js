@@ -151,4 +151,5 @@ export default class Tile extends Phaser.Sprite {
      }, 150, Phaser.Easing.Cubic.Out, true, 0, 0, false);
       this.collapseTween.onComplete.add(this.resetToEmpty, this);
    }
+
 }
