@@ -16,7 +16,7 @@ export default class Play extends Phaser.State {
   create() {
     this.initRender();
     this.gamestate = {
-      // debug: true,
+      debug: true,
       minimumConnecting: 2,
       // 33 * 3 = 99
       maxLevel: 6,
@@ -51,8 +51,8 @@ export default class Play extends Phaser.State {
 
       score: 0,
       // Min: 1 - Max: 6 || boring under 4?
-      numTiles:   4
-      // numTiles:   1
+      // numTiles:   3
+      numTiles:   1
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
     this.gameBackground = this.add.sprite(0, 0, 'game-background');

@@ -93,10 +93,5 @@ export default class UI {
       this.nextRandsText.fontWeight = 'normal';
       this.nextRandsText.setText(`${this.gamestate.numRand} / ${this.gamestate.randomCounter}`);
     }
-
-    // console.log('Tiles on Grid: this.gamestate.tilesOnGrid: ' + this.gamestate.tilesOnGrid);
-
   }
-
-
 }
