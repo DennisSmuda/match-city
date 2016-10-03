@@ -59,6 +59,9 @@ export default class Grid {
     /**
     * Level check based on ( 1 + (i*3) ) | 1, 3, 6, 9, 12, etc..
     */
+    console.log('Generate new level');
+    console.log(this.gamestate.connectingLevels);
+
     let ones = this.gamestate.connectingLevels[1];
     for (let i = 0; i <= this.gamestate.maxLevel-1; i++) {
 
@@ -76,8 +79,8 @@ export default class Grid {
           this.newLevel += 3;
         }
 
-        if (amount >= 2 && amount < 4) { this.newLevel += level ;}
-        if (amount >= 4) { this.newLevel += level ;}
+        if (amount >= 2 && amount < 4) { this.newLevel += 3 ;}
+        if (amount >= 4) { this.newLevel += 3 ;}
       }
     }
         // if (this.possibleMatches.length == 2 && ones <= 2 && this.newLevel >= 6) this.newLevel -= 3;
@@ -197,36 +200,6 @@ export default class Grid {
   }
 
 
-  clearPossibleMatches(level) {
-    let numMatches = this.possibleMatches.length;
-
-    // if (level) {
-    //   console.log('Clear Level');
-    //
-    // } else {
-    //   console.log('Clear all');
-    // }
-    // console.log('Clear wiggles');
-    // console.log('Delete Level: ' + level);
-    while (numMatches > 0) {
-      // Go Backwards through possibleMatches
-      // and empty the possible Matches
-      // console.log('Checking level: ' + this.possibleMatches[numMatches-1].level);
-      if (level && this.possibleMatches[numMatches-1].level == level) {
-      // console.log('Deleting level: ' + this.possibleMatches[numMatches-1].level);
-        this.possibleMatches[numMatches-1].stopWiggling();
-        this.possibleMatches.splice(numMatches-1, 1);
-        this.gamestate.connectingLevels[level] = 0;
-
-      }
-      else if (level == undefined) {
-        this.possibleMatches[numMatches-1].stopWiggling();
-        this.possibleMatches.splice(numMatches-1, 1);
-        this.resetConnecting();
-      }
-      numMatches--;
-    }
-  }
 
   findPossibleMatches() {
     this.gamestate.updateMatches = false;
@@ -501,7 +474,8 @@ export default class Grid {
       let low = levels[2];
 
       if (max == mid == low == 1) { return; }
-      if (max == mid) { return; }
+      // Clear single low number
+      if (max == mid) { this.clearPossibleMatches(low); return; }
 
       // One High with two Low-levels
       if (mid == low) {
@@ -532,52 +506,88 @@ export default class Grid {
       console.log(matches);
 
       highestLevel = matches[0];
+      let lastHandled = 0;
 
       // for (let level = highestLevel; level >= 3; level -= 3) {
       for (let level of matches) {
-        console.log('Checking lvl ' + level + ' with ' + this.gamestate.connectingLevels[`${level}`]);
-        if (level !== 1) {
-          if (this.gamestate.connectingLevels[`${level}`] == 1) {
+        if (lastHandled == level) { break; }
 
-            console.log('Just One of '+ level);
+        let numConnecting = this.gamestate.connectingLevels[level];
+        // console.log('Checking lvl ' + level + ' with ' + numConnecting);
+
+        if (level !== 1) {
+          if (numConnecting == 1) {
+
+            // console.log('Just One of '+ level);
             this.clearPossibleMatches(level);
             highestLevel = -1;
             // return;
 
-          } else if (this.gamestate.connectingLevels[`${level}`] >= 2) {
+          } else if (numConnecting >= 2) {
 
             // console.log('More of of: ' + level);
             if (highestLevel == -1 || highestLevel == 1) {
               highestLevel = level;
-              console.log('Highest Level: ' + highestLevel);
-              return;
+              // console.log('Highest Level: ' + highestLevel);
+              // return;
             }
             else if (secondHighestLevel == 0 && level == highestLevel-3) {
               secondHighestLevel = level;
-              console.log('secondHighestLevel: ' + secondHighestLevel);
-              return;
+              // console.log('secondHighestLevel: ' + secondHighestLevel);
+              // return;
             }
             else {
-              this.clearPossibleMatches(level);
+              // this.clearPossibleMatches(level);
             }
 
           }
         } else {
           // Level == 1
+          // if (highestLevel !== 3) {
+            // this.clearPossibleMatches(1);
+          // }
 
         }
+        lastHandled = level;
 
       }
 
-
-
-      // if (max == topmid == lowmid == low == 1) { return; }
 
     }
 
 
   }
 
+  clearPossibleMatches(level) {
+    let numMatches = this.possibleMatches.length;
+
+    // if (level) {
+    //   console.log('Clear Level');
+    //
+    // } else {
+    //   console.log('Clear all');
+    // }
+    // console.log('Clear wiggles');
+    // console.log('Delete Level: ' + level);
+    while (numMatches > 0) {
+      // Go Backwards through possibleMatches
+      // and empty the possible Matches
+      // console.log('Checking level: ' + this.possibleMatches[numMatches-1].level);
+      if (level && this.possibleMatches[numMatches-1].level == level) {
+        console.log('Deleting level: ' + this.possibleMatches[numMatches-1].level);
+        this.possibleMatches[numMatches-1].stopWiggling();
+        this.possibleMatches.splice(numMatches-1, 1);
+        this.gamestate.connectingLevels[level] = 0;
+
+      }
+      else if (level == undefined) {
+        this.possibleMatches[numMatches-1].stopWiggling();
+        this.possibleMatches.splice(numMatches-1, 1);
+        this.resetConnecting();
+      }
+      numMatches--;
+    }
+  }
 
   spawnRandomTiles() {
     let randX = getRandomInt(0, 6);
