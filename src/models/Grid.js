@@ -55,37 +55,27 @@ export default class Grid {
 
 
   generateNewLevel() {
-    this.newLevel = 1;
+    this.newLevel = 0;
     /**
     * Level check based on ( 1 + (i*3) ) | 1, 3, 6, 9, 12, etc..
     */
-    console.log('Generate new level');
-    console.log(this.gamestate.connectingLevels);
+    // console.log('Generate new level');
+    // console.log(this.gamestate.connectingLevels);
 
     let ones = this.gamestate.connectingLevels[1];
-    for (let i = 0; i <= this.gamestate.maxLevel-1; i++) {
+    for (let i = this.gamestate.maxLevel; i >= 0; i--) {
 
       if (i == 0) {
-        // if (ones < 2)  { this.newLevel += 0 ;}
-        if (ones >= 2 && this.newLevel == 1) { this.newLevel += 2 ;}
+        if (this.newLevel == 0) { this.newLevel += 3; }
         if (ones >= 5) { this.newLevel += 3 ;}
         if (ones >= 8) { this.newLevel += 3 ;}
       } else {
         let amount = this.gamestate.connectingLevels[i*3];
         let level  = i*3;
-        if (this.newLevel == 1) { this.newLevel += 2}
 
-        if (amount >= 1) {
-          this.newLevel += 3;
-        }
-
-        if (amount >= 2 && amount < 4) { this.newLevel += 3 ;}
-        if (amount >= 4) { this.newLevel += 3 ;}
+        if (amount >= 2) { this.newLevel += level+3 ;}
       }
     }
-        // if (this.possibleMatches.length == 2 && ones <= 2 && this.newLevel >= 6) this.newLevel -= 3;
-    // if (this.possibleMatches.length <= 2 && this.newLevel >= 6) this.newLevel -= 3;
-    // console.log('Possible Matches: ' + this.possibleMatches.length)
 
     this.grid[this.gamestate.hovering.x][this.gamestate.hovering.y].updatePotentialLevel(this.newLevel);
   }
@@ -156,7 +146,7 @@ export default class Grid {
     this.gamestate.turns++;
     if (this.gamestate.tilesOnGrid >= (this.cols * this.rows)) {
       console.log('Loose');
-      this.gameOver();
+      // this.gameOver();
     }
 
     if (this.gamestate.randomCounter > 0) {
@@ -430,6 +420,7 @@ export default class Grid {
     // Highest matching level
 
     if (this.possibleMatches.length == 2) {
+      console.log('Double Match');
       let highest = 1;
       // Lower of Two
       let lower = 1;
@@ -472,13 +463,15 @@ export default class Grid {
       let max = levels[0];
       let mid = levels[1];
       let low = levels[2];
+      console.log(max, mid, low);
 
-      if (max == mid == low == 1) { return; }
+      if (max == mid && max == low) {
+        return;
+      }
       // Clear single low number
-      if (max == mid) { this.clearPossibleMatches(low); return; }
-
+      else if (max == mid) { this.clearPossibleMatches(low); return; }
       // One High with two Low-levels
-      if (mid == low) {
+      else if (mid == low) {
         this.clearPossibleMatches(max);
       }
       // Three different Levels match.
@@ -502,8 +495,6 @@ export default class Grid {
 
       matches.sort((a, b) => {return a-b;})
       matches.reverse();
-
-      console.log(matches);
 
       highestLevel = matches[0];
       let lastHandled = 0;
@@ -574,7 +565,7 @@ export default class Grid {
       // and empty the possible Matches
       // console.log('Checking level: ' + this.possibleMatches[numMatches-1].level);
       if (level && this.possibleMatches[numMatches-1].level == level) {
-        console.log('Deleting level: ' + this.possibleMatches[numMatches-1].level);
+        // console.log('Deleting level: ' + this.possibleMatches[numMatches-1].level);
         this.possibleMatches[numMatches-1].stopWiggling();
         this.possibleMatches.splice(numMatches-1, 1);
         this.gamestate.connectingLevels[level] = 0;

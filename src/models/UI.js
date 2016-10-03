@@ -22,7 +22,7 @@ export default class UI {
       align: 'left'
     });
 
-    this.nextText     = this.game.add.text(134, 485, 'Next Two Tiles ', {
+    this.nextText     = this.game.add.text(136, 485, 'Next Two Tiles ', {
       font: '14px Roboto Mono',
       fill: '#C2C2C2',
       align: 'left'
@@ -35,7 +35,7 @@ export default class UI {
     this.score     = this.game.add.text(192, 578, `${this.gamestate.score}`, {
       font: '16px Roboto Mono',
       fill: '#ffcf00',
-      align: 'center'
+      align: 'right'
     });
     this.counterLabel = this.game.add.text(296, 485, 'Matches / Turns ', {
       font: '14px Roboto Mono',
