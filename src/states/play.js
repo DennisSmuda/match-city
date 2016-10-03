@@ -4,8 +4,17 @@ import Grid from '../models/Grid';
 
 
 export default class Play extends Phaser.State {
+  initRender() {
+    // this.game.scale.startFullScreen();
+    this.game.scale.scaleMode = Phaser.ScaleManager.USER_SCALE;
+    this.game.scale.setUserScale(0.9, 0.9);
+    // this.game.renderer.renderSession.roundPixels = true;
+    // Phaser.Canvas.setImageRenderingCrisp(this.game.canvas)
+    this.game.stage.smoothed = false;
+  }
 
   create() {
+    this.initRender();
     this.gamestate = {
       debug: true,
       minimumConnecting: 2,
@@ -49,6 +58,7 @@ export default class Play extends Phaser.State {
 
     // this.tile = new Tile(this.game, 4, 4, 'blue');
     this.grid = new Grid(this.game, this.gamestate);
+
   }
 
   update() {

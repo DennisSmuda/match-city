@@ -56,7 +56,6 @@ export default class Grid {
 
   generateNewLevel() {
     this.newLevel = 1;
-
     /**
     * Level check based on ( 1 + (i*3) ) | 1, 3, 6, 9, 12, etc..
     */
@@ -64,17 +63,17 @@ export default class Grid {
     for (let i = 0; i <= this.gamestate.maxLevel-1; i++) {
 
       if (i == 0) {
-        if (ones < 2)  { this.newLevel += 0 ;}
-        if (ones >= 2) { this.newLevel += 2 ;}
-        if (ones >= 4) { this.newLevel += 3 ;}
-        if (ones >= 6) { this.newLevel += 3 ;}
+        // if (ones < 2)  { this.newLevel += 0 ;}
+        if (ones >= 2 && this.newLevel == 1) { this.newLevel += 2 ;}
+        if (ones >= 5) { this.newLevel += 3 ;}
+        if (ones >= 8) { this.newLevel += 3 ;}
       } else {
         let amount = this.gamestate.connectingLevels[i*3];
         let level  = i*3;
         if (this.newLevel == 1) { this.newLevel += 2}
 
         if (amount >= 1) {
-          this.newLevel += level;
+          this.newLevel += 3;
         }
 
         if (amount >= 2 && amount < 4) { this.newLevel += level ;}
@@ -199,25 +198,34 @@ export default class Grid {
 
 
   clearPossibleMatches(level) {
-    // console.log('Clear wiggles');
     let numMatches = this.possibleMatches.length;
-    console.log('Delete Level: ' + level);
+
+    // if (level) {
+    //   console.log('Clear Level');
+    //
+    // } else {
+    //   console.log('Clear all');
+    // }
+    // console.log('Clear wiggles');
+    // console.log('Delete Level: ' + level);
     while (numMatches > 0) {
       // Go Backwards through possibleMatches
       // and empty the possible Matches
-      console.log('Checking level: ' + this.possibleMatches[numMatches-1].level);
+      // console.log('Checking level: ' + this.possibleMatches[numMatches-1].level);
       if (level && this.possibleMatches[numMatches-1].level == level) {
-      console.log('Deleting level: ' + this.possibleMatches[numMatches-1].level);
+      // console.log('Deleting level: ' + this.possibleMatches[numMatches-1].level);
         this.possibleMatches[numMatches-1].stopWiggling();
         this.possibleMatches.splice(numMatches-1, 1);
+        this.gamestate.connectingLevels[level] = 0;
+
       }
       else if (level == undefined) {
         this.possibleMatches[numMatches-1].stopWiggling();
         this.possibleMatches.splice(numMatches-1, 1);
+        this.resetConnecting();
       }
       numMatches--;
     }
-    this.resetConnecting();
   }
 
   findPossibleMatches() {
@@ -467,9 +475,10 @@ export default class Grid {
       }
       // console.log('Possible Match Difference : ' + (highest - lower));
 
-      if ((highest - lower) !== 3
+      if (
+        // (highest - lower) !== 3
         // && (highest - lower) !== 2
-        && (highest - lower) !== 0) {
+        (highest - lower) !== 0) {
         // console.log('Not Possible because difference ==' + (highest - lower));
           this.clearPossibleMatches();
       }
@@ -486,7 +495,6 @@ export default class Grid {
 
       levels.sort((a, b) => {return a-b;})
       levels.reverse();
-      console.log(levels);
 
       let max = levels[0];
       let mid = levels[1];
@@ -497,10 +505,7 @@ export default class Grid {
 
       // One High with two Low-levels
       if (mid == low) {
-        if ((max - mid) !== 2 &&
-            (max - mid) !== 3) {
-          this.clearPossibleMatches(max);
-        }
+        this.clearPossibleMatches(max);
       }
       // Three different Levels match.
       else {
@@ -510,27 +515,63 @@ export default class Grid {
 
     // Check for more than 4 Matches
     if (this.possibleMatches.length >= 4) {
-      let highest = 1;
+      let highestLevel = 1;
+      let secondHighestLevel = 0;
+      let highest = [];
+      let lower   = [];
 
-      let levels = [];
+      let matches = [];
 
       for (let i = 0; i < this.possibleMatches.length; i++) {
-        levels.push(this.possibleMatches[i].level);
+        matches.push(this.possibleMatches[i].level);
+      }
+
+      matches.sort((a, b) => {return a-b;})
+      matches.reverse();
+
+      console.log(matches);
+
+      highestLevel = matches[0];
+
+      // for (let level = highestLevel; level >= 3; level -= 3) {
+      for (let level of matches) {
+        console.log('Checking lvl ' + level + ' with ' + this.gamestate.connectingLevels[`${level}`]);
+        if (level !== 1) {
+          if (this.gamestate.connectingLevels[`${level}`] == 1) {
+
+            console.log('Just One of '+ level);
+            this.clearPossibleMatches(level);
+            highestLevel = -1;
+            // return;
+
+          } else if (this.gamestate.connectingLevels[`${level}`] >= 2) {
+
+            // console.log('More of of: ' + level);
+            if (highestLevel == -1 || highestLevel == 1) {
+              highestLevel = level;
+              console.log('Highest Level: ' + highestLevel);
+              return;
+            }
+            else if (secondHighestLevel == 0 && level == highestLevel-3) {
+              secondHighestLevel = level;
+              console.log('secondHighestLevel: ' + secondHighestLevel);
+              return;
+            }
+            else {
+              this.clearPossibleMatches(level);
+            }
+
+          }
+        } else {
+          // Level == 1
+
+        }
 
       }
 
-      levels.sort((a, b) => {return a-b;})
-      levels.reverse();
-      console.log(levels);
-
-      let max = levels[0];
-      let topmid = levels[1];
-      let lowmid = levels[2];
-      let low = levels[3];
 
 
-
-      if (max == topmid == lowmid == low == 1) { return; }
+      // if (max == topmid == lowmid == low == 1) { return; }
 
     }
 
