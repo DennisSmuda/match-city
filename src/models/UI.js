@@ -22,20 +22,20 @@ export default class UI {
       align: 'left'
     });
 
-    this.nextText     = this.game.add.text(136, 485, 'Next Two Tiles ', {
+    this.nextText     = this.game.add.text(126, 485, 'Next Two', {
       font: '14px Roboto Mono',
       fill: '#C2C2C2',
       align: 'left'
     });
-    this.scoreText     = this.game.add.text(176, 550, 'Score ', {
+    this.scoreText     = this.game.add.text(126, 550, 'Score ', {
       font: '14px Roboto Mono',
       fill: '#C2C2C2',
-      align: 'center'
+      align: 'left'
     });
-    this.score     = this.game.add.text(192, 578, `${this.gamestate.score}`, {
+    this.score     = this.game.add.text(142, 578, `${this.gamestate.score}`, {
       font: '16px Roboto Mono',
       fill: '#ffcf00',
-      align: 'right'
+      align: 'left'
     });
     this.counterLabel = this.game.add.text(296, 485, 'Matches / Turns ', {
       font: '14px Roboto Mono',
@@ -67,7 +67,7 @@ export default class UI {
     this.nextTiles    = this.game.add.group();
     this.nextTiles.scale.set(0.5);
 
-    this.nextTiles.create(375, 1035, 'next-arrow');
+    this.nextTiles.create(342, 1035, 'next-arrow');
   }
 
   updateNextTiles() {
@@ -75,7 +75,7 @@ export default class UI {
       if (i == 0) {
         this.nextTiles.create(90, 1080, this.gamestate.nextTiles[i]);
       } else {
-        this.nextTiles.create((195 + (i * 110)), 1020, this.gamestate.nextTiles[i]);
+        this.nextTiles.create((162 + (i * 110)), 1020, this.gamestate.nextTiles[i]);
       }
     }
   }

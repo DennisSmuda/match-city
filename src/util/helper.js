@@ -51,6 +51,8 @@ export function newRandomTiles(gamestate) {
     gamestate.numRand       = getRandomInt(gamestate.minNumRand, gamestate.maxNumRand);
   }
 
+  if (gamestate.tilesOnGrid <= 4) { num = 12; }
+
   for (let i = 0; i <= num; i++) {
     let k = getRandomInt(0, gamestate.numTiles-1);
     // k = k / gamestate.numTiles;

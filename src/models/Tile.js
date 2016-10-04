@@ -85,7 +85,7 @@ export default class Tile extends Phaser.Sprite {
    }
 
    spawn(index) {
-      this.level = 1;
+      this.level = this.gamestate.averageLevel;
       this.type  = this.gamestate.nextRandoms[index];
       this.loadTexture(this.gamestate.nextRandoms[index], 0, false);
       this.gamestate.lastClicked.x = this.xPos;

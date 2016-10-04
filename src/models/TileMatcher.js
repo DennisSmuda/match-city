@@ -7,6 +7,8 @@
 
 export default class TileMatcher {
   constructor(gamestate) {
+    this.gamestate = gamestate;
+    this.possibleMatches = [];
 
   }
 }

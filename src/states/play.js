@@ -16,10 +16,11 @@ export default class Play extends Phaser.State {
   create() {
     this.initRender();
     this.gamestate = {
-      debug: true,
+      // debug: true,
       minimumConnecting: 2,
+      averageLevel: 1,
       // 33 * 3 = 99
-      maxLevel: 6,
+      maxLevel: 33,
       connectingLevels: { },
       needLevelUp: false,
       nextLevel: 1,
@@ -45,13 +46,13 @@ export default class Play extends Phaser.State {
       numRand: 12,
       minNumRand: 3,
       maxNumRand: 5,
-      minTurns:   4,
-      maxTurns:   6,
+      minTurns:   12,
+      maxTurns:   18,
       randomCounter: 3,
 
       score: 0,
       // Min: 1 - Max: 6 || boring under 4?
-      // numTiles:   3
+      // numTiles:   4
       numTiles:   1
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }

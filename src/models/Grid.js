@@ -71,11 +71,12 @@ export default class Grid {
 
         let amount = this.gamestate.connectingLevels[i*3];
         let level  = i*3;
+        this.newLevel += level*amount;
 
-        if (amount >= 2) { this.newLevel += level ;}
-        if (amount >= 4) { this.newLevel += level ;}
-        if (amount >= 6) { this.newLevel += level ;}
-        if (amount >= 8) { this.newLevel += level ;}
+        // if (amount >= 2) { this.newLevel += level ;}
+        // if (amount >= 4) { this.newLevel += level ;}
+        // if (amount >= 6) { this.newLevel += level ;}
+        // if (amount >= 8) { this.newLevel += level ;}
       }
     }
 
@@ -169,7 +170,8 @@ export default class Grid {
     this.gamestate.clickHandled = false;
     this.gamestate.matchesHandled = false;
     this.gamestate.matches++;
-    this.gamestate.randomCounter++;
+    // TODO: maybe add, to delay random spawns
+    // this.gamestate.randomCounter++;
 
     // Loop through array and collapse all matching (surrounding tiles)
     while (numMatches > 0 && !this.gamestate.matchesHandled) {
@@ -385,27 +387,81 @@ export default class Grid {
       }
     }
 
-
-    // }
-
-
     /**
     * - Check second tier x+2,y+1 || x+1,y+2
     */
     // Check left-left-up
-    // if (x > 1 && y > 0) {
-    //   if ((this.checkType(x-1, y, currentType) && (this.checkType(x-2, y, currentType)) ||
-    //        this.checkType(x-1, y, currentType) && this.checkType(x-1, y-1) )) {
-    //
-    //     if (this.checkType(x-2, y-1, currentType)) {
-    //       this.checkLevel(x-2, y-1);
-    //       this.possibleMatches.push(this.grid[x-2][y-1]);
-    //     }
-    //   }
-
-
-    // }
-
+    if ((this.checkType(x-1, y, currentType) && (this.checkType(x-2, y, currentType)) ||
+         this.checkType(x-1, y, currentType) && this.checkType(x-1, y-1, currentType) &&
+         this.checkType(x, y-1, currentType) && this.checkType(x-1, y-1, currentType) )) {
+           if (this.checkType(x-2, y-1, currentType)) {
+             this.checkLevel(x-2, y-1);
+             this.possibleMatches.push(this.grid[x-2][y-1]);
+           }
+    }
+    // Check up-up-left
+    if ((this.checkType(x, y-1, currentType) && this.checkType(x, y-2, currentType) ||
+         this.checkType(x, y-1, currentType) && this.checkType(x-1,y-1, currentType) ||
+         this.checkType(x-1, y, currentType) && this.checkType(x-1, y-1, currentType) )) {
+           if (this.checkType(x-1, y-2, currentType)) {
+             this.checkLevel(x-1, y-2);
+             this.possibleMatches.push(this.grid[x-1][y-2]);
+           }
+    }
+    // Check up-up-right
+    if ((this.checkType(x, y-1, currentType) && this.checkType(x, y-2, currentType) ||
+         this.checkType(x, y-1, currentType) && this.checkType(x+1,y-1, currentType) ||
+         this.checkType(x+1, y, currentType) && this.checkType(x+1, y-1, currentType) )) {
+           if (this.checkType(x+1, y-2, currentType)) {
+             this.checkLevel(x+1, y-2);
+             this.possibleMatches.push(this.grid[x+1][y-2]);
+           }
+    }
+    // Check right-right-up
+    if ((this.checkType(x+1, y, currentType) && this.checkType(x+2, y, currentType) ||
+         this.checkType(x+1, y, currentType) && this.checkType(x+1,y-1, currentType) ||
+         this.checkType(x, y-1, currentType) && this.checkType(x+1, y-1, currentType) )) {
+           if (this.checkType(x+2, y-1, currentType)) {
+             this.checkLevel(x+2, y-1);
+             this.possibleMatches.push(this.grid[x+2][y-1]);
+           }
+    }
+    // Check right-right-down
+    if ((this.checkType(x+1, y, currentType) && this.checkType(x+2, y, currentType) ||
+         this.checkType(x+1, y, currentType) && this.checkType(x+1,y+1, currentType) ||
+         this.checkType(x, y+1, currentType) && this.checkType(x+1, y+1, currentType) )) {
+           if (this.checkType(x+2, y+1, currentType)) {
+             this.checkLevel(x+2, y+1);
+             this.possibleMatches.push(this.grid[x+2][y+1]);
+           }
+    }
+    // Check down-down-right
+    if ((this.checkType(x, y+1, currentType) && this.checkType(x, y+2, currentType) ||
+         this.checkType(x+1, y, currentType) && this.checkType(x+1,y+1, currentType) ||
+         this.checkType(x, y+1, currentType) && this.checkType(x+1, y+1, currentType) )) {
+           if (this.checkType(x+1, y+2, currentType)) {
+             this.checkLevel(x+1, y+2);
+             this.possibleMatches.push(this.grid[x+1][y+2]);
+           }
+    }
+    // Check down-down-left
+    if ((this.checkType(x, y+1, currentType) && this.checkType(x, y+2, currentType) ||
+         this.checkType(x-1, y, currentType) && this.checkType(x-1,y+1, currentType) ||
+         this.checkType(x, y+1, currentType) && this.checkType(x-1, y+1, currentType) )) {
+           if (this.checkType(x-1, y+2, currentType)) {
+             this.checkLevel(x-1, y+2);
+             this.possibleMatches.push(this.grid[x-1][y+2]);
+           }
+    }
+    // Check left-left-down
+    if ((this.checkType(x-1, y, currentType) && this.checkType(x-2, y, currentType) ||
+         this.checkType(x-1, y, currentType) && this.checkType(x-1,y+1, currentType) ||
+         this.checkType(x, y+1, currentType) && this.checkType(x-1, y+1, currentType) )) {
+           if (this.checkType(x-2, y+1, currentType)) {
+             this.checkLevel(x-2, y+1);
+             this.possibleMatches.push(this.grid[x-2][y+1]);
+           }
+    }
 
     /**
     * You can only match same level tiles,
@@ -465,20 +521,10 @@ export default class Grid {
       if (max == mid && max == low) {
         return;
       } else if (mid == 1 && low == 1) {
-        this.clearPossibleMatches(max);
+        this.clearPossibleMatchesWithLevel(max);
       } else {
         this.clearPossibleMatches();
       }
-      // Clear single low number
-      // else if (max == mid) { this.clearPossibleMatches(low); return; }
-      // // One High with two Low-levels
-      // else if (mid == low) {
-      //   this.clearPossibleMatches(max);
-      // }
-      // // Three different Levels match.
-      // else {
-      //   this.clearPossibleMatches();
-      // }
     }
 
     // Check for more than 4 Matches
@@ -503,41 +549,23 @@ export default class Grid {
       // for (let level = highestLevel; level >= 3; level -= 3) {
       for (let level of matches) {
 
-        if (lastHandled == level) {
-          // console.log('Already Handled');
-          break;
-        }
+        if (lastHandled == level) { continue; }
 
         let numConnecting = this.gamestate.connectingLevels[level];
-        // console.log('Checking lvl ' + level + ' with ' + numConnecting);
 
         if (level !== 1) {
           if (numConnecting >= 3) {
 
-            // console.log('More of of: ' + level);
-            if (highestLevel == 0) {
-              highestLevel = level;
-              console.log('Highest Level: ' + highestLevel);
-              // return;
-            }
-            else if (secondHighestLevel == 0 && level == highestLevel-3) {
+            if (secondHighestLevel == 0 && level == highestLevel-3) {
               secondHighestLevel = level;
-              console.log('secondHighestLevel: ' + secondHighestLevel);
-              // return;
             }
+
           } else if (numConnecting < 3) {
-            if (secondHighestLevel == 0 && highestLevel !== level) {
-              secondHighestLevel = level;
-              console.log('secondHighestLevel: ' + secondHighestLevel);
-            }
-            this.clearPossibleMatches(level);
-            // return;
+            this.clearPossibleMatchesWithLevel(level);
           }
         } else {
           // Level == 1
-          // console.log('secondHighestLevel: ' + secondHighestLevel)
-          // console.log('highestLevel: ' + highestLevel)
-          if (secondHighestLevel == 3 || highestLevel == 3) {
+          if (secondHighestLevel !== 3 || highestLevel !== 3) {
             if (highestLevel !== 0) {
               console.log('Clear Ones');
               // this.clearPossibleMatches(1);
@@ -549,30 +577,29 @@ export default class Grid {
     }
   }
 
-  clearPossibleMatches(level) {
+  clearPossibleMatches() {
     let numMatches = this.possibleMatches.length;
     // Go Backwards through possibleMatches
     // and empty the possible Matches
 
-    if (level) {
-      while (numMatches > 0) {
-        if (this.possibleMatches[numMatches-1].level == level) {
-          console.log('Deleting level: ' + this.possibleMatches[numMatches-1].level);
-          this.possibleMatches[numMatches-1].stopWiggling();
-          this.possibleMatches.splice(numMatches-1, 1);
-          this.gamestate.connectingLevels[level] = 0;
-        }
-        numMatches--;
-      }
+    while (numMatches > 0) {
+      this.possibleMatches[numMatches-1].stopWiggling();
+      this.possibleMatches.splice(numMatches-1, 1);
+      this.resetConnecting();
+      numMatches--;
     }
-    else {
-      while (numMatches > 0) {
-        console.log('Checking level: ' + level + ' tilelevel: ' + this.possibleMatches[numMatches-1].level);
+  }
+
+  clearPossibleMatchesWithLevel(level) {
+    let numMatches = this.possibleMatches.length;
+
+    while (numMatches > 0) {
+      if (this.possibleMatches[numMatches-1].level == level) {
         this.possibleMatches[numMatches-1].stopWiggling();
         this.possibleMatches.splice(numMatches-1, 1);
-        this.resetConnecting();
-        numMatches--;
+        this.gamestate.connectingLevels[level] = 0;
       }
+      numMatches--;
     }
   }
 
