@@ -20,6 +20,7 @@ export default class Tile extends Phaser.Sprite {
     this.type           = 'empty';
     this.potentialLevel = 1;
 
+    
 
     // Input & Events
     this.inputEnabled = true;
@@ -79,6 +80,7 @@ export default class Tile extends Phaser.Sprite {
 
 
       this.drop = this.game.add.tween(this).to( { y: this.y+4 }, 400, Phaser.Easing.Bounce.Out, true);
+
       this.gamestate.nextTiles.shift();
 
     }
