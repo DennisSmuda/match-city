@@ -57,7 +57,6 @@ export default class Grid {
     }
   }
 
-
   generateNewLevel() {
     this.newLevel = 0;
     /**
@@ -69,17 +68,12 @@ export default class Grid {
 
       if (i == 0) {
         if (this.newLevel == 0) { this.newLevel += 3; }
-        if (ones >= 5) { this.newLevel += 3 ;}
-        if (ones >= 8) { this.newLevel += 3 ;}
+        if (ones >= 6) { this.newLevel += 6; }
       } else {
-
         let amount = this.gamestate.connectingLevels[i*3];
         let level  = i*3;
-
-        if (amount >= 2) { this.newLevel += level+3 ;}
-        // if (amount >= 4) { this.newLevel += level ;}
-        // if (amount >= 6) { this.newLevel += level ;}
-        // if (amount >= 8) { this.newLevel += level ;}
+        if (amount >= 2) { this.newLevel += level*3 ;}
+        if (amount >= 4) { this.newLevel *=2 ;}
       }
     }
 
@@ -144,6 +138,14 @@ export default class Grid {
     if (this.gamestate.tilesOnGrid >= (this.cols * this.rows)) {
       console.log('Loose');
       // this.gameOver();
+    }
+
+    console.log(this.gamestate.tilesOnGrid);
+    if (this.gamestate.turns == 5) {
+      this.gamestate.averageLevel = 3;
+    }
+    if (this.gamestate.turns == 150) {
+      this.gamestate.averageLevel = 6;
     }
 
     if (this.gamestate.randomCounter > 0) {

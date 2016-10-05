@@ -44,16 +44,16 @@ export default class Play extends Phaser.State {
       individualMatches: 0,
       // Random Spawns
       numRand: 12,
-      minNumRand: 3,
-      maxNumRand: 5,
-      minTurns:   12,
-      maxTurns:   18,
+      minNumRand: 4,
+      maxNumRand: 6,
+      minTurns:   8,
+      maxTurns:   14,
       randomCounter: 3,
 
       score: 0,
       // Min: 1 - Max: 6 || boring under 4?
-      numTiles:   6
-      // numTiles:   1
+      // numTiles:   6
+      numTiles:   3
     }
     // let center = { x: this.game.world.centerX, y: this.game.world.centerY }
     this.gameBackground = this.add.sprite(0, 0, 'game-background');

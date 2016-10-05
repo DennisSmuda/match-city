@@ -19,13 +19,13 @@ export function newNextTiles(gamestate) {
     nextTiles.push('blue');
   }
   else if (k == 2) {
-    nextTiles.push('yellow');
-  }
-  else if (k == 3) {
     nextTiles.push('green');
   }
-  else if (k == 4) {
+  else if (k == 3) {
     nextTiles.push('purple');
+  }
+  else if (k == 4) {
+    nextTiles.push('yellow');
   }
   else if (k == 5) {
     nextTiles.push('orange');
@@ -66,13 +66,13 @@ export function newRandomTiles(gamestate) {
       randomTiles.push('blue');
     }
     else if (k == 2) {
-      randomTiles.push('yellow');
-    }
-    else if (k == 3) {
       randomTiles.push('green');
     }
-    else if (k == 4) {
+    else if (k == 3) {
       randomTiles.push('purple');
+    }
+    else if (k == 4) {
+      randomTiles.push('yellow');
     }
     else if (k == 5) {
       randomTiles.push('orange');
