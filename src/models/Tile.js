@@ -2,7 +2,7 @@
 export default class Tile extends Phaser.Sprite {
 
   constructor(game, x, y, frame, gamestate) {
-    super(game, x+32, y+32, frame);
+    super(game, x+36, y+36, frame);
     this.anchor.setTo(0.5, 0.5);
     this.game           = game;
     this.enableBody     = true;
@@ -12,15 +12,15 @@ export default class Tile extends Phaser.Sprite {
 
     this.collapseTween  = null;
     this.wiggle         = null;
-    this.originalX      = x+32;
-    this.originalY      = y+32;
+    this.originalX      = x+36;
+    this.originalY      = y+36;
     this.xPos           = (x-6)/64;
     this.yPos           = (y)/64;
     this.level          = 1;
     this.type           = 'empty';
     this.potentialLevel = 1;
 
-    
+
 
     // Input & Events
     this.inputEnabled = true;

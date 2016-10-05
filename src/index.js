@@ -9,7 +9,7 @@ Array.max = function( array ){
 
 class Game extends Phaser.Game {
   constructor() {
-    super(460, 636, Phaser.CANVAS, 'content', null);
+    super(468, 644, Phaser.CANVAS, 'content', null);
     console.log(this);
     this.state.add('preload', preload);
     this.state.add('gameover', gameover);

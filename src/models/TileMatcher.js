@@ -345,6 +345,7 @@ export default class TileMatcher {
   }
 
   checkType(x, y, currentType) {
+    // console.log(this.grid);
     if (x < 0 || y < 0 || x > 6 || y > 6) {
       return false;
     } else if (this.grid[x][y].type == currentType) {

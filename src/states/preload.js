@@ -9,7 +9,7 @@ export default class Preload extends Phaser.State {
   }
 
   preload() {
-    this.stage.backgroundColor = '#B0C0C3';
+    this.stage.backgroundColor = '#1A0039';
     // this.load.image('game-background', 'assets/images/game-background.png');
     this.load.image('game-background', 'assets/images/game-bg.png');
     this.load.image('next-arrow', 'assets/images/next-arrow.png');
