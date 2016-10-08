@@ -67,13 +67,13 @@ export default class Grid {
     for (let i = this.gamestate.maxLevel; i >= 0; i--) {
 
       if (i == 0) {
+        if (ones >= 6 && this.newLevel == 0) { this.newLevel += 9; }
         if (this.newLevel == 0) { this.newLevel += 3; }
-        if (ones >= 6) { this.newLevel += 6; }
       } else {
         let amount = this.gamestate.connectingLevels[i*3];
         let level  = i*3;
         if (amount >= 2) { this.newLevel += level*3 ;}
-        if (amount >= 4) { this.newLevel *=2 ;}
+        if (amount >= 4) { this.newLevel *=3 ;}
       }
     }
 
@@ -141,7 +141,7 @@ export default class Grid {
     }
 
     console.log(this.gamestate.tilesOnGrid);
-    if (this.gamestate.turns == 5) {
+    if (this.gamestate.turns == 75) {
       this.gamestate.averageLevel = 3;
     }
     if (this.gamestate.turns == 150) {
@@ -167,7 +167,7 @@ export default class Grid {
     this.gamestate.matchesHandled = false;
     this.gamestate.matches++;
     // TODO: maybe add, to delay random spawns
-    // this.gamestate.randomCounter++;
+    this.gamestate.randomCounter++;
 
     // Loop through array and collapse all matching (surrounding tiles)
     while (numMatches > 0 && !this.gamestate.matchesHandled) {
