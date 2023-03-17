@@ -1,5 +1,6 @@
 import { animationConfig } from "./config";
 import "./style.css";
+import { generateRandomColor } from "./utils";
 
 const gameOverModal = document.getElementById("game-over") as HTMLElement;
 const nextTileContainer = document.getElementById("next-tile-container");
@@ -176,36 +177,67 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
   // cell.ariaDisabled = "false";
 };
 
+const onMouseEnterCell = (x: number, y: number) => {
+  for (let i = 0; i < 5; i++) {
+    const potentialMatchCell = document.querySelector(
+      `[data-grid-pos="${i}:${y}"]`
+    ) as HTMLElement;
+    potentialMatchCell.classList.add("active");
+  }
+  for (let j = 0; j < 5; j++) {
+    const potentialMatchCell = document.querySelector(
+      `[data-grid-pos="${x}:${j}"]`
+    ) as HTMLElement;
+    potentialMatchCell.classList.add("active");
+  }
+};
+
+const onMouseLeaveCell = (x: number, y: number) => {
+  for (let i = 0; i < 5; i++) {
+    const potentialMatchCell = document.querySelector(
+      `[data-grid-pos="${i}:${y}"]`
+    ) as HTMLElement;
+    potentialMatchCell.classList.remove("active");
+  }
+  for (let j = 0; j < 5; j++) {
+    const potentialMatchCell = document.querySelector(
+      `[data-grid-pos="${x}:${j}"]`
+    ) as HTMLElement;
+    potentialMatchCell.classList.remove("active");
+  }
+};
+
 const initCells = () => {
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell: Element) => {
     const position = cell.getAttribute("data-grid-pos") || "0:0";
     const [x, y] = position.split(":");
-    console.log("Cell Pos: ", x, y);
+
     cell.addEventListener(
       "click",
       onClickCell.bind(null, cell, parseInt(x), parseInt(y))
     );
+    cell.addEventListener(
+      "mouseenter",
+      onMouseEnterCell.bind(null, parseInt(x), parseInt(y))
+    );
+    cell.addEventListener(
+      "mouseleave",
+      onMouseLeaveCell.bind(null, parseInt(x), parseInt(y))
+    );
   });
 };
 
-initCells();
-
-// let x = 0;
-// let y = 0;
 const tile = document.querySelectorAll(".tile")[0] as HTMLElement;
 console.log("tile", tile);
-
-// const onMouseMove = (e: MouseEvent) => {
-//   x = e.clientX;
-//   y = e.clientY;
-//   console.log("Event", x, y);
-// };
 
 document.body.onkeyup = function (e) {
   if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
     // Trigger events for debugging puproses
     scoreCountAnimation(12);
+  }
+  if (e.key == "r" || e.code == "r") {
+    gameOver();
   }
 };
 
@@ -224,18 +256,6 @@ const scoreCountAnimation = async (amount: number) => {
   ).finished;
 
   scoreText.remove();
-};
-
-const generateRandomColor = () => {
-  let nextChance = Math.random();
-  let nextColor = "green";
-  if (nextChance < 0.3) {
-    nextColor = "pink";
-  } else if (nextChance < 0.6) {
-    nextColor = "blue";
-  }
-
-  return nextColor;
 };
 
 const gameOver = async () => {
@@ -263,7 +283,7 @@ const restartGame = async () => {
   tiles.forEach(async (tile) => {
     tile.innerHTML = "";
     await tile?.animate(
-      animationConfig.keyframesOut,
+      animationConfig.keyframesDisappear,
       animationConfig.timingLong
     ).finished;
     tile?.remove();
@@ -281,3 +301,8 @@ const restartGame = async () => {
   scoreElement.innerHTML = score.toString();
   grid = {};
 };
+
+/**
+ * Initialize
+ */
+initCells();
