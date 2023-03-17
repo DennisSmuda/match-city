@@ -1,3 +1,4 @@
+import { animationConfig } from "./config";
 import "./style.css";
 
 const gameOverModal = document.getElementById("game-over") as HTMLElement;
@@ -5,30 +6,9 @@ const nextTileContainer = document.getElementById("next-tile-container");
 let grid: { [key: string]: any } = {};
 let matches: { [key: string]: any } = {};
 
-let currentTurn = 0;
+// let currentTurn = 0;
 let score = 0;
 let isInputBlocked: boolean = false;
-
-const animationConfig = {
-  keyframesIn: [{ scale: 0.8 }, { scale: 1.1 }, { scale: 1 }],
-  keyframesOut: [{ scale: 1 }, { scale: 1.1 }, { scale: 0.2 }],
-  keyframesDisappear: [
-    { scale: 1, opacity: 1 },
-    { scale: 0.2, opacity: 0 },
-  ],
-  timing: {
-    easing: "cubic-bezier(0.42, 0, 0.58, 1)",
-    duration: 130,
-  },
-  timingShort: {
-    easing: "cubic-bezier(0.42, 0, 0.58, 1)",
-    duration: 80,
-  },
-  timingLong: {
-    easing: "cubic-bezier(0.42, 0, 0.58, 1)",
-    duration: 240,
-  },
-};
 
 gameOverModal.style.opacity = "0";
 gameOverModal.style.pointerEvents = "none";
@@ -163,7 +143,7 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
   const clickedType = grid[`${x}:${y}`];
   if (clickedType) return;
 
-  currentTurn++;
+  // currentTurn++;
   const tile = document.querySelectorAll(".tile.next")[0] as HTMLElement;
   console.log("tile", tile);
   // let animation =
@@ -189,7 +169,7 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
   console.log("Check if game over", Object.keys(grid).length);
   if (Object.keys(grid).length >= 25) {
     // grid is full 5x5 tiles are not empty
-    gameOver();
+    gameOver(score, grid);
   }
   console.log("Finish");
   isInputBlocked = false;
@@ -211,65 +191,20 @@ const initCells = () => {
 
 initCells();
 
-let x = 0;
-let y = 0;
+// let x = 0;
+// let y = 0;
 const tile = document.querySelectorAll(".tile")[0] as HTMLElement;
 console.log("tile", tile);
 
-const onMouseMove = (e: MouseEvent) => {
-  x = e.clientX;
-  y = e.clientY;
-  console.log("Event", x, y);
-};
-
-const gameOver = async () => {
-  console.log("Game Over", gameOverModal);
-  const finalScoreElement = document.getElementById(
-    "final-score"
-  ) as HTMLElement;
-  finalScoreElement.innerHTML = score.toString();
-  gameOverModal.style.visibility = "visible";
-  gameOverModal.style.pointerEvents = "auto";
-  gameOverModal.style.opacity = "1";
-  await gameOverModal?.animate(
-    // [{ opacity: 0 }, { opacity: 1 }],
-    animationConfig.keyframesIn,
-    animationConfig.timingShort
-  ).finished;
-  console.log("finish", gameOverModal);
-
-  document
-    .getElementById("restart-game-button")
-    ?.addEventListener("click", async () => {
-      console.log("Restart Game");
-
-      const tiles = document.querySelectorAll(`.tile:not(.next)`);
-      tiles.forEach(async (tile) => {
-        tile.innerHTML = "";
-        await tile?.animate(
-          animationConfig.keyframesOut,
-          animationConfig.timingLong
-        ).finished;
-        tile?.remove();
-      });
-
-      await gameOverModal?.animate(
-        // [{ opacity: 0 }, { opacity: 1 }],
-        animationConfig.keyframesDisappear,
-        animationConfig.timingShort
-      ).finished;
-      gameOverModal.style.opacity = "0";
-      gameOverModal.style.pointerEvents = "none";
-      score = 0;
-      const scoreElement = document.getElementById("score") as HTMLElement;
-      scoreElement.innerHTML = score.toString();
-      grid = {};
-    });
-};
+// const onMouseMove = (e: MouseEvent) => {
+//   x = e.clientX;
+//   y = e.clientY;
+//   console.log("Event", x, y);
+// };
 
 document.body.onkeyup = function (e) {
   if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
-    //your code
+    // Trigger events for debugging puproses
     scoreCountAnimation(12);
   }
 };
@@ -301,4 +236,48 @@ const generateRandomColor = () => {
   }
 
   return nextColor;
+};
+
+const gameOver = async () => {
+  const finalScoreElement = document.getElementById(
+    "final-score"
+  ) as HTMLElement;
+  finalScoreElement.innerHTML = score.toString();
+  gameOverModal.style.visibility = "visible";
+  gameOverModal.style.pointerEvents = "auto";
+  gameOverModal.style.opacity = "1";
+  await gameOverModal?.animate(
+    animationConfig.keyframesIn,
+    animationConfig.timingShort
+  ).finished;
+
+  document
+    .getElementById("restart-game-button")
+    ?.addEventListener("click", restartGame.bind(null, score, grid));
+};
+
+const restartGame = async () => {
+  console.log("Restart Game");
+
+  const tiles = document.querySelectorAll(`.tile:not(.next)`);
+  tiles.forEach(async (tile) => {
+    tile.innerHTML = "";
+    await tile?.animate(
+      animationConfig.keyframesOut,
+      animationConfig.timingLong
+    ).finished;
+    tile?.remove();
+  });
+
+  await gameOverModal?.animate(
+    // [{ opacity: 0 }, { opacity: 1 }],
+    animationConfig.keyframesDisappear,
+    animationConfig.timingShort
+  ).finished;
+  gameOverModal.style.opacity = "0";
+  gameOverModal.style.pointerEvents = "none";
+  score = 0;
+  const scoreElement = document.getElementById("score") as HTMLElement;
+  scoreElement.innerHTML = score.toString();
+  grid = {};
 };
