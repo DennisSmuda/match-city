@@ -1,49 +1,19 @@
-import { animationConfig } from "./config";
-import { gameStore } from "./store";
 import "./style.css";
-import { generateRandomColor } from "./utils";
 
-let matches: { [key: string]: any } = {};
+import { animationConfig } from "./config";
+import { onMouseEnterCell, onMouseLeaveCell, onMouseMove } from "./events";
+import { floatingText, scoreCountAnimation } from "./floating-text";
+import { gameStore } from "./store";
+import {
+  generateNextTile,
+  generateRandomTile,
+  moveNextTileToCell,
+} from "./tile-generation";
+import { gameOver } from "./game-over";
+
+document.onmousemove = onMouseMove;
 
 let isInputBlocked: boolean = false;
-
-const generateNextTile = async () => {
-  const nextTileContainer = document.getElementById("next-tile-container");
-  const nextTile = document.createElement("div");
-  nextTile.classList.add("tile", "next");
-  nextTile.setAttribute("data-type", generateRandomColor());
-  nextTile.innerHTML = "1";
-  nextTileContainer?.appendChild(nextTile);
-  await nextTile.animate(animationConfig.keyframesIn, animationConfig.timing)
-    .finished;
-};
-
-const generateRandomTile = async () => {
-  const randomTile = document.createElement("div");
-  randomTile.classList.add("tile");
-  randomTile.setAttribute("data-type", generateRandomColor());
-  randomTile.innerHTML = "1";
-  const { x, y } = getRandomGridPosition();
-  const tileContainer = document.querySelector(`[data-grid-pos="${x}:${y}"]`);
-  gameStore.state.grid[`${x}:${y}`] = randomTile.getAttribute("data-type");
-  tileContainer?.appendChild(randomTile);
-  await randomTile.animate(animationConfig.keyframesIn, animationConfig.timing)
-    .finished;
-
-  await checkGrid(x, y);
-};
-
-const getRandomGridPosition = () => {
-  let randomPos = null;
-  while (!randomPos) {
-    let x = Math.floor(Math.random() * 5);
-    let y = Math.floor(Math.random() * 5);
-    if (!gameStore.state.grid[`${x}:${y}`]) {
-      randomPos = { x, y };
-    }
-  }
-  return randomPos;
-};
 
 const checkGrid = async (x: number, y: number) => {
   const currentType = gameStore.state.grid[`${x}:${y}`];
@@ -56,7 +26,7 @@ const checkGrid = async (x: number, y: number) => {
     // Matching to the left
     const checkingType = gameStore.state.grid[`${i}:${y}`];
     if (checkingType === currentType) {
-      matches[`${i}:${y}`] = true;
+      gameStore.state.matches[`${i}:${y}`] = true;
       matchCount++;
     } else {
       break;
@@ -67,7 +37,7 @@ const checkGrid = async (x: number, y: number) => {
     // Matching to the right
     const checkingType = gameStore.state.grid[`${i}:${y}`];
     if (checkingType === currentType) {
-      matches[`${i}:${y}`] = true;
+      gameStore.state.matches[`${i}:${y}`] = true;
       matchCount++;
     } else {
       break;
@@ -78,7 +48,7 @@ const checkGrid = async (x: number, y: number) => {
     // Matching downwards
     const checkingType = gameStore.state.grid[`${x}:${j}`];
     if (checkingType === currentType) {
-      matches[`${x}:${j}`] = true;
+      gameStore.state.matches[`${x}:${j}`] = true;
       matchCount++;
     } else {
       break;
@@ -89,7 +59,7 @@ const checkGrid = async (x: number, y: number) => {
     // Matching upwards
     const checkingType = gameStore.state.grid[`${x}:${j}`];
     if (checkingType === currentType) {
-      matches[`${x}:${j}`] = true;
+      gameStore.state.matches[`${x}:${j}`] = true;
       matchCount++;
     } else {
       break;
@@ -98,8 +68,8 @@ const checkGrid = async (x: number, y: number) => {
 
   // If there are more than 2 other connecting tiles -> collapse
   if (matchCount >= 2) {
-    for (const pos in matches) {
-      if (Object.prototype.hasOwnProperty.call(matches, pos)) {
+    for (const pos in gameStore.state.matches) {
+      if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {
         const tile = document.querySelector(`[data-grid-pos="${pos}"] > .tile`);
         const result =
           parseInt(tile?.innerHTML || "1") + parseInt(currentTile.innerHTML);
@@ -118,8 +88,9 @@ const checkGrid = async (x: number, y: number) => {
           animationConfig.keyframesIn,
           animationConfig.timingShort
         ).finished;
+
         tile?.remove();
-        delete matches[pos];
+        delete gameStore.state.matches[pos];
         delete gameStore.state.grid[pos];
       }
     }
@@ -129,10 +100,12 @@ const checkGrid = async (x: number, y: number) => {
   }
 
   // reset matches
-  matches = {};
+  gameStore.set(() => ({
+    matches: {},
+  }));
 };
 
-const onClickCell = async (cell: Element, x: number, y: number) => {
+const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   if (isInputBlocked) {
     return;
   } else {
@@ -142,15 +115,8 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
   const clickedType = gameStore.state.grid[`${x}:${y}`];
   if (clickedType) return;
 
-  const tile = document.querySelectorAll(".tile.next")[0] as HTMLElement;
-  tile.animate(animationConfig.keyframesOut, animationConfig.timing).finished;
-
-  cell.appendChild(tile);
-  gameStore.state.grid[`${x}:${y}`] = tile.getAttribute("data-type");
-  tile.classList.remove("next");
-
-  await tile.animate(animationConfig.keyframesIn, animationConfig.timing)
-    .finished;
+  // Move from next-container to clicked cell
+  await moveNextTileToCell(cell, x, y);
 
   // Generate next tile to place
   await generateNextTile();
@@ -160,7 +126,8 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
 
   // Spawn a random tile if enough room
   if (Object.keys(gameStore.state.grid).length <= 23) {
-    await generateRandomTile();
+    const { x: randomX, y: randomY } = await generateRandomTile();
+    await checkGrid(randomX, randomY);
   }
 
   // Lose condition
@@ -171,36 +138,6 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
   isInputBlocked = false;
 };
 
-const onMouseEnterCell = (x: number, y: number) => {
-  for (let i = 0; i < 5; i++) {
-    const potentialMatchCell = document.querySelector(
-      `[data-grid-pos="${i}:${y}"]`
-    ) as HTMLElement;
-    potentialMatchCell.classList.add("active");
-  }
-  for (let j = 0; j < 5; j++) {
-    const potentialMatchCell = document.querySelector(
-      `[data-grid-pos="${x}:${j}"]`
-    ) as HTMLElement;
-    potentialMatchCell.classList.add("active");
-  }
-};
-
-const onMouseLeaveCell = (x: number, y: number) => {
-  for (let i = 0; i < 5; i++) {
-    const potentialMatchCell = document.querySelector(
-      `[data-grid-pos="${i}:${y}"]`
-    ) as HTMLElement;
-    potentialMatchCell.classList.remove("active");
-  }
-  for (let j = 0; j < 5; j++) {
-    const potentialMatchCell = document.querySelector(
-      `[data-grid-pos="${x}:${j}"]`
-    ) as HTMLElement;
-    potentialMatchCell.classList.remove("active");
-  }
-};
-
 const initCells = () => {
   const cells = document.querySelectorAll(".cell");
   cells.forEach((cell: Element) => {
@@ -209,7 +146,7 @@ const initCells = () => {
 
     cell.addEventListener(
       "click",
-      onClickCell.bind(null, cell, parseInt(x), parseInt(y))
+      placeTileOnCell.bind(null, cell, parseInt(x), parseInt(y))
     );
     cell.addEventListener(
       "mouseenter",
@@ -222,85 +159,15 @@ const initCells = () => {
   });
 };
 
-const tile = document.querySelectorAll(".tile")[0] as HTMLElement;
-console.log("tile", tile);
-
 document.body.onkeyup = function (e) {
   if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
     // Trigger events for debugging puproses
-    scoreCountAnimation(12);
+    // scoreCountAnimation(12);
+    floatingText(12, 12, "hadsjklf");
   }
   if (e.key == "r" || e.code == "r") {
     gameOver();
   }
-};
-
-const scoreCountAnimation = async (amount: number) => {
-  const scoreElement = document.getElementById("score") as HTMLElement;
-  const scoreText = document.createElement("div");
-  scoreText.classList.add("floating-text", "score");
-  scoreText.innerHTML = `+${amount.toString()}`;
-  scoreElement?.appendChild(scoreText);
-  await scoreText.animate(
-    [
-      { transform: "translateY(0)" },
-      { transform: "translateY(-1rem)", opacity: 0 },
-    ],
-    500
-  ).finished;
-
-  scoreText.remove();
-};
-
-const gameOver = async () => {
-  const gameOverModal = document.getElementById("game-over") as HTMLElement;
-  const finalScoreElement = document.getElementById(
-    "final-score"
-  ) as HTMLElement;
-  finalScoreElement.innerHTML = gameStore.state.score.toString();
-  gameOverModal.style.visibility = "visible";
-  gameOverModal.style.pointerEvents = "auto";
-  gameOverModal.style.opacity = "1";
-  await gameOverModal?.animate(
-    animationConfig.keyframesIn,
-    animationConfig.timingShort
-  ).finished;
-
-  document
-    .getElementById("restart-game-button")
-    ?.addEventListener("click", restartGame);
-};
-
-const restartGame = async () => {
-  console.log("Restart Game");
-  const gameOverModal = document.getElementById("game-over") as HTMLElement;
-
-  const tiles = document.querySelectorAll(`.tile:not(.next)`);
-  tiles.forEach(async (tile) => {
-    tile.innerHTML = "";
-    await tile?.animate(
-      animationConfig.keyframesDisappear,
-      animationConfig.timingLong
-    ).finished;
-    tile?.remove();
-  });
-
-  await gameOverModal?.animate(
-    // [{ opacity: 0 }, { opacity: 1 }],
-    animationConfig.keyframesDisappear,
-    animationConfig.timingShort
-  ).finished;
-
-  gameOverModal.style.opacity = "0";
-  gameOverModal.style.pointerEvents = "none";
-
-  gameStore.set(() => ({
-    score: 0,
-    grid: {},
-  }));
-
-  const scoreElement = document.getElementById("score") as HTMLElement;
-  scoreElement.innerHTML = gameStore.state.score.toString();
 };
 
 /**
