@@ -175,8 +175,9 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  /* opacity: 0; */
-  /* visibility: hidden; */
+
+  /* Hide initially */
+  opacity: 0;
   pointer-events: none;
 }
 

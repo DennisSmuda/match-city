@@ -1,20 +1,19 @@
 import { animationConfig } from "./config";
+import { gameStore } from "./store";
 import "./style.css";
 import { generateRandomColor } from "./utils";
 
-const gameOverModal = document.getElementById("game-over") as HTMLElement;
-const nextTileContainer = document.getElementById("next-tile-container");
 let grid: { [key: string]: any } = {};
 let matches: { [key: string]: any } = {};
 
 // let currentTurn = 0;
-let score = 0;
 let isInputBlocked: boolean = false;
 
-gameOverModal.style.opacity = "0";
-gameOverModal.style.pointerEvents = "none";
+// gameOverModal.style.opacity = "0";
+// gameOverModal.style.pointerEvents = "none";
 
 const generateNextTile = async () => {
+  const nextTileContainer = document.getElementById("next-tile-container");
   const nextTile = document.createElement("div");
   nextTile.classList.add("tile", "next");
   nextTile.setAttribute("data-type", generateRandomColor());
@@ -52,7 +51,6 @@ const getRandomGridPosition = () => {
 };
 
 const checkGrid = async (x: number, y: number) => {
-  console.log("Check grid for", x, y);
   const currentType = grid[`${x}:${y}`];
   const currentTile = document.querySelector(
     `[data-grid-pos="${x}:${y}"] > .tile`
@@ -105,21 +103,24 @@ const checkGrid = async (x: number, y: number) => {
 
   // If there are more than 2 other connecting tiles -> collapse
   if (matchCount >= 2) {
-    let totalAddedScore = 0;
     for (const pos in matches) {
       if (Object.prototype.hasOwnProperty.call(matches, pos)) {
         const tile = document.querySelector(`[data-grid-pos="${pos}"] > .tile`);
         const result =
           parseInt(tile?.innerHTML || "1") + parseInt(currentTile.innerHTML);
         currentTile.innerHTML = result.toString();
-        score += result;
-        totalAddedScore += result;
+        // const newScore = gameStore.state.score + result;
+        gameStore.set((state) => ({
+          score: state.score + result,
+        }));
 
         const scoreElement = document.getElementById("score") as HTMLElement;
-        scoreElement.innerHTML = score.toString();
+        scoreElement.innerHTML = gameStore.state.score.toString();
 
-        await tile?.animate(
-          animationConfig.keyframesOut,
+        tile?.animate(animationConfig.keyframesOut, animationConfig.timingShort)
+          .finished;
+        await currentTile?.animate(
+          animationConfig.keyframesIn,
           animationConfig.timingShort
         ).finished;
         tile?.remove();
@@ -127,14 +128,16 @@ const checkGrid = async (x: number, y: number) => {
         delete grid[pos];
       }
     }
-    scoreCountAnimation(totalAddedScore);
+
+    const totalScore = parseInt(currentTile.innerHTML);
+    scoreCountAnimation(totalScore);
   }
+
   // reset matches
   matches = {};
 };
 
 const onClickCell = async (cell: Element, x: number, y: number) => {
-  // cell.ariaDisabled = "true";
   if (isInputBlocked) {
     return;
   } else {
@@ -144,37 +147,33 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
   const clickedType = grid[`${x}:${y}`];
   if (clickedType) return;
 
-  // currentTurn++;
   const tile = document.querySelectorAll(".tile.next")[0] as HTMLElement;
-  console.log("tile", tile);
-  // let animation =
   tile.animate(animationConfig.keyframesOut, animationConfig.timing).finished;
 
   cell.appendChild(tile);
   grid[`${x}:${y}`] = tile.getAttribute("data-type");
-
   tile.classList.remove("next");
 
   await tile.animate(animationConfig.keyframesIn, animationConfig.timing)
     .finished;
 
+  // Generate next tile to place
   await generateNextTile();
 
+  // Check Grid
   await checkGrid(x, y);
-  console.log("Finish checking grid after click");
 
+  // Spawn a random tile if enough room
   if (Object.keys(grid).length <= 23) {
     await generateRandomTile();
   }
 
-  console.log("Check if game over", Object.keys(grid).length);
+  // Lose condition
   if (Object.keys(grid).length >= 25) {
-    // grid is full 5x5 tiles are not empty
     gameOver();
   }
-  console.log("Finish");
+
   isInputBlocked = false;
-  // cell.ariaDisabled = "false";
 };
 
 const onMouseEnterCell = (x: number, y: number) => {
@@ -259,10 +258,11 @@ const scoreCountAnimation = async (amount: number) => {
 };
 
 const gameOver = async () => {
+  const gameOverModal = document.getElementById("game-over") as HTMLElement;
   const finalScoreElement = document.getElementById(
     "final-score"
   ) as HTMLElement;
-  finalScoreElement.innerHTML = score.toString();
+  finalScoreElement.innerHTML = gameStore.state.score.toString();
   gameOverModal.style.visibility = "visible";
   gameOverModal.style.pointerEvents = "auto";
   gameOverModal.style.opacity = "1";
@@ -273,11 +273,12 @@ const gameOver = async () => {
 
   document
     .getElementById("restart-game-button")
-    ?.addEventListener("click", restartGame.bind(null, score, grid));
+    ?.addEventListener("click", restartGame);
 };
 
 const restartGame = async () => {
   console.log("Restart Game");
+  const gameOverModal = document.getElementById("game-over") as HTMLElement;
 
   const tiles = document.querySelectorAll(`.tile:not(.next)`);
   tiles.forEach(async (tile) => {
@@ -296,9 +297,11 @@ const restartGame = async () => {
   ).finished;
   gameOverModal.style.opacity = "0";
   gameOverModal.style.pointerEvents = "none";
-  score = 0;
+  gameStore.set(() => ({
+    score: 0,
+  }));
   const scoreElement = document.getElementById("score") as HTMLElement;
-  scoreElement.innerHTML = score.toString();
+  scoreElement.innerHTML = gameStore.state.score.toString();
   grid = {};
 };
 
