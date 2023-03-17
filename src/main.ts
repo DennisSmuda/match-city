@@ -67,7 +67,13 @@ const checkGrid = async (x: number, y: number) => {
 
   // If there are more than 2 other connecting tiles -> collapse
   if (matchCount >= 2) {
+    const scoreElement = document.getElementById("score") as HTMLElement;
+
+    gameStore.set((state) => ({
+      score: state.score + parseInt(currentTile.innerHTML),
+    }));
     let totalAddedScore = 1;
+
     for (const pos in gameStore.state.matches) {
       if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {
         const tile = document.querySelector(
@@ -77,15 +83,12 @@ const checkGrid = async (x: number, y: number) => {
         totalAddedScore += parseInt(tile.innerHTML);
         const result =
           parseInt(tile.innerHTML) + parseInt(currentTile.innerHTML);
-        console.log("Set result", result);
         currentTile.innerHTML = result.toString();
-        // const newScore = gameStore.state.score + result;
+
         gameStore.set((state) => ({
-          score: state.score + result,
+          score: state.score + parseInt(tile.innerHTML),
         }));
 
-        const scoreElement = document.getElementById("score") as HTMLElement;
-        console.log("", gameStore.state.score);
         scoreElement.innerHTML = gameStore.state.score.toString();
 
         tile?.animate(animationConfig.keyframesOut, animationConfig.timingShort)
@@ -100,8 +103,9 @@ const checkGrid = async (x: number, y: number) => {
         delete gameStore.state.grid[pos];
       }
     }
-    floatingText(`${getMatchCountDescription(matchCount)} match`);
 
+    floatingText(`${getMatchCountDescription(matchCount)} match`);
+    scoreElement.innerHTML = gameStore.state.score.toString();
     scoreCountAnimation(totalAddedScore);
   }
 
