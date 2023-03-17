@@ -14,7 +14,7 @@ export const generateNextTile = async () => {
 };
 
 export const generateRandomTile = async () => {
-  const randomTile = document.createElement("div");
+  const randomTile = document.createElement("div") as HTMLDivElement;
   randomTile.classList.add("tile");
   randomTile.setAttribute("data-type", generateRandomColor());
   randomTile.innerHTML = "1";

@@ -22,5 +22,8 @@ export const getRandomGridPosition = () => {
       randomPos = { x, y };
     }
   }
-  return randomPos;
+  return {
+    x: randomPos.x,
+    y: randomPos.y,
+  };
 };

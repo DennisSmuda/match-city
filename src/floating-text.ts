@@ -21,6 +21,7 @@ export const floatingText = async (x: number, y: number, message: string) => {
   scoreText.innerHTML = message;
   scoreText.style.left = "1px";
   scoreText.style.top = y.toString();
+  // TODO: absolute/fixed?
 
   document.body.appendChild(scoreText);
   await scoreText.animate(
