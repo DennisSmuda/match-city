@@ -27,3 +27,18 @@ export const getRandomGridPosition = () => {
     y: randomPos.y,
   };
 };
+
+export const getMatchCountDescription = (matchCount: number) => {
+  switch (matchCount) {
+    case 2:
+      return "double";
+    case 3:
+      return "triple";
+    case 4:
+      return "quadruple";
+    case 5:
+      return "quintuple";
+    default:
+      return "";
+  }
+};

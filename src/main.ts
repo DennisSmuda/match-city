@@ -10,10 +10,9 @@ import {
   moveNextTileToCell,
 } from "./tile-generation";
 import { gameOver } from "./game-over";
+import { getMatchCountDescription } from "./utils";
 
 document.onmousemove = onMouseMove;
-
-let isInputBlocked: boolean = false;
 
 const checkGrid = async (x: number, y: number) => {
   const currentType = gameStore.state.grid[`${x}:${y}`];
@@ -68,11 +67,17 @@ const checkGrid = async (x: number, y: number) => {
 
   // If there are more than 2 other connecting tiles -> collapse
   if (matchCount >= 2) {
+    let totalAddedScore = 1;
     for (const pos in gameStore.state.matches) {
       if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {
-        const tile = document.querySelector(`[data-grid-pos="${pos}"] > .tile`);
+        const tile = document.querySelector(
+          `[data-grid-pos="${pos}"] > .tile`
+        ) as HTMLElement;
+
+        totalAddedScore += parseInt(tile.innerHTML);
         const result =
-          parseInt(tile?.innerHTML || "1") + parseInt(currentTile.innerHTML);
+          parseInt(tile.innerHTML) + parseInt(currentTile.innerHTML);
+        console.log("Set result", result);
         currentTile.innerHTML = result.toString();
         // const newScore = gameStore.state.score + result;
         gameStore.set((state) => ({
@@ -80,6 +85,7 @@ const checkGrid = async (x: number, y: number) => {
         }));
 
         const scoreElement = document.getElementById("score") as HTMLElement;
+        console.log("", gameStore.state.score);
         scoreElement.innerHTML = gameStore.state.score.toString();
 
         tile?.animate(animationConfig.keyframesOut, animationConfig.timingShort)
@@ -94,9 +100,9 @@ const checkGrid = async (x: number, y: number) => {
         delete gameStore.state.grid[pos];
       }
     }
+    floatingText(`${getMatchCountDescription(matchCount)} match`);
 
-    const totalScore = parseInt(currentTile.innerHTML);
-    scoreCountAnimation(totalScore);
+    scoreCountAnimation(totalAddedScore);
   }
 
   // reset matches
@@ -106,14 +112,8 @@ const checkGrid = async (x: number, y: number) => {
 };
 
 const placeTileOnCell = async (cell: Element, x: number, y: number) => {
-  if (isInputBlocked) {
-    return;
-  } else {
-    isInputBlocked = true;
-  }
-
-  const clickedType = gameStore.state.grid[`${x}:${y}`];
-  if (clickedType) return;
+  // Cell is occupied
+  if (gameStore.state.grid[`${x}:${y}`]) return;
 
   // Move from next-container to clicked cell
   await moveNextTileToCell(cell, x, y);
@@ -134,8 +134,6 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   if (Object.keys(gameStore.state.grid).length >= 25) {
     gameOver();
   }
-
-  isInputBlocked = false;
 };
 
 const initCells = () => {
@@ -162,7 +160,6 @@ const initCells = () => {
 document.body.onkeyup = function (e) {
   if (e.key == "z" || e.code == "z") {
     // Trigger events for debugging puproses
-    // scoreCountAnimation(12);
     floatingText("hadsjklf");
   }
   if (e.key == "r" || e.code == "r") {

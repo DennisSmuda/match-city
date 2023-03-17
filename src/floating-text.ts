@@ -17,9 +17,12 @@ export const scoreCountAnimation = async (amount: number) => {
   scoreText.remove();
 };
 
-export const floatingText = async (message: string) => {
+export const floatingText = async (
+  message: string,
+  color: string = "white"
+) => {
   const scoreText = document.createElement("div");
-  scoreText.classList.add("floating-text");
+  scoreText.classList.add("floating-text", color);
   scoreText.innerHTML = message;
   scoreText.style.left = `${gameStore.state.mouse.x}px`;
   scoreText.style.top = `calc(${gameStore.state.mouse.y}px - 2rem)`;
@@ -30,9 +33,9 @@ export const floatingText = async (message: string) => {
   await scoreText.animate(
     [
       { transform: "translateY(0)" },
-      { transform: "translateY(-1rem)", opacity: 0 },
+      { transform: "translateY(-2rem)", opacity: 0 },
     ],
-    500
+    1250
   ).finished;
 
   scoreText.remove();
