@@ -169,7 +169,7 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
   console.log("Check if game over", Object.keys(grid).length);
   if (Object.keys(grid).length >= 25) {
     // grid is full 5x5 tiles are not empty
-    gameOver(score, grid);
+    gameOver();
   }
   console.log("Finish");
   isInputBlocked = false;
