@@ -3,14 +3,9 @@ import { gameStore } from "./store";
 import "./style.css";
 import { generateRandomColor } from "./utils";
 
-let grid: { [key: string]: any } = {};
 let matches: { [key: string]: any } = {};
 
-// let currentTurn = 0;
 let isInputBlocked: boolean = false;
-
-// gameOverModal.style.opacity = "0";
-// gameOverModal.style.pointerEvents = "none";
 
 const generateNextTile = async () => {
   const nextTileContainer = document.getElementById("next-tile-container");
