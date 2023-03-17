@@ -1,25 +1,9 @@
 import { gameStore } from "./store";
 
 export const onMouseMove = (e: MouseEvent) => {
-  let doc, body;
-
-  if (e.pageX == null && e.clientX != null) {
-    doc = document.documentElement;
-    body = document.body;
-
-    const x =
-      e.clientX +
-      ((doc && doc.scrollLeft) || (body && body.scrollLeft) || 0) -
-      ((doc && doc.clientLeft) || (body && body.clientLeft) || 0);
-    const y =
-      e.clientY +
-      ((doc && doc.scrollTop) || (body && body.scrollTop) || 0) -
-      ((doc && doc.clientTop) || (body && body.clientTop) || 0);
-
-    gameStore.set(() => ({
-      mouse: { x, y },
-    }));
-  }
+  gameStore.set(() => ({
+    mouse: { x: e.pageX, y: e.pageY },
+  }));
 };
 
 export const onMouseEnterCell = (x: number, y: number) => {

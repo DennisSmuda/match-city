@@ -1,3 +1,5 @@
+import { gameStore } from "./store";
+
 export const scoreCountAnimation = async (amount: number) => {
   const scoreElement = document.getElementById("score") as HTMLElement;
   const scoreText = document.createElement("div");
@@ -15,13 +17,14 @@ export const scoreCountAnimation = async (amount: number) => {
   scoreText.remove();
 };
 
-export const floatingText = async (x: number, y: number, message: string) => {
+export const floatingText = async (message: string) => {
   const scoreText = document.createElement("div");
   scoreText.classList.add("floating-text");
   scoreText.innerHTML = message;
-  scoreText.style.left = "1px";
-  scoreText.style.top = y.toString();
-  // TODO: absolute/fixed?
+  scoreText.style.left = `${gameStore.state.mouse.x}px`;
+  scoreText.style.top = `calc(${gameStore.state.mouse.y}px - 2rem)`;
+  scoreText.style.textAlign = "center";
+  console.log("mousepos", gameStore.state.mouse);
 
   document.body.appendChild(scoreText);
   await scoreText.animate(
@@ -32,5 +35,5 @@ export const floatingText = async (x: number, y: number, message: string) => {
     500
   ).finished;
 
-  // scoreText.remove();
+  scoreText.remove();
 };

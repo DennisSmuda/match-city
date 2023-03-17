@@ -160,10 +160,10 @@ const initCells = () => {
 };
 
 document.body.onkeyup = function (e) {
-  if (e.key == " " || e.code == "Space" || e.keyCode == 32) {
+  if (e.key == "z" || e.code == "z") {
     // Trigger events for debugging puproses
     // scoreCountAnimation(12);
-    floatingText(12, 12, "hadsjklf");
+    floatingText("hadsjklf");
   }
   if (e.key == "r" || e.code == "r") {
     gameOver();
