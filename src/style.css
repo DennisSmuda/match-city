@@ -116,8 +116,11 @@ h1 {
 
 .floating-text {
   position: absolute;
+  z-index: 10;
   font-size: 1rem;
-  /* left: calc(-25%); */
+}
+
+.floating-text.score {
   right: 0;
   top: -25%;
 }
@@ -135,15 +138,15 @@ h1 {
 .tile {
   width: 3rem;
   height: 3rem;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   line-height: 1;
   border-radius: 0.5rem;
-  user-select: none;
 
-  /* transform-origin: -100% -100%; */
-  /* position: fixed; */
+  user-select: none;
   z-index: 1;
 }
 
