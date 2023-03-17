@@ -1,7 +1,6 @@
 import { gameStore } from "./store";
 
 export const generateRandomColor = () => {
-  return "pink";
   let nextChance = Math.random();
   let nextColor = "green";
   if (nextChance < 0.3) {
