@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + TS</title>
+    <script type="module" crossorigin src="/assets/index-663a5e85.js"></script>
+    <link rel="stylesheet" href="/assets/index-17ffe690.css">
+  </head>
+  <body>
+    <h1>Match Stuff</h1>
+    <div id="game-grid" class="grid">
+      <div class="cell" data-grid-pos="0:0"></div>
+      <div class="cell" data-grid-pos="1:0"></div>
+      <div class="cell" data-grid-pos="2:0"></div>
+      <div class="cell" data-grid-pos="3:0"></div>
+      <div class="cell" data-grid-pos="4:0"></div>
+
+      <div class="cell" data-grid-pos="0:1"></div>
+      <div class="cell" data-grid-pos="1:1"></div>
+      <div class="cell" data-grid-pos="2:1"></div>
+      <div class="cell" data-grid-pos="3:1"></div>
+      <div class="cell" data-grid-pos="4:1"></div>
+
+      <div class="cell" data-grid-pos="0:2"></div>
+      <div class="cell" data-grid-pos="1:2"></div>
+      <div class="cell" data-grid-pos="2:2"></div>
+      <div class="cell" data-grid-pos="3:2"></div>
+      <div class="cell" data-grid-pos="4:2"></div>
+
+      <div class="cell" data-grid-pos="0:3"></div>
+      <div class="cell" data-grid-pos="1:3"></div>
+      <div class="cell" data-grid-pos="2:3"></div>
+      <div class="cell" data-grid-pos="3:3"></div>
+      <div class="cell" data-grid-pos="4:3"></div>
+
+      <div class="cell" data-grid-pos="0:4"></div>
+      <div class="cell" data-grid-pos="1:4"></div>
+      <div class="cell" data-grid-pos="2:4"></div>
+      <div class="cell" data-grid-pos="3:4"></div>
+      <div class="cell" data-grid-pos="4:4"></div>
+    </div>
+    <div class="game-footer">
+      <div>
+        <div id="next-tile-container">
+          <div data-type="pink" class="tile next">1</div>
+        </div>
+        <!-- <span> next</span> -->
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-corner-right-up"
+          width="44"
+          height="44"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M6 18h6a3 3 0 0 0 3 -3v-10l-4 4m8 0l-4 -4" />
+        </svg>
+      </div>
+      <div>
+        <span>score:</span>
+        <div id="score" class="score">0</div>
+      </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over">
+      <h1>Game Over</h1>
+      <p>Your final score is:</p>
+      <h2 id="final-score" class="score">0</h2>
+      <button id="restart-game-button">Restart</button>
+    </div>
+
+    <!-- Include Script -->
+    
+  </body>
+</html>
