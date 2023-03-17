@@ -25,7 +25,7 @@ const generateRandomTile = async () => {
   randomTile.innerHTML = "1";
   const { x, y } = getRandomGridPosition();
   const tileContainer = document.querySelector(`[data-grid-pos="${x}:${y}"]`);
-  grid[`${x}:${y}`] = randomTile.getAttribute("data-type");
+  gameStore.state.grid[`${x}:${y}`] = randomTile.getAttribute("data-type");
   tileContainer?.appendChild(randomTile);
   await randomTile.animate(animationConfig.keyframesIn, animationConfig.timing)
     .finished;
@@ -38,7 +38,7 @@ const getRandomGridPosition = () => {
   while (!randomPos) {
     let x = Math.floor(Math.random() * 5);
     let y = Math.floor(Math.random() * 5);
-    if (!grid[`${x}:${y}`]) {
+    if (!gameStore.state.grid[`${x}:${y}`]) {
       randomPos = { x, y };
     }
   }
@@ -46,7 +46,7 @@ const getRandomGridPosition = () => {
 };
 
 const checkGrid = async (x: number, y: number) => {
-  const currentType = grid[`${x}:${y}`];
+  const currentType = gameStore.state.grid[`${x}:${y}`];
   const currentTile = document.querySelector(
     `[data-grid-pos="${x}:${y}"] > .tile`
   ) as HTMLElement;
@@ -54,7 +54,7 @@ const checkGrid = async (x: number, y: number) => {
   let matchCount = 0;
   for (let i = x - 1; i >= x - 4; i--) {
     // Matching to the left
-    const checkingType = grid[`${i}:${y}`];
+    const checkingType = gameStore.state.grid[`${i}:${y}`];
     if (checkingType === currentType) {
       matches[`${i}:${y}`] = true;
       matchCount++;
@@ -65,7 +65,7 @@ const checkGrid = async (x: number, y: number) => {
 
   for (let i = x + 1; i <= x + 4; i++) {
     // Matching to the right
-    const checkingType = grid[`${i}:${y}`];
+    const checkingType = gameStore.state.grid[`${i}:${y}`];
     if (checkingType === currentType) {
       matches[`${i}:${y}`] = true;
       matchCount++;
@@ -76,7 +76,7 @@ const checkGrid = async (x: number, y: number) => {
 
   for (let j = y + 1; j <= y + 4; j++) {
     // Matching downwards
-    const checkingType = grid[`${x}:${j}`];
+    const checkingType = gameStore.state.grid[`${x}:${j}`];
     if (checkingType === currentType) {
       matches[`${x}:${j}`] = true;
       matchCount++;
@@ -87,7 +87,7 @@ const checkGrid = async (x: number, y: number) => {
 
   for (let j = y - 1; j >= y - 4; j--) {
     // Matching upwards
-    const checkingType = grid[`${x}:${j}`];
+    const checkingType = gameStore.state.grid[`${x}:${j}`];
     if (checkingType === currentType) {
       matches[`${x}:${j}`] = true;
       matchCount++;
@@ -120,7 +120,7 @@ const checkGrid = async (x: number, y: number) => {
         ).finished;
         tile?.remove();
         delete matches[pos];
-        delete grid[pos];
+        delete gameStore.state.grid[pos];
       }
     }
 
@@ -139,14 +139,14 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
     isInputBlocked = true;
   }
 
-  const clickedType = grid[`${x}:${y}`];
+  const clickedType = gameStore.state.grid[`${x}:${y}`];
   if (clickedType) return;
 
   const tile = document.querySelectorAll(".tile.next")[0] as HTMLElement;
   tile.animate(animationConfig.keyframesOut, animationConfig.timing).finished;
 
   cell.appendChild(tile);
-  grid[`${x}:${y}`] = tile.getAttribute("data-type");
+  gameStore.state.grid[`${x}:${y}`] = tile.getAttribute("data-type");
   tile.classList.remove("next");
 
   await tile.animate(animationConfig.keyframesIn, animationConfig.timing)
@@ -159,12 +159,12 @@ const onClickCell = async (cell: Element, x: number, y: number) => {
   await checkGrid(x, y);
 
   // Spawn a random tile if enough room
-  if (Object.keys(grid).length <= 23) {
+  if (Object.keys(gameStore.state.grid).length <= 23) {
     await generateRandomTile();
   }
 
   // Lose condition
-  if (Object.keys(grid).length >= 25) {
+  if (Object.keys(gameStore.state.grid).length >= 25) {
     gameOver();
   }
 
@@ -290,14 +290,17 @@ const restartGame = async () => {
     animationConfig.keyframesDisappear,
     animationConfig.timingShort
   ).finished;
+
   gameOverModal.style.opacity = "0";
   gameOverModal.style.pointerEvents = "none";
+
   gameStore.set(() => ({
     score: 0,
+    grid: {},
   }));
+
   const scoreElement = document.getElementById("score") as HTMLElement;
   scoreElement.innerHTML = gameStore.state.score.toString();
-  grid = {};
 };
 
 /**
