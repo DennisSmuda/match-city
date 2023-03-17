@@ -1,8 +1,8 @@
-name: Deploy to Github Pages
+name: Update Branch for Github Pages
 
 on:
   push:
-    branches: ["testtest"]
+    branches: ["master"]
 
 jobs:
   build:
@@ -34,7 +34,7 @@ jobs:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/testtest'
+    if: github.ref == 'refs/heads/master'
 
     steps:
       - name: Download artifact
