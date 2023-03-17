@@ -1,4 +1,4 @@
-name: Update Branch for Github Pages
+name: Github Pages Build
 
 on:
   push:
