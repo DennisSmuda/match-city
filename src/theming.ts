@@ -77,17 +77,32 @@ export const changeColorTheme = (name: AvailableThemes) => {
 export const setupThemeToggles = () => {
   setupBorderWidthToggle();
   setupBorderRadiusToggle();
+  setupTileSizeToggle();
   setupColorSwitchers();
+};
+
+const setupTileSizeToggle = () => {
+  const toggleButton = document.getElementById("toggle-tile-size-button");
+  toggleButton?.addEventListener("click", () => {
+    const currentSize = getComputedStyle(document.documentElement)
+      .getPropertyValue("--tile-size")
+      .trim();
+
+    if (currentSize === "4rem") {
+      document.documentElement.style.setProperty("--tile-size", "3rem");
+    } else {
+      document.documentElement.style.setProperty("--tile-size", "4rem");
+    }
+  });
 };
 
 const setupBorderRadiusToggle = () => {
   const toggleButton = document.getElementById("toggle-border-radius-button");
   toggleButton?.addEventListener("click", () => {
-    console.log("Toggle Border radius");
     const currentRadius = getComputedStyle(document.documentElement)
       .getPropertyValue("--cell-border-radius")
       .trim();
-    if (currentRadius === "0.5rem") {
+    if (currentRadius === "0.75rem") {
       document.documentElement.style.setProperty("--cell-border-radius", "0px");
       document.documentElement.style.setProperty("--tile-border-radius", "0");
     } else if (currentRadius === "0px") {
@@ -102,7 +117,7 @@ const setupBorderRadiusToggle = () => {
     } else {
       document.documentElement.style.setProperty(
         "--cell-border-radius",
-        "0.5rem"
+        "0.75rem"
       );
       document.documentElement.style.setProperty(
         "--tile-border-radius",

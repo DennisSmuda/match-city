@@ -19,7 +19,10 @@
   --cell-bg-color: #222222;
   --cell-border-width: 4px;
   --cell-border-radius: 0.5rem;
+  --cell-size: 4rem;
+  --cell-gap: 0.5rem;
   --tile-border-radius: 0.5rem;
+  --tile-size: 3rem;
 
   --primary-color: #e11d48;
   --primary-border-color: #881337;
@@ -41,7 +44,6 @@
 
 body {
   margin: 0;
-  padding: 1rem;
 }
 
 #app {
@@ -61,13 +63,13 @@ h1 {
 }
 
 .grid {
-  width: calc((4rem) * 6);
-  height: calc((4rem) * 6);
+  width: calc(((var(--cell-size)) * 5) + ((var(--cell-gap)) * 4));
+  height: calc(((var(--cell-size)) * 5) + ((var(--cell-gap)) * 4));
 
   display: grid;
-  grid-template-columns: repeat(5, 4rem);
-  grid-template-rows: repeat(5, 4rem);
-  grid-gap: 0.5rem;
+  grid-template-columns: repeat(5, var(--cell-size));
+  grid-template-rows: repeat(5, var(--cell-size));
+  grid-gap: var(--cell-gap);
 
   position: relative;
   margin: auto;
@@ -76,6 +78,7 @@ h1 {
 .cell {
   width: 100%;
   height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -103,7 +106,7 @@ h1 {
   padding: 1rem;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   width: calc((4rem) * 6);
   margin: auto;
   margin-top: 1rem;
@@ -142,30 +145,21 @@ h1 {
   top: -25%;
 }
 
-#next-tile-container {
-  width: 4rem;
-  height: 4rem;
-  background-color: var(--cell-bg-color);
-  border-radius: var(--tile-border-radius);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .tile {
-  width: 3rem;
-  height: 3rem;
+  width: var(--tile-size);
+  height: var(--tile-size);
 
   display: flex;
   justify-content: center;
   align-items: center;
 
+  /* font-weight: 900; */
   line-height: 1;
   border-radius: var(--tile-border-radius);
 
   user-select: none;
   z-index: 1;
-  transition: border 0.3s;
+  transition: border 0.3s, width 0.3s, height 0.3s;
 }
 
 [data-type="primary"] {
@@ -283,4 +277,38 @@ button:active {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border-width: 0;
+}
+
+#game-header {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+#next-tile-container {
+  position: relative;
+  margin-top: 1rem;
+  width: var(--cell-size);
+  height: var(--cell-size);
+  /* height: 100%; */
+  /* height: 112px; */
+  /* padding-top: 2rem; */
+
+  background-color: var(--cell-bg-color);
+  border-bottom-right-radius: var(--tile-border-radius);
+  border-bottom-left-radius: var(--tile-border-radius);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#next-tile-container:before {
+  content: "";
+  background-color: var(--cell-bg-color);
+  width: 100%;
+  height: 1rem;
+
+  position: absolute;
+  bottom: 100%;
 }

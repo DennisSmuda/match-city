@@ -7,7 +7,14 @@
     <title>Match colors and keep your board from filling up!</title>
   </head>
   <body>
-    <h1>Match Stuff</h1>
+    <h1 class="sr-only">Match City - a game by Dennis Smuda</h1>
+
+    <div id="game-header">
+      <div id="next-tile-container">
+        <div data-type="primary" class="tile next">1</div>
+      </div>
+    </div>
+
     <div id="game-grid" class="grid">
       <div class="cell" data-grid-pos="0:0"></div>
       <div class="cell" data-grid-pos="1:0"></div>
@@ -40,29 +47,10 @@
       <div class="cell" data-grid-pos="4:4"></div>
     </div>
     <div class="game-footer">
+      <!-- <div>
+      </div> -->
       <div>
-        <div id="next-tile-container">
-          <div data-type="primary" class="tile next">1</div>
-        </div>
-        <!-- <span> next</span> -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="icon icon-tabler icon-tabler-corner-right-up"
-          width="44"
-          height="44"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M6 18h6a3 3 0 0 0 3 -3v-10l-4 4m8 0l-4 -4" />
-        </svg>
-      </div>
-      <div>
-        <span>score:</span>
+        <span class="sr-only">score:</span>
         <div id="score" class="score">0</div>
       </div>
     </div>
@@ -107,6 +95,30 @@
           <rect x="10" y="10" width="11" height="11" rx="2" />
         </svg>
         <span class="sr-only">toggle borders</span>
+      </button>
+      <button class="theme-toggle" id="toggle-tile-size-button">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-dimensions"
+          width="44"
+          height="44"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <path d="M3 5h11" />
+          <path d="M12 7l2 -2l-2 -2" />
+          <path d="M5 3l-2 2l2 2" />
+          <path d="M19 10v11" />
+          <path d="M17 19l2 2l2 -2" />
+          <path d="M21 12l-2 -2l-2 2" />
+          <rect x="3" y="10" width="11" height="11" rx="2" />
+        </svg>
+        <span class="sr-only">toggle cell size</span>
       </button>
     </div>
 
