@@ -95,7 +95,7 @@ h1 {
 }
 
 .cell.active {
-  /* background-color: #3f3f4666; */
+  /* background-color: var(--bg-color); */
 }
 
 .cell:hover {
@@ -129,7 +129,7 @@ h1 {
 
 #score {
   font-weight: 900;
-  font-size: 2rem;
+  font-size: 3rem;
   position: relative;
 }
 
@@ -152,7 +152,8 @@ h1 {
   justify-content: center;
   align-items: center;
 
-  /* font-weight: 900; */
+  font-weight: 600;
+  font-size: 1.25rem;
   line-height: 1;
   border-radius: var(--tile-border-radius);
 
@@ -176,26 +177,6 @@ h1 {
   border-bottom: var(--cell-border-width) solid var(--tertiary-border-color);
 }
 
-#game-over {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: var(--cell-bg-color);
-
-  z-index: 1;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  /* Hide initially */
-  opacity: 0;
-  pointer-events: none;
-}
-
 button {
   appearance: none;
   border: none;
@@ -213,16 +194,51 @@ button:active {
   background-color: #000;
 }
 
+#game-over {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--bg-color);
+
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /* Hide initially */
+  opacity: 0;
+  pointer-events: none;
+}
+
 #restart-game-button {
+  background-color: var(--tertiary-color);
+  color: var(--text-color);
+  border-bottom: var(--cell-border-width) solid var(--tertiary-border-color);
+}
+
+#restart-game-button:active {
+  border-color: transparent;
+  transform: translateY(4px);
 }
 
 .theme-toggle {
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   padding: 0;
   border-bottom: var(--cell-border-width) solid;
   border-opacity: 0.5;
   transition: border 0.3s;
+}
+
+@media screen and (min-width: 520px) {
+  .theme-toggle {
+    width: 2rem;
+    height: 2rem;
+  }
 }
 
 .theme-toggle svg {
@@ -244,7 +260,7 @@ button:active {
   bottom: 0;
 
   display: flex;
-  margin: 0.5rem;
+  margin: 1rem;
   gap: 0.5rem;
 }
 
@@ -255,15 +271,23 @@ button:active {
 
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem;
 }
 
 .theme-button {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 100%;
   padding: 0;
-  margin: 0.25rem 0.25rem;
   border: 1px solid;
+}
+
+@media screen and (min-width: 520px) {
+  .theme-button {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
 }
 
 .sr-only {
@@ -289,9 +313,6 @@ button:active {
   margin-top: 1rem;
   width: var(--cell-size);
   height: var(--cell-size);
-  /* height: 100%; */
-  /* height: 112px; */
-  /* padding-top: 2rem; */
 
   background-color: var(--cell-bg-color);
   border-bottom-right-radius: var(--tile-border-radius);
@@ -310,4 +331,8 @@ button:active {
 
   position: absolute;
   bottom: 100%;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--score-color);
 }

@@ -104,7 +104,7 @@ const setupBorderRadiusToggle = () => {
       .trim();
     if (currentRadius === "0.75rem") {
       document.documentElement.style.setProperty("--cell-border-radius", "0px");
-      document.documentElement.style.setProperty("--tile-border-radius", "0");
+      document.documentElement.style.setProperty("--tile-border-radius", "0px");
     } else if (currentRadius === "0px") {
       document.documentElement.style.setProperty(
         "--cell-border-radius",
