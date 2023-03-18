@@ -15,7 +15,11 @@ import {
 import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
 import { showHighscores } from "./high-score";
-import { changeColorTheme } from "./color-theme";
+import {
+  AvailableThemes,
+  changeColorTheme,
+  setupColorSwitchers,
+} from "./theming";
 
 /**
  * Initialize grid cells
@@ -88,12 +92,13 @@ document.body.onkeyup = function (e) {
   if (e.key == "h" || e.code == "h") {
     showHighscores();
   }
-  if (e.key == "c" || e.code == "c") {
-    changeColorTheme("white");
-  }
 };
+
+const defaultTheme = localStorage.getItem("color-theme") || "black";
+changeColorTheme(defaultTheme as AvailableThemes);
 
 /**
  * Initialize
  */
 initCells();
+setupColorSwitchers();

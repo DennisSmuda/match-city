@@ -1,5 +1,5 @@
 import { makeStore } from "statery";
-import { AvailableThemes } from "./color-theme";
+import { AvailableThemes } from "./theming";
 
 export const gameStore = makeStore<{
   score: number;
