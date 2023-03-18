@@ -62,17 +62,20 @@ const checkHighscore = () => {
   const oldBestScoreEl = document.querySelector(
     "#old-best-score"
   ) as HTMLElement;
-  const scoreEl = document.querySelector(
-    "#old-best-score .score"
-  ) as HTMLElement;
 
   if (newScore > personalBestScore) {
-    console.log("New Personal Best!");
+    const scoreEl = document.querySelector(
+      "#new-best-score span"
+    ) as HTMLElement;
+
     newBestScoreEl.style.display = "inline-block";
     oldBestScoreEl.style.display = "none";
     localStorage.setItem("pb-score", `${newScore}`);
+    scoreEl.innerHTML = ` (previously ${personalBestScore})`;
   } else {
-    console.log("You were better before", personalBestScore, newScore);
+    const scoreEl = document.querySelector(
+      "#old-best-score .score"
+    ) as HTMLElement;
     oldBestScoreEl.style.display = "inline-block";
     newBestScoreEl.style.display = "none";
     scoreEl.innerHTML = `${personalBestScore}`;
