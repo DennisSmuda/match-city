@@ -78,7 +78,17 @@ export const setupThemeToggles = () => {
   setupBorderWidthToggle();
   setupBorderRadiusToggle();
   setupTileSizeToggle();
+  setupSettingsToggle();
   setupColorSwitchers();
+};
+
+const setupSettingsToggle = () => {
+  const toggleButton = document.getElementById("toggle-settings-button");
+  const settingsContainer = document.getElementById("theme-settings");
+
+  toggleButton?.addEventListener("click", () => {
+    settingsContainer?.classList.toggle("active");
+  });
 };
 
 const setupTileSizeToggle = () => {
@@ -102,6 +112,7 @@ const setupBorderRadiusToggle = () => {
     const currentRadius = getComputedStyle(document.documentElement)
       .getPropertyValue("--cell-border-radius")
       .trim();
+
     if (currentRadius === "0.75rem") {
       document.documentElement.style.setProperty("--cell-border-radius", "0px");
       document.documentElement.style.setProperty("--tile-border-radius", "0px");
