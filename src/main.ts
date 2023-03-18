@@ -102,3 +102,4 @@ changeColorTheme(defaultTheme as AvailableThemes);
 
 initCells();
 setupThemeToggles();
+gameOver();
