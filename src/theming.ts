@@ -72,6 +72,25 @@ export const changeColorTheme = (name: AvailableThemes) => {
 };
 
 /**
+ * Toggle tile borders
+ */
+export const setupBorderToggle = () => {
+  const toggleButton = document.getElementById("toggle-borders-button");
+
+  toggleButton?.addEventListener("click", () => {
+    const currentWidth = getComputedStyle(document.documentElement)
+      .getPropertyValue("--cell-border-width")
+      .trim();
+
+    if (currentWidth === "4px") {
+      document.documentElement.style.setProperty("--cell-border-width", "0px");
+    } else {
+      document.documentElement.style.setProperty("--cell-border-width", "4px");
+    }
+  });
+};
+
+/**
  * Loop through all available themes and create buttons for them inside #theme-switcher
  */
 export const setupColorSwitchers = () => {

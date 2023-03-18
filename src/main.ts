@@ -18,6 +18,7 @@ import { showHighscores } from "./high-score";
 import {
   AvailableThemes,
   changeColorTheme,
+  setupBorderToggle,
   setupColorSwitchers,
 } from "./theming";
 
@@ -94,11 +95,12 @@ document.body.onkeyup = function (e) {
   }
 };
 
-const defaultTheme = localStorage.getItem("color-theme") || "black";
-changeColorTheme(defaultTheme as AvailableThemes);
-
 /**
  * Initialize
  */
+const defaultTheme = localStorage.getItem("color-theme") || "black";
+changeColorTheme(defaultTheme as AvailableThemes);
+
 initCells();
 setupColorSwitchers();
+setupBorderToggle();

@@ -17,6 +17,7 @@
   --bg-color: #181818;
   --text-color: #ffffff;
   --cell-bg-color: #222222;
+  --cell-border-width: 4px;
 
   --primary-color: #e11d48;
   --primary-border-color: #881337;
@@ -165,17 +166,17 @@ h1 {
 
 [data-type="primary"] {
   background-color: var(--primary-color);
-  border-bottom: 4px solid var(--primary-border-color);
+  border-bottom: var(--cell-border-width) solid var(--primary-border-color);
 }
 
 [data-type="secondary"] {
   background-color: var(--secondary-color);
-  border-bottom: 4px solid var(--secondary-border-color);
+  border-bottom: var(--cell-border-width) solid var(--secondary-border-color);
 }
 
 [data-type="tertiary"] {
   background-color: var(--tertiary-color);
-  border-bottom: 4px solid var(--tertiary-border-color);
+  border-bottom: var(--cell-border-width) solid var(--tertiary-border-color);
 }
 
 #game-over {
@@ -201,8 +202,7 @@ h1 {
 button {
   appearance: none;
   border: none;
-  background-color: ;
-  /* background-color: #27272a; */
+  background-color: var(--cell-bg-color);
   padding: 1rem 2rem;
   font-size: 1.25rem;
   border-radius: 0.5rem;
@@ -217,6 +217,23 @@ button:active {
 }
 
 #restart-game-button {
+}
+
+#toggle-borders-button {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-bottom: var(--cell-border-width) solid;
+  border-opacity: 0.5;
+}
+
+#theme-settings {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+
+  display: flex;
+  margin: 0.25rem;
 }
 
 #theme-switcher {
