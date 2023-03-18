@@ -14,11 +14,7 @@ import {
 } from "./tile-generation";
 import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
-import {
-  AvailableThemes,
-  changeColorTheme,
-  setupThemeToggles,
-} from "./theming";
+import { initUserTheme, setupThemeToggles } from "./theming";
 
 /**
  * Initialize grid cells
@@ -93,8 +89,6 @@ document.body.onkeyup = function (e) {
 /**
  * Initialize
  */
-const defaultTheme = localStorage.getItem("color-theme") || "black";
-changeColorTheme(defaultTheme as AvailableThemes);
-
+initUserTheme();
 initCells();
 setupThemeToggles();

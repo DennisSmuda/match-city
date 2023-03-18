@@ -101,10 +101,13 @@ const setupGapSizeToggle = () => {
 
     if (currentGap === "0.5rem") {
       document.documentElement.style.setProperty("--cell-gap", "0.125rem");
+      localStorage.setItem("--cell-gap", "0.125rem");
     } else if (currentGap === "0.125rem") {
       document.documentElement.style.setProperty("--cell-gap", "0.25rem");
+      localStorage.setItem("--cell-gap", "0.25rem");
     } else {
       document.documentElement.style.setProperty("--cell-gap", "0.5rem");
+      localStorage.setItem("--cell-gap", "0.5rem");
     }
   });
 };
@@ -118,8 +121,10 @@ const setupTileSizeToggle = () => {
 
     if (currentSize === "4rem") {
       document.documentElement.style.setProperty("--tile-size", "3rem");
+      localStorage.setItem("--tile-size", "3rem");
     } else {
       document.documentElement.style.setProperty("--tile-size", "4rem");
+      localStorage.setItem("--tile-size", "4rem");
     }
   });
 };
@@ -134,7 +139,9 @@ const setupBorderRadiusToggle = () => {
     if (currentRadius === "0.75rem") {
       document.documentElement.style.setProperty("--cell-border-radius", "0px");
       document.documentElement.style.setProperty("--tile-border-radius", "0px");
+      localStorage.setItem("--cell-border-radius", "0px");
     } else if (currentRadius === "0px") {
+      localStorage.setItem("--cell-border-radius", "100%");
       document.documentElement.style.setProperty(
         "--cell-border-radius",
         "100%"
@@ -144,6 +151,7 @@ const setupBorderRadiusToggle = () => {
         "100%"
       );
     } else {
+      localStorage.setItem("--cell-border-radius", "0.75rem");
       document.documentElement.style.setProperty(
         "--cell-border-radius",
         "0.75rem"
@@ -166,8 +174,10 @@ const setupBorderWidthToggle = () => {
 
     if (currentWidth === "4px") {
       document.documentElement.style.setProperty("--cell-border-width", "0px");
+      localStorage.setItem("--cell-border-width", "0px");
     } else {
       document.documentElement.style.setProperty("--cell-border-width", "4px");
+      localStorage.setItem("--cell-border-width", "4px");
     }
   });
 };
@@ -190,4 +200,29 @@ const setupColorSwitchers = () => {
       changeColorTheme(theme as AvailableThemes);
     });
   }
+};
+
+export const initUserTheme = () => {
+  const defaultTheme = localStorage.getItem("color-theme") || "black";
+  changeColorTheme(defaultTheme as AvailableThemes);
+
+  const defaultGap = localStorage.getItem("--cell-gap") || "0.5rem";
+  document.documentElement.style.setProperty("--cell-gap", defaultGap);
+
+  const defaultBorderWidth =
+    localStorage.getItem("--cell-border-width") || "4px ";
+  document.documentElement.style.setProperty(
+    "--cell-border-width",
+    defaultBorderWidth
+  );
+
+  const defaultBorderRadius =
+    localStorage.getItem("--cell-border-radius") || "0.5rem";
+  document.documentElement.style.setProperty(
+    "--cell-border-radius",
+    defaultBorderRadius
+  );
+
+  const defaultTileSize = localStorage.getItem("--tile-size") || "3rem";
+  document.documentElement.style.setProperty("--tile-size", defaultTileSize);
 };
