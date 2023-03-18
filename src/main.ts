@@ -18,8 +18,7 @@ import { showHighscores } from "./high-score";
 import {
   AvailableThemes,
   changeColorTheme,
-  setupBorderToggle,
-  setupColorSwitchers,
+  setupThemeToggles,
 } from "./theming";
 
 /**
@@ -102,5 +101,4 @@ const defaultTheme = localStorage.getItem("color-theme") || "black";
 changeColorTheme(defaultTheme as AvailableThemes);
 
 initCells();
-setupColorSwitchers();
-setupBorderToggle();
+setupThemeToggles();

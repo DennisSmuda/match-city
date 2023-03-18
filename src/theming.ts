@@ -72,9 +72,47 @@ export const changeColorTheme = (name: AvailableThemes) => {
 };
 
 /**
- * Toggle tile borders
+ * Toggle borders
  */
-export const setupBorderToggle = () => {
+export const setupThemeToggles = () => {
+  setupBorderWidthToggle();
+  setupBorderRadiusToggle();
+  setupColorSwitchers();
+};
+
+const setupBorderRadiusToggle = () => {
+  const toggleButton = document.getElementById("toggle-border-radius-button");
+  toggleButton?.addEventListener("click", () => {
+    console.log("Toggle Border radius");
+    const currentRadius = getComputedStyle(document.documentElement)
+      .getPropertyValue("--cell-border-radius")
+      .trim();
+    if (currentRadius === "0.5rem") {
+      document.documentElement.style.setProperty("--cell-border-radius", "0px");
+      document.documentElement.style.setProperty("--tile-border-radius", "0");
+    } else if (currentRadius === "0px") {
+      document.documentElement.style.setProperty(
+        "--cell-border-radius",
+        "100%"
+      );
+      document.documentElement.style.setProperty(
+        "--tile-border-radius",
+        "100%"
+      );
+    } else {
+      document.documentElement.style.setProperty(
+        "--cell-border-radius",
+        "0.5rem"
+      );
+      document.documentElement.style.setProperty(
+        "--tile-border-radius",
+        "0.5rem"
+      );
+    }
+  });
+};
+
+const setupBorderWidthToggle = () => {
   const toggleButton = document.getElementById("toggle-borders-button");
 
   toggleButton?.addEventListener("click", () => {
@@ -93,7 +131,7 @@ export const setupBorderToggle = () => {
 /**
  * Loop through all available themes and create buttons for them inside #theme-switcher
  */
-export const setupColorSwitchers = () => {
+const setupColorSwitchers = () => {
   const container = document.getElementById("theme-switcher");
 
   for (const [theme, properties] of Object.entries(themes)) {
