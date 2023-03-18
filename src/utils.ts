@@ -1,15 +1,10 @@
 import { gameStore } from "./store";
 
-export const generateRandomColor = () => {
-  let nextChance = Math.random();
-  let nextColor = "green";
-  if (nextChance < 0.3) {
-    nextColor = "pink";
-  } else if (nextChance < 0.6) {
-    nextColor = "blue";
-  }
+export type Color = "primary" | "secondary" | "tertiary";
+export const colors = ["primary", "secondary", "tertiary"];
 
-  return nextColor;
+export const generateRandomColor = () => {
+  return colors[Math.floor(Math.random() * colors.length)] as Color;
 };
 
 export const getRandomGridPosition = () => {
@@ -21,6 +16,7 @@ export const getRandomGridPosition = () => {
       randomPos = { x, y };
     }
   }
+
   return {
     x: randomPos.x,
     y: randomPos.y,
