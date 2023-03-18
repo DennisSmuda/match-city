@@ -57,7 +57,8 @@ canvas {
 }
 
 h1 {
-  letter-spacing: -0.1em;
+  font-size: 3rem;
+  letter-spacing: -0.05em;
   font-weight: 900;
   text-align: center;
 }
@@ -125,8 +126,10 @@ h1 {
 
 .score {
   color: var(--score-color);
+  font-weight: 900;
 }
 
+#final-score,
 #score {
   font-weight: 900;
   font-size: 3rem;
@@ -215,6 +218,7 @@ button:active {
 }
 
 #restart-game-button {
+  margin-top: 2rem;
   background-color: var(--tertiary-color);
   color: var(--text-color);
   border-bottom: var(--cell-border-width) solid var(--tertiary-border-color);

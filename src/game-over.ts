@@ -2,10 +2,13 @@ import { animationConfig } from "./config";
 import { gameStore } from "./store";
 
 export const gameOver = async () => {
+  checkHighscore();
+
   const gameOverModal = document.getElementById("game-over") as HTMLElement;
   const finalScoreElement = document.getElementById(
     "final-score"
   ) as HTMLElement;
+
   finalScoreElement.innerHTML = gameStore.state.score.toString();
   gameOverModal.style.visibility = "visible";
   gameOverModal.style.pointerEvents = "auto";
@@ -47,4 +50,31 @@ export const restartGame = async () => {
 
   const scoreElement = document.getElementById("score") as HTMLElement;
   scoreElement.innerHTML = gameStore.state.score.toString();
+};
+
+const checkHighscore = () => {
+  const personalBestScore = parseInt(localStorage.getItem("pb-score") || "0");
+  const newScore = gameStore.state.score;
+
+  const newBestScoreEl = document.querySelector(
+    "#new-best-score"
+  ) as HTMLElement;
+  const oldBestScoreEl = document.querySelector(
+    "#old-best-score"
+  ) as HTMLElement;
+  const scoreEl = document.querySelector(
+    "#old-best-score .score"
+  ) as HTMLElement;
+
+  if (newScore > personalBestScore) {
+    console.log("New Personal Best!");
+    newBestScoreEl.style.display = "inline-block";
+    oldBestScoreEl.style.display = "none";
+    localStorage.setItem("pb-score", `${newScore}`);
+  } else {
+    console.log("You were better before", personalBestScore, newScore);
+    oldBestScoreEl.style.display = "inline-block";
+    newBestScoreEl.style.display = "none";
+    scoreEl.innerHTML = `${personalBestScore}`;
+  }
 };

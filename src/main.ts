@@ -14,7 +14,6 @@ import {
 } from "./tile-generation";
 import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
-import { showHighscores } from "./high-score";
 import {
   AvailableThemes,
   changeColorTheme,
@@ -89,9 +88,6 @@ document.body.onkeyup = function (e) {
   if (e.key == "r" || e.code == "r") {
     gameOver();
   }
-  if (e.key == "h" || e.code == "h") {
-    showHighscores();
-  }
 };
 
 /**
@@ -102,4 +98,3 @@ changeColorTheme(defaultTheme as AvailableThemes);
 
 initCells();
 setupThemeToggles();
-// gameOver();
