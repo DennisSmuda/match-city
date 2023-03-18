@@ -9,7 +9,7 @@ export const generateNextTile = async () => {
   nextTile.setAttribute("data-type", generateRandomColor());
   nextTile.innerHTML = "1";
   nextTileContainer?.appendChild(nextTile);
-  await nextTile.animate(animationConfig.keyframesIn, animationConfig.timing)
+  await nextTile.animate(animationConfig.keyframesSpawn, animationConfig.timing)
     .finished;
 };
 

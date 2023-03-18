@@ -78,7 +78,35 @@ export const setupThemeToggles = () => {
   setupBorderWidthToggle();
   setupBorderRadiusToggle();
   setupTileSizeToggle();
+  setupSettingsToggle();
+  setupGapSizeToggle();
   setupColorSwitchers();
+};
+
+const setupSettingsToggle = () => {
+  const toggleButton = document.getElementById("toggle-settings-button");
+  const settingsContainer = document.getElementById("theme-settings");
+
+  toggleButton?.addEventListener("click", () => {
+    settingsContainer?.classList.toggle("active");
+  });
+};
+
+const setupGapSizeToggle = () => {
+  const toggleButton = document.getElementById("toggle-gap-size-button");
+  toggleButton?.addEventListener("click", () => {
+    const currentGap = getComputedStyle(document.documentElement)
+      .getPropertyValue("--cell-gap")
+      .trim();
+
+    if (currentGap === "0.5rem") {
+      document.documentElement.style.setProperty("--cell-gap", "0.125rem");
+    } else if (currentGap === "0.125rem") {
+      document.documentElement.style.setProperty("--cell-gap", "0.25rem");
+    } else {
+      document.documentElement.style.setProperty("--cell-gap", "0.5rem");
+    }
+  });
 };
 
 const setupTileSizeToggle = () => {
@@ -102,9 +130,10 @@ const setupBorderRadiusToggle = () => {
     const currentRadius = getComputedStyle(document.documentElement)
       .getPropertyValue("--cell-border-radius")
       .trim();
+
     if (currentRadius === "0.75rem") {
       document.documentElement.style.setProperty("--cell-border-radius", "0px");
-      document.documentElement.style.setProperty("--tile-border-radius", "0");
+      document.documentElement.style.setProperty("--tile-border-radius", "0px");
     } else if (currentRadius === "0px") {
       document.documentElement.style.setProperty(
         "--cell-border-radius",

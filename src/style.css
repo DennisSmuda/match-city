@@ -12,13 +12,13 @@
   -webkit-text-size-adjust: 100%;
   box-sizing: content-box;
 
-  font-size: 3.5vw;
+  font-size: 4.25vw;
 
   --bg-color: #181818;
   --text-color: #ffffff;
   --cell-bg-color: #222222;
   --cell-border-width: 4px;
-  --cell-border-radius: 0.5rem;
+  --cell-border-radius: 0.75rem;
   --cell-size: 4rem;
   --cell-gap: 0.5rem;
   --tile-border-radius: 0.5rem;
@@ -95,7 +95,7 @@ h1 {
 }
 
 .cell.active {
-  /* background-color: #3f3f4666; */
+  /* background-color: var(--bg-color); */
 }
 
 .cell:hover {
@@ -107,7 +107,6 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc((4rem) * 6);
   margin: auto;
   margin-top: 1rem;
 }
@@ -130,7 +129,7 @@ h1 {
 
 #score {
   font-weight: 900;
-  font-size: 2rem;
+  font-size: 3rem;
   position: relative;
 }
 
@@ -153,7 +152,8 @@ h1 {
   justify-content: center;
   align-items: center;
 
-  /* font-weight: 900; */
+  font-weight: 600;
+  font-size: 1.25rem;
   line-height: 1;
   border-radius: var(--tile-border-radius);
 
@@ -177,26 +177,6 @@ h1 {
   border-bottom: var(--cell-border-width) solid var(--tertiary-border-color);
 }
 
-#game-over {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background-color: var(--cell-bg-color);
-
-  z-index: 1;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  /* Hide initially */
-  opacity: 0;
-  pointer-events: none;
-}
-
 button {
   appearance: none;
   border: none;
@@ -214,22 +194,35 @@ button:active {
   background-color: #000;
 }
 
+#game-over {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: var(--bg-color);
+
+  z-index: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  /* Hide initially */
+  opacity: 0;
+  pointer-events: none;
+}
+
 #restart-game-button {
-}
-
-.theme-toggle {
-  width: 2rem;
-  height: 2rem;
-  padding: 0;
-  border-bottom: var(--cell-border-width) solid;
-  border-opacity: 0.5;
-  transition: border 0.3s;
-}
-
-.theme-toggle svg {
-  width: 1rem;
-  height: 1rem;
+  background-color: var(--tertiary-color);
   color: var(--text-color);
+  border-bottom: var(--cell-border-width) solid var(--tertiary-border-color);
+}
+
+#restart-game-button:active {
+  border-color: transparent;
+  transform: translateY(4px);
 }
 
 #toggle-borders-button {
@@ -245,8 +238,28 @@ button:active {
   bottom: 0;
 
   display: flex;
-  margin: 0.5rem;
-  gap: 0.5rem;
+  margin: 1rem;
+  gap: 1rem;
+  transform: translateX(calc(-100% + 2rem));
+  transition: transform 0.3s;
+}
+
+#theme-settings.active {
+  transform: translateX(0);
+}
+
+.theme-toggle {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-bottom: var(--cell-border-width) solid;
+  transition: border 0.3s;
+}
+
+.theme-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-color);
 }
 
 #theme-switcher {
@@ -256,6 +269,9 @@ button:active {
 
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  margin: 1rem;
+  padding-bottom: 0.25rem;
 }
 
 .theme-button {
@@ -263,7 +279,6 @@ button:active {
   height: 1.5rem;
   border-radius: 100%;
   padding: 0;
-  margin: 0.25rem 0.25rem;
   border: 1px solid;
 }
 
@@ -290,9 +305,6 @@ button:active {
   margin-top: 1rem;
   width: var(--cell-size);
   height: var(--cell-size);
-  /* height: 100%; */
-  /* height: 112px; */
-  /* padding-top: 2rem; */
 
   background-color: var(--cell-bg-color);
   border-bottom-right-radius: var(--tile-border-radius);
@@ -311,4 +323,25 @@ button:active {
 
   position: absolute;
   bottom: 100%;
+}
+
+*:focus-visible {
+  outline: 2px solid var(--score-color);
+}
+
+#toggle-settings-button {
+}
+
+.active [aria-label="open"] {
+  display: initial;
+}
+.active [aria-label="open"] {
+  display: none;
+}
+
+[aria-label="close"] {
+  display: none;
+}
+.active [aria-label="close"] {
+  display: initial;
 }

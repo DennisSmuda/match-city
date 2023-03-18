@@ -59,9 +59,6 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Move from next-container to clicked cell
   await moveNextTileToCell(cell, x, y);
 
-  // Generate next tile to place
-  await generateNextTile();
-
   // Check Grid
   await checkGrid(x, y);
 
@@ -70,6 +67,9 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
     const { x: randomX, y: randomY } = await generateRandomTile();
     await checkGrid(randomX, randomY);
   }
+
+  // Generate next tile to place
+  await generateNextTile();
 
   // Lose condition
   if (Object.keys(gameStore.state.grid).length >= 25) {
@@ -102,3 +102,4 @@ changeColorTheme(defaultTheme as AvailableThemes);
 
 initCells();
 setupThemeToggles();
+// gameOver();
