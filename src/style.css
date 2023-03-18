@@ -107,7 +107,6 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: calc((4rem) * 6);
   margin: auto;
   margin-top: 1rem;
 }

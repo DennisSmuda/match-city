@@ -1,5 +1,10 @@
 export const animationConfig = {
   keyframesIn: [{ scale: 0.8 }, { scale: 1.1 }, { scale: 1 }],
+  keyframesSpawn: [
+    { scale: 0.8, transform: "translateY(-4rem)" },
+    { scale: 1.1 },
+    { scale: 1, transform: "translateY(-0rem)" },
+  ],
   keyframesOut: [{ scale: 1 }, { scale: 1.1 }, { scale: 0.2 }],
   keyframesDisappear: [
     { scale: 1, opacity: 1 },
