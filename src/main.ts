@@ -14,6 +14,8 @@ import {
 } from "./tile-generation";
 import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
+import { showHighscores } from "./high-score";
+import { changeColorTheme } from "./color-theme";
 
 /**
  * Initialize grid cells
@@ -82,6 +84,12 @@ document.body.onkeyup = function (e) {
   }
   if (e.key == "r" || e.code == "r") {
     gameOver();
+  }
+  if (e.key == "h" || e.code == "h") {
+    showHighscores();
+  }
+  if (e.key == "c" || e.code == "c") {
+    changeColorTheme("white");
   }
 };
 

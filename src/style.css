@@ -3,9 +3,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #181818;
+  color-scheme: light-dark;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,7 +11,18 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   box-sizing: content-box;
+
   font-size: 15px;
+
+  --bg-color: #181818;
+  --text-color: #ffffff;
+
+  /* --primary-color:
+  --secondary-color: */
+
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  /* transition: background-color 1s, color 1s; */
 }
 
 @media screen and (min-width: 520px) {
@@ -171,7 +180,7 @@ h1 {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #181818bb;
+  /* background-color: #181818bb; */
   z-index: 1;
 
   display: flex;

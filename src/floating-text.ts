@@ -27,7 +27,6 @@ export const floatingText = async (
   scoreText.style.left = `${gameStore.state.mouse.x}px`;
   scoreText.style.top = `calc(${gameStore.state.mouse.y}px - 2rem)`;
   scoreText.style.textAlign = "center";
-  console.log("mousepos", gameStore.state.mouse);
 
   document.body.appendChild(scoreText);
   await scoreText.animate(
