@@ -75,6 +75,8 @@ h1 {
 
   position: relative;
   margin: auto;
+
+  transition: grid-gap 0.3s, width 0.3s, height 0.3s;
 }
 
 .cell {
@@ -89,7 +91,7 @@ h1 {
   border-radius: var(--cell-border-radius);
 
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, border-radius 0.3s;
 }
 
 .cell[aria-disabled="true"] {
@@ -163,7 +165,7 @@ h1 {
 
   user-select: none;
   z-index: 1;
-  transition: border 0.3s, width 0.3s, height 0.3s;
+  transition: border 0.3s, border-radius 0.3s, width 0.3s, height 0.3s;
 }
 
 [data-type="primary"] {
@@ -347,6 +349,29 @@ button:active {
 [aria-label="close"] {
   display: none;
 }
+
 .active [aria-label="close"] {
   display: initial;
+}
+
+#github-badge {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: var(--text-color);
+  opacity: 0.5;
+  background-color: var(--cell-bg-color);
+
+  padding: 0.5rem 0.5rem 2rem;
+  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 65%);
+  transition: opacity 0.3s;
+}
+
+#github-badge:hover {
+  opacity: 1;
 }
