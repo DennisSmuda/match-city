@@ -5,8 +5,8 @@
     <link rel="icon" type="image/svg+xml" href="./icon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Match colors and keep your board from filling up!</title>
-    <script type="module" crossorigin src="./assets/index-f0acbe4e.js"></script>
-    <link rel="stylesheet" href="./assets/index-dc7fe5a2.css">
+    <script type="module" crossorigin src="./assets/index-4ce38e58.js"></script>
+    <link rel="stylesheet" href="./assets/index-41bd8677.css">
   </head>
   <body>
     <h1>Match Stuff</h1>
@@ -44,7 +44,7 @@
     <div class="game-footer">
       <div>
         <div id="next-tile-container">
-          <div data-type="pink" class="tile next">1</div>
+          <div data-type="primary" class="tile next">1</div>
         </div>
         <!-- <span> next</span> -->
         <svg
@@ -67,6 +67,49 @@
         <span>score:</span>
         <div id="score" class="score">0</div>
       </div>
+    </div>
+
+    <!-- Themeing -->
+    <div id="theme-switcher"></div>
+    <div id="theme-settings">
+      <button class="theme-toggle" id="toggle-borders-button">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-shadow"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <circle cx="12" cy="12" r="9" />
+          <path d="M13 12h5" />
+          <path d="M13 15h4" />
+          <path d="M13 18h1" />
+          <path d="M13 9h4" />
+          <path d="M13 6h1" />
+        </svg>
+        <span class="sr-only">toggle borders</span>
+      </button>
+      <button class="theme-toggle" id="toggle-border-radius-button">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon icon-tabler icon-tabler-circle-square"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <circle cx="9.5" cy="9.5" r="6.5" />
+          <rect x="10" y="10" width="11" height="11" rx="2" />
+        </svg>
+        <span class="sr-only">toggle borders</span>
+      </button>
     </div>
 
     <!-- Game Over Modal -->
