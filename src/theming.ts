@@ -79,6 +79,7 @@ export const setupThemeToggles = () => {
   setupBorderRadiusToggle();
   setupTileSizeToggle();
   setupSettingsToggle();
+  setupGapSizeToggle();
   setupColorSwitchers();
 };
 
@@ -88,6 +89,23 @@ const setupSettingsToggle = () => {
 
   toggleButton?.addEventListener("click", () => {
     settingsContainer?.classList.toggle("active");
+  });
+};
+
+const setupGapSizeToggle = () => {
+  const toggleButton = document.getElementById("toggle-gap-size-button");
+  toggleButton?.addEventListener("click", () => {
+    const currentGap = getComputedStyle(document.documentElement)
+      .getPropertyValue("--cell-gap")
+      .trim();
+
+    if (currentGap === "0.5rem") {
+      document.documentElement.style.setProperty("--cell-gap", "0.125rem");
+    } else if (currentGap === "0.125rem") {
+      document.documentElement.style.setProperty("--cell-gap", "0.25rem");
+    } else {
+      document.documentElement.style.setProperty("--cell-gap", "0.5rem");
+    }
   });
 };
 
