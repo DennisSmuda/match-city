@@ -223,6 +223,18 @@ export const initUserTheme = () => {
     defaultBorderRadius
   );
 
+  if (defaultBorderRadius === "0.75rem") {
+    document.documentElement.style.setProperty(
+      "--tile-border-radius",
+      "0.5rem"
+    );
+  } else {
+    document.documentElement.style.setProperty(
+      "--tile-border-radius",
+      defaultBorderRadius
+    );
+  }
+
   const defaultTileSize = localStorage.getItem("--tile-size") || "3rem";
   document.documentElement.style.setProperty("--tile-size", defaultTileSize);
 };
