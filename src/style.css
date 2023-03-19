@@ -99,11 +99,12 @@ h1 {
 }
 
 .cell.active {
-  /* background-color: var(--bg-color); */
+  /* background-color:var(--bg-color); */
+  background-color: #ffffff15;
 }
 
 .cell:hover {
-  /* background-color: #3f3f46aa; */
+  background-color: #ffffff33;
 }
 
 .game-footer {
@@ -332,6 +333,7 @@ button:active {
   bottom: 100%;
 }
 
+.highlight,
 *:focus-visible {
   outline: 2px solid var(--score-color);
 }

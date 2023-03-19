@@ -1,12 +1,15 @@
 import { animationConfig } from "./config";
 import { gameStore } from "./store";
-import { generateRandomColor, getRandomGridPosition } from "./utils";
+import { Color, generateRandomColor, getRandomGridPosition } from "./utils";
 
 export const generateNextTile = async () => {
   const nextTileContainer = document.getElementById("next-tile-container");
   const nextTile = document.createElement("div");
   nextTile.classList.add("tile", "next");
-  nextTile.setAttribute("data-type", generateRandomColor());
+  nextTile.setAttribute(
+    "data-type",
+    gameStore.state.tutorialStep <= 2 ? "primary" : generateRandomColor()
+  );
   nextTile.innerHTML = "1";
   nextTileContainer?.appendChild(nextTile);
   await nextTile.animate(animationConfig.keyframesSpawn, animationConfig.timing)
@@ -26,6 +29,18 @@ export const generateRandomTile = async () => {
     .finished;
 
   return { x, y };
+};
+
+export const generateTile = async (type: Color, x: number, y: number) => {
+  const newTile = document.createElement("div") as HTMLDivElement;
+  newTile.classList.add("tile");
+  newTile.setAttribute("data-type", type);
+  newTile.innerHTML = "1";
+  const tileContainer = document.querySelector(`[data-grid-pos="${x}:${y}"]`);
+  gameStore.state.grid[`${x}:${y}`] = newTile.getAttribute("data-type");
+  tileContainer?.appendChild(newTile);
+  await newTile.animate(animationConfig.keyframesIn, animationConfig.timing)
+    .finished;
 };
 
 export const moveNextTileToCell = async (
