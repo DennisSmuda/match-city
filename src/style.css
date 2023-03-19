@@ -42,6 +42,11 @@
   }
 }
 
+html {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
 body {
   margin: 0;
 }
@@ -99,11 +104,12 @@ h1 {
 }
 
 .cell.active {
-  /* background-color: var(--bg-color); */
+  /* background-color:var(--bg-color); */
+  background-color: #ffffff15;
 }
 
 .cell:hover {
-  /* background-color: #3f3f46aa; */
+  background-color: #ffffff33;
 }
 
 .game-footer {
@@ -140,6 +146,8 @@ h1 {
 }
 
 .floating-text {
+  user-select: none;
+  pointer-events: none;
   position: absolute;
   z-index: 10;
   font-size: 1rem;
@@ -303,6 +311,9 @@ button:active {
 
 #game-header {
   display: flex;
+  flex-direction: column;
+
+  align-items: center;
   justify-content: center;
   margin-bottom: 2rem;
 }
@@ -332,6 +343,12 @@ button:active {
   bottom: 100%;
 }
 
+#game-message {
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.highlight,
 *:focus-visible {
   outline: 2px solid var(--score-color);
 }

@@ -7,10 +7,12 @@ export const gameStore = makeStore<{
   matches: { [key: string]: any };
   mouse: { x: number; y: number };
   currentTheme: AvailableThemes;
+  tutorialStep: number;
 }>({
   score: 0,
   grid: {},
   matches: {},
   mouse: { x: 0, y: 0 },
   currentTheme: "black",
+  tutorialStep: 0,
 });

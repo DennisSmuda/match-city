@@ -5,7 +5,7 @@ export const themes = {
   black: {
     // https://tailwindcss.com/docs/customizing-colors
     "--bg-color": "#181818",
-    "--cell-bg-color": "#22222288",
+    "--cell-bg-color": "#222222",
     "--text-color": "#ffffff",
     "--score-color": "#fbbf24",
 

@@ -15,6 +15,7 @@ import {
 import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
 import { initUserTheme, setupThemeToggles } from "./theming";
+import { launchTutorial, tutorialSteps, updateTutorial } from "./tutorial";
 
 /**
  * Initialize grid cells
@@ -50,6 +51,22 @@ const initCells = () => {
 const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
   if (gameStore.state.grid[`${x}:${y}`]) return;
+  if (gameStore.state.tutorialStep === 0) {
+    gameStore.set(() => ({
+      tutorialStep: 1,
+    }));
+    updateTutorial();
+    return;
+  } else if (
+    gameStore.state.tutorialStep === 2 ||
+    gameStore.state.tutorialStep === 3
+  ) {
+    const cell = document.querySelector(`[data-grid-pos="${x}:${y}"]`);
+    if (!cell?.classList.contains("highlight")) {
+      floatingText("place on highlighted tile!", "yellow");
+      return;
+    }
+  }
 
   // Move from next-container to clicked cell
   await moveNextTileToCell(cell, x, y);
@@ -58,13 +75,21 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   await checkGrid(x, y);
 
   // Spawn a random tile if enough room
-  if (Object.keys(gameStore.state.grid).length <= 23) {
+  if (
+    Object.keys(gameStore.state.grid).length <= 23 &&
+    gameStore.state.tutorialStep <= 3 === false
+  ) {
     const { x: randomX, y: randomY } = await generateRandomTile();
     await checkGrid(randomX, randomY);
   }
 
   // Generate next tile to place
   await generateNextTile();
+
+  // Update Tutorial
+  if (gameStore.state.tutorialStep <= tutorialSteps) {
+    updateTutorial();
+  }
 
   // Lose condition
   if (Object.keys(gameStore.state.grid).length >= 25) {
@@ -92,3 +117,13 @@ document.body.onkeyup = function (e) {
 initUserTheme();
 initCells();
 setupThemeToggles();
+
+// Tutorial
+const hasFinishedTutorial = localStorage.getItem("has-finished-tutorial");
+if (hasFinishedTutorial) {
+  gameStore.set(() => ({
+    tutorialStep: tutorialSteps + 1,
+  }));
+} else {
+  launchTutorial();
+}
