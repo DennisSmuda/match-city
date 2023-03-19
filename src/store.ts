@@ -14,5 +14,5 @@ export const gameStore = makeStore<{
   matches: {},
   mouse: { x: 0, y: 0 },
   currentTheme: "black",
-  tutorialStep: 1,
+  tutorialStep: 0,
 });

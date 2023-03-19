@@ -42,6 +42,11 @@
   }
 }
 
+html {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
 body {
   margin: 0;
 }
@@ -141,6 +146,8 @@ h1 {
 }
 
 .floating-text {
+  user-select: none;
+  pointer-events: none;
   position: absolute;
   z-index: 10;
   font-size: 1rem;
@@ -304,6 +311,9 @@ button:active {
 
 #game-header {
   display: flex;
+  flex-direction: column;
+
+  align-items: center;
   justify-content: center;
   margin-bottom: 2rem;
 }
@@ -331,6 +341,11 @@ button:active {
 
   position: absolute;
   bottom: 100%;
+}
+
+#game-message {
+  margin-top: 0.5rem;
+  text-align: center;
 }
 
 .highlight,

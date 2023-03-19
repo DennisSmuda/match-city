@@ -6,10 +6,13 @@ export const generateNextTile = async () => {
   const nextTileContainer = document.getElementById("next-tile-container");
   const nextTile = document.createElement("div");
   nextTile.classList.add("tile", "next");
-  nextTile.setAttribute(
-    "data-type",
-    gameStore.state.tutorialStep <= 2 ? "primary" : generateRandomColor()
-  );
+  let nextColor = generateRandomColor();
+  if (gameStore.state.tutorialStep <= 2) {
+    nextColor = "primary";
+  } else if (gameStore.state.tutorialStep === 3) {
+    nextColor = "secondary";
+  }
+  nextTile.setAttribute("data-type", nextColor);
   nextTile.innerHTML = "1";
   nextTileContainer?.appendChild(nextTile);
   await nextTile.animate(animationConfig.keyframesSpawn, animationConfig.timing)

@@ -15,7 +15,7 @@ import {
 import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
 import { initUserTheme, setupThemeToggles } from "./theming";
-import { launchTutorial, updateTutorial } from "./tutorial";
+import { launchTutorial, tutorialSteps, updateTutorial } from "./tutorial";
 
 /**
  * Initialize grid cells
@@ -51,10 +51,18 @@ const initCells = () => {
 const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
   if (gameStore.state.grid[`${x}:${y}`]) return;
-  if (gameStore.state.tutorialStep <= 2) {
+  if (gameStore.state.tutorialStep === 0) {
+    gameStore.set(() => ({
+      tutorialStep: 1,
+    }));
+    updateTutorial();
+    return;
+  } else if (
+    gameStore.state.tutorialStep === 2 ||
+    gameStore.state.tutorialStep === 3
+  ) {
     const cell = document.querySelector(`[data-grid-pos="${x}:${y}"]`);
     if (!cell?.classList.contains("highlight")) {
-      console.log("Not possible");
       floatingText("place on highlighted tile!", "yellow");
       return;
     }
@@ -69,7 +77,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Spawn a random tile if enough room
   if (
     Object.keys(gameStore.state.grid).length <= 23 &&
-    gameStore.state.tutorialStep <= 2 === false
+    gameStore.state.tutorialStep <= 3 === false
   ) {
     const { x: randomX, y: randomY } = await generateRandomTile();
     await checkGrid(randomX, randomY);
@@ -79,7 +87,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   await generateNextTile();
 
   // Update Tutorial
-  if (gameStore.state.tutorialStep <= 2) {
+  if (gameStore.state.tutorialStep <= tutorialSteps) {
     updateTutorial();
   }
 
@@ -109,4 +117,13 @@ document.body.onkeyup = function (e) {
 initUserTheme();
 initCells();
 setupThemeToggles();
-launchTutorial();
+
+// Tutorial
+const hasFinishedTutorial = localStorage.getItem("has-finished-tutorial");
+if (hasFinishedTutorial) {
+  gameStore.set(() => ({
+    tutorialStep: tutorialSteps + 1,
+  }));
+} else {
+  launchTutorial();
+}
