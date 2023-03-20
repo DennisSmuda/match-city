@@ -68,9 +68,10 @@ export const checkGrid = async (x: number, y: number) => {
     gameStore.set((state) => ({
       score: state.score + parseInt(currentTile.innerHTML),
     }));
+
     let totalAddedScore = 1;
 
-    if (matchCount > 4) {
+    if (matchCount >= 4) {
       playSound("combo2Sound");
     } else {
       playSound("comboSound");

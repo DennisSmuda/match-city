@@ -39,5 +39,5 @@ export const getMatchCountDescription = (matchCount: number) => {
 };
 
 export const sleep = async (timeout: number) => {
-  await new Promise((resolve) => setTimeout(resolve, 2500));
+  await new Promise((resolve) => setTimeout(resolve, timeout));
 };

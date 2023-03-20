@@ -49,7 +49,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
   if (gameStore.state.grid[`${x}:${y}`]) return;
 
-  rippleEffect(x, y);
+  await rippleEffect(x, y);
 
   if (gameStore.state.tutorialStep === 0) {
     gameStore.set(() => ({
