@@ -38,7 +38,6 @@ export const onMouseLeaveCell = (x: number, y: number) => {
 };
 
 export const rippleEffect = async (x: number, y: number) => {
-  console.log("Ripple", x, y);
   for (let i = 0; i < 5; i++) {
     const potentialMatchCell = document.querySelector(
       `[data-grid-pos="${i}:${y}"]`

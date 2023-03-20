@@ -13,13 +13,14 @@ import { checkGrid } from "./check-grid";
 import { initUserTheme, setupThemeToggles } from "./theming";
 import { launchTutorial, tutorialSteps, updateTutorial } from "./tutorial";
 import { playSound, setupAudio } from "./audio";
+import { sleep } from "./utils";
 
 /**
  * Initialize grid cells
  * -> Puts events on each cell
  */
 const initCells = () => {
-  const cells = document.querySelectorAll(".cell");
+  const cells = document.querySelectorAll(".cell:not(.demo)");
   cells.forEach((cell: Element) => {
     const position = cell.getAttribute("data-grid-pos") || "0:0";
     const [x, y] = position.split(":");
@@ -49,7 +50,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
   if (gameStore.state.grid[`${x}:${y}`]) return;
 
-  await rippleEffect(x, y);
+  rippleEffect(x, y);
 
   if (gameStore.state.tutorialStep === 0) {
     gameStore.set(() => ({
@@ -74,6 +75,8 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
 
   // Check Grid
   await checkGrid(x, y);
+
+  await sleep(350);
 
   // Spawn a random tile if enough room
   if (
