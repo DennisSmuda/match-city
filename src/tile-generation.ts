@@ -1,4 +1,5 @@
 import { animationConfig } from "./config";
+import { rippleEffect } from "./event-handlers";
 import { gameStore } from "./store";
 import { Color, generateRandomColor, getRandomGridPosition } from "./utils";
 
@@ -25,6 +26,8 @@ export const generateRandomTile = async () => {
   randomTile.setAttribute("data-type", generateRandomColor());
   randomTile.innerHTML = "1";
   const { x, y } = getRandomGridPosition();
+  await rippleEffect(x, y);
+
   const tileContainer = document.querySelector(`[data-grid-pos="${x}:${y}"]`);
   gameStore.state.grid[`${x}:${y}`] = randomTile.getAttribute("data-type");
   tileContainer?.appendChild(randomTile);

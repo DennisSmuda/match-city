@@ -248,24 +248,19 @@ button:active {
 }
 
 #theme-settings {
-  position: fixed;
-  left: 0;
-  bottom: 0;
+  /* position: fixed; */
+  /* left: 0; */
+  /* bottom: 0; */
 
   display: flex;
   margin: 1rem;
   gap: 1rem;
-  transform: translateX(calc(-100% + 2rem));
   transition: transform 0.3s;
 }
 
-#theme-settings.active {
-  transform: translateX(0);
-}
-
 .theme-toggle {
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
   padding: 0;
   border-bottom: var(--cell-border-width) solid;
   transition: border 0.3s;
@@ -278,20 +273,16 @@ button:active {
 }
 
 #theme-switcher {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 1.5rem;
   margin: 1rem;
   padding-bottom: 0.25rem;
 }
 
 .theme-button {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
   border-radius: 100%;
   padding: 0;
   border: 1px solid;
@@ -372,9 +363,9 @@ button:active {
 }
 
 #github-badge {
-  position: fixed;
-  top: 0;
-  right: 0;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
 
   display: flex;
   justify-content: center;
@@ -384,11 +375,88 @@ button:active {
   opacity: 0.5;
   background-color: var(--cell-bg-color);
 
-  padding: 0.5rem 0.5rem 2rem;
-  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 65%);
+  padding: 1rem;
+  border-radius: var(--cell-border-radius);
   transition: opacity 0.3s;
 }
 
 #github-badge:hover {
   opacity: 1;
+}
+
+#audio-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-bottom: var(--cell-border-width) solid;
+  transition: border 0.3s;
+}
+
+#audio-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-color);
+}
+
+#audio-toggle.enabled #enable-audio {
+  display: none;
+}
+
+#audio-toggle:not(.enabled) #disable-audio {
+  display: none;
+}
+
+#toggle-settings-button {
+  position: fixed;
+  z-index: 100;
+  top: 1rem;
+  right: 1rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-bottom: var(--cell-border-width) solid;
+  transition: border 0.3s;
+}
+
+#toggle-settings-button svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-color);
+}
+
+#settings {
+  position: fixed;
+  z-index: 10;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--bg-color);
+
+  transform: translatey(-100%);
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+#settings.active {
+  transform: translateY(0rem);
+  padding-top: 0rem;
+}
+
+.demo-grid-row {
+  width: calc(((var(--cell-size)) * 3) + ((var(--cell-gap)) * 2));
+  height: var(--cell-size);
+  margin-bottom: 2.5rem;
+
+  display: grid;
+  grid-template-columns: repeat(3, var(--cell-size));
+  grid-template-rows: none;
+  grid-gap: var(--cell-gap);
+
+  transition: grid-gap 0.3s, width 0.3s, height 0.3s;
 }

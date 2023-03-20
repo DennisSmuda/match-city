@@ -22,6 +22,10 @@ npm run dev
 
 ## Credits
 
+### Sounds
+
+[Hidden Folks Mouth Sounds](https://adriaan.itch.io/hidden-folks-mouth-sounds)
+
 [Tabler Icons](https://tablericons.com/)
 
 #### Colors

@@ -85,7 +85,7 @@ export const setupThemeToggles = () => {
 
 const setupSettingsToggle = () => {
   const toggleButton = document.getElementById("toggle-settings-button");
-  const settingsContainer = document.getElementById("theme-settings");
+  const settingsContainer = document.getElementById("settings");
 
   toggleButton?.addEventListener("click", () => {
     settingsContainer?.classList.toggle("active");

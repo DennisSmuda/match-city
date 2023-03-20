@@ -1,10 +1,6 @@
 import "./style.css";
 
-import {
-  onMouseEnterCell,
-  onMouseLeaveCell,
-  onMouseMove,
-} from "./event-handlers";
+import { onMouseMove, rippleEffect } from "./event-handlers";
 import { floatingText } from "./floating-text";
 import { gameStore } from "./store";
 import {
@@ -16,13 +12,15 @@ import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
 import { initUserTheme, setupThemeToggles } from "./theming";
 import { launchTutorial, tutorialSteps, updateTutorial } from "./tutorial";
+import { playSound, setupAudio } from "./audio";
+import { sleep } from "./utils";
 
 /**
  * Initialize grid cells
  * -> Puts events on each cell
  */
 const initCells = () => {
-  const cells = document.querySelectorAll(".cell");
+  const cells = document.querySelectorAll(".cell:not(.demo)");
   cells.forEach((cell: Element) => {
     const position = cell.getAttribute("data-grid-pos") || "0:0";
     const [x, y] = position.split(":");
@@ -31,14 +29,14 @@ const initCells = () => {
       "click",
       placeTileOnCell.bind(null, cell, parseInt(x), parseInt(y))
     );
-    cell.addEventListener(
-      "mouseenter",
-      onMouseEnterCell.bind(null, parseInt(x), parseInt(y))
-    );
-    cell.addEventListener(
-      "mouseleave",
-      onMouseLeaveCell.bind(null, parseInt(x), parseInt(y))
-    );
+    // cell.addEventListener(
+    //   "mouseenter",
+    //   onMouseEnterCell.bind(null, parseInt(x), parseInt(y))
+    // );
+    // cell.addEventListener(
+    //   "mouseleave",
+    //   onMouseLeaveCell.bind(null, parseInt(x), parseInt(y))
+    // );
   });
 };
 
@@ -51,6 +49,9 @@ const initCells = () => {
 const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
   if (gameStore.state.grid[`${x}:${y}`]) return;
+
+  rippleEffect(x, y);
+
   if (gameStore.state.tutorialStep === 0) {
     gameStore.set(() => ({
       tutorialStep: 1,
@@ -67,6 +68,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
       return;
     }
   }
+  await playSound("clickSound");
 
   // Move from next-container to clicked cell
   await moveNextTileToCell(cell, x, y);
@@ -74,12 +76,15 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Check Grid
   await checkGrid(x, y);
 
+  await sleep(350);
+
   // Spawn a random tile if enough room
   if (
     Object.keys(gameStore.state.grid).length <= 23 &&
     gameStore.state.tutorialStep <= 3 === false
   ) {
     const { x: randomX, y: randomY } = await generateRandomTile();
+    playSound("randomTileSound");
     await checkGrid(randomX, randomY);
   }
 
@@ -117,6 +122,8 @@ document.body.onkeyup = function (e) {
 initUserTheme();
 initCells();
 setupThemeToggles();
+
+setupAudio();
 
 // Tutorial
 const hasFinishedTutorial = localStorage.getItem("has-finished-tutorial");

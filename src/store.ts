@@ -8,6 +8,7 @@ export const gameStore = makeStore<{
   mouse: { x: number; y: number };
   currentTheme: AvailableThemes;
   tutorialStep: number;
+  isAudioEnabled: boolean;
 }>({
   score: 0,
   grid: {},
@@ -15,4 +16,5 @@ export const gameStore = makeStore<{
   mouse: { x: 0, y: 0 },
   currentTheme: "black",
   tutorialStep: 0,
+  isAudioEnabled: true,
 });

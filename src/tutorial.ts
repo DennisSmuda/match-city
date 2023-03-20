@@ -1,5 +1,6 @@
 import { gameStore } from "./store";
 import { generateTile } from "./tile-generation";
+import { sleep } from "./utils";
 
 export const tutorialSteps = 5;
 
@@ -14,7 +15,7 @@ const messageEl = document.getElementById("game-message") as HTMLElement;
 
 export const launchTutorial = async () => {
   messageEl.innerHTML = "Welcome to Match City!";
-  await new Promise((resolve) => setTimeout(resolve, 2500));
+  await sleep(2500);
   if (gameStore.state.tutorialStep === 0) {
     messageEl.innerHTML = "Click to advance";
   }
@@ -33,7 +34,6 @@ export const updateTutorial = async () => {
     middleCell.classList.add("highlight");
   } else if (currentStep === 2) {
     messageEl.innerHTML = `Nice! Try another one!`;
-    console.log(" update");
     generateTile("primary", 2, 0);
     generateTile("primary", 2, 3);
     generateTile("primary", 2, 4);
@@ -46,7 +46,7 @@ export const updateTutorial = async () => {
   } else if (currentStep === 5) {
     messageEl.innerHTML = "Good luck, have fun!";
     localStorage.setItem("has-finished-tutorial", "true");
-    await new Promise((resolve) => setTimeout(resolve, 2500));
+    await sleep(2500);
     messageEl.style.opacity = "0";
   }
 
