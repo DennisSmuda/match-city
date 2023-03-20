@@ -363,9 +363,9 @@ button:active {
 }
 
 #github-badge {
-  position: fixed;
-  top: 0;
-  right: 0;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
 
   display: flex;
   justify-content: center;
@@ -375,8 +375,8 @@ button:active {
   opacity: 0.5;
   background-color: var(--cell-bg-color);
 
-  padding: 0.5rem 0.5rem 2rem;
-  clip-path: polygon(0% 0, 100% 0%, 100% 100%, 0 65%);
+  padding: 1rem;
+  border-radius: var(--cell-border-radius);
   transition: opacity 0.3s;
 }
 
