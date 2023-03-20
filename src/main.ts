@@ -1,10 +1,12 @@
 import "./style.css";
 
-import {
-  onMouseEnterCell,
-  onMouseLeaveCell,
-  onMouseMove,
-} from "./event-handlers";
+var clickSound = new Audio("/sounds/Toot02.wav");
+var randomTileSound = new Audio("/sounds/Tap01.wav");
+
+clickSound.volume = 0.25;
+randomTileSound.volume = 0.25;
+
+import { onMouseMove, rippleEffect } from "./event-handlers";
 import { floatingText } from "./floating-text";
 import { gameStore } from "./store";
 import {
@@ -31,14 +33,14 @@ const initCells = () => {
       "click",
       placeTileOnCell.bind(null, cell, parseInt(x), parseInt(y))
     );
-    cell.addEventListener(
-      "mouseenter",
-      onMouseEnterCell.bind(null, parseInt(x), parseInt(y))
-    );
-    cell.addEventListener(
-      "mouseleave",
-      onMouseLeaveCell.bind(null, parseInt(x), parseInt(y))
-    );
+    // cell.addEventListener(
+    //   "mouseenter",
+    //   onMouseEnterCell.bind(null, parseInt(x), parseInt(y))
+    // );
+    // cell.addEventListener(
+    //   "mouseleave",
+    //   onMouseLeaveCell.bind(null, parseInt(x), parseInt(y))
+    // );
   });
 };
 
@@ -50,7 +52,11 @@ const initCells = () => {
  */
 const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
+  await clickSound.play();
   if (gameStore.state.grid[`${x}:${y}`]) return;
+
+  rippleEffect(x, y);
+
   if (gameStore.state.tutorialStep === 0) {
     gameStore.set(() => ({
       tutorialStep: 1,
@@ -80,6 +86,8 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
     gameStore.state.tutorialStep <= 3 === false
   ) {
     const { x: randomX, y: randomY } = await generateRandomTile();
+    console.log("Cli", clickSound);
+    randomTileSound.play();
     await checkGrid(randomX, randomY);
   }
 

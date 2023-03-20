@@ -35,3 +35,7 @@ export const onMouseLeaveCell = (x: number, y: number) => {
     potentialMatchCell.classList.remove("active");
   }
 };
+
+export const rippleEffect = (x: number, y: number) => {
+  console.log("Ripple", x, y);
+};
