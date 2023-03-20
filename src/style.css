@@ -385,6 +385,7 @@ button:active {
 }
 
 #audio-toggle {
+  display: none;
   position: fixed;
   top: 1rem;
   left: 1rem;
@@ -439,7 +440,7 @@ button:active {
   align-items: center;
   background-color: var(--bg-color);
 
-  transform: translatey(-100%);
+  transform: translatey(-100rem);
   transition: transform 0.3s, background-color 0.3s;
 }
 
