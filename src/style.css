@@ -392,3 +392,28 @@ button:active {
 #github-badge:hover {
   opacity: 1;
 }
+
+#audio-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-bottom: var(--cell-border-width) solid;
+  transition: border 0.3s;
+}
+
+#audio-toggle svg {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-color);
+}
+
+#audio-toggle.enabled #enable-audio {
+  display: none;
+}
+
+#audio-toggle:not(.enabled) #disable-audio {
+  display: none;
+}

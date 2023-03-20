@@ -1,11 +1,5 @@
 import "./style.css";
 
-var clickSound = new Audio("/sounds/Toot02.wav");
-var randomTileSound = new Audio("/sounds/Tap01.wav");
-
-clickSound.volume = 0.25;
-randomTileSound.volume = 0.25;
-
 import { onMouseMove, rippleEffect } from "./event-handlers";
 import { floatingText } from "./floating-text";
 import { gameStore } from "./store";
@@ -18,6 +12,7 @@ import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
 import { initUserTheme, setupThemeToggles } from "./theming";
 import { launchTutorial, tutorialSteps, updateTutorial } from "./tutorial";
+import { playSound, setupAudio } from "./audio";
 
 /**
  * Initialize grid cells
@@ -52,7 +47,6 @@ const initCells = () => {
  */
 const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
-  await clickSound.play();
   if (gameStore.state.grid[`${x}:${y}`]) return;
 
   rippleEffect(x, y);
@@ -73,6 +67,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
       return;
     }
   }
+  await playSound("clickSound");
 
   // Move from next-container to clicked cell
   await moveNextTileToCell(cell, x, y);
@@ -86,8 +81,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
     gameStore.state.tutorialStep <= 3 === false
   ) {
     const { x: randomX, y: randomY } = await generateRandomTile();
-    console.log("Cli", clickSound);
-    randomTileSound.play();
+    playSound("randomTileSound");
     await checkGrid(randomX, randomY);
   }
 
@@ -125,6 +119,8 @@ document.body.onkeyup = function (e) {
 initUserTheme();
 initCells();
 setupThemeToggles();
+
+setupAudio();
 
 // Tutorial
 const hasFinishedTutorial = localStorage.getItem("has-finished-tutorial");
