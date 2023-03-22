@@ -18,3 +18,6 @@ export const gameStore = makeStore<{
   tutorialStep: 0,
   isAudioEnabled: true,
 });
+
+export const numberOfMatches = ({ matches }: any) =>
+  Object.keys(matches).length;

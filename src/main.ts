@@ -14,12 +14,14 @@ import { initUserTheme, setupThemeToggles } from "./theming";
 import { launchTutorial, tutorialSteps, updateTutorial } from "./tutorial";
 // import { playSound, setupAudio } from "./audio";
 import { sleep } from "./utils";
+import { loadGame, saveGame } from "./save-load";
 
 /**
  * Initialize grid cells
  * -> Puts events on each cell
  */
-const initCells = () => {
+const initCells = async () => {
+  await loadGame();
   const cells = document.querySelectorAll(".cell:not(.demo)");
   cells.forEach((cell: Element) => {
     const position = cell.getAttribute("data-grid-pos") || "0:0";
@@ -99,6 +101,8 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Lose condition
   if (Object.keys(gameStore.state.grid).length >= 25) {
     gameOver();
+  } else {
+    saveGame();
   }
 };
 

@@ -1,6 +1,6 @@
 import { animationConfig } from "./config";
 import { floatingText, scoreCountAnimation } from "./floating-text";
-import { gameStore } from "./store";
+import { gameStore, numberOfMatches } from "./store";
 import { getMatchCountDescription } from "./utils";
 
 export const checkGrid = async (x: number, y: number) => {
@@ -50,7 +50,8 @@ export const checkGrid = async (x: number, y: number) => {
   }
 
   // If there are more than 2 other connecting tiles -> collapse
-  if (gameStore.state.matches.length) {
+  const matches = numberOfMatches(gameStore.state);
+  if (matches >= 2) {
     const scoreElement = document.getElementById("score") as HTMLElement;
 
     gameStore.set((state) => ({
@@ -94,9 +95,7 @@ export const checkGrid = async (x: number, y: number) => {
       }
     }
 
-    floatingText(
-      `${getMatchCountDescription(gameStore.state.matches.length)} match`
-    );
+    floatingText(`${getMatchCountDescription(matches)} match`);
     scoreElement.innerHTML = gameStore.state.score.toString();
     scoreCountAnimation(totalAddedScore);
   }
