@@ -7,7 +7,7 @@ export const saveGame = () => {
 };
 
 export const loadGame = async () => {
-  const gridDataString = localStorage.getItem("grid") as string;
+  const gridDataString = localStorage.getItem("grid") || ("{}" as string);
   const grid = JSON.parse(gridDataString);
 
   gameStore.set(() => ({
