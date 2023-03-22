@@ -11,25 +11,25 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "/manifest-icon-192.maskable.png",
+      "src": "./manifest-icon-192.maskable.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/manifest-icon-192.maskable.png",
+      "src": "./manifest-icon-192.maskable.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "maskable"
     },
     {
-      "src": "/manifest-icon-512.maskable.png",
+      "src": "./manifest-icon-512.maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "/manifest-icon-512.maskable.png",
+      "src": "./manifest-icon-512.maskable.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "maskable"
@@ -37,12 +37,12 @@
   ],
   "screenshots": [
     {
-      "src": "/screenshots/1280x800-screenshot.png",
+      "src": "./screenshots/1280x800-screenshot.png",
       "sizes": "1280x800",
       "type": "image/png"
     },
     {
-      "src": "/screenshots/750x1334-screenshot.png",
+      "src": "./screenshots/750x1334-screenshot.png",
       "sizes": "750x1334",
       "type": "image/png"
     }
