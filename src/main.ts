@@ -50,6 +50,7 @@ const initCells = async () => {
  */
 const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
+  console.log("store", gameStore.state);
   if (gameStore.state.grid[`${x}:${y}`]) return;
 
   rippleEffect(x, y);
