@@ -14,7 +14,7 @@ export const generateNextTile = async () => {
     nextColor = "secondary";
   }
   nextTile.setAttribute("data-type", nextColor);
-  nextTile.innerHTML = "1";
+  // nextTile.innerHTML = "1";
   nextTileContainer?.appendChild(nextTile);
   await nextTile.animate(animationConfig.keyframesSpawn, animationConfig.timing)
     .finished;
@@ -24,7 +24,7 @@ export const generateRandomTile = async () => {
   const randomTile = document.createElement("div") as HTMLDivElement;
   randomTile.classList.add("tile");
   randomTile.setAttribute("data-type", generateRandomColor());
-  randomTile.innerHTML = "1";
+  // randomTile.innerHTML = "1";
   const { x, y } = getRandomGridPosition();
   await rippleEffect(x, y);
 
@@ -41,7 +41,7 @@ export const generateTile = async (type: Color, x: number, y: number) => {
   const newTile = document.createElement("div") as HTMLDivElement;
   newTile.classList.add("tile");
   newTile.setAttribute("data-type", type);
-  newTile.innerHTML = "1";
+  // newTile.innerHTML = "1";
   const tileContainer = document.querySelector(`[data-grid-pos="${x}:${y}"]`);
   gameStore.state.grid[`${x}:${y}`] = newTile.getAttribute("data-type");
   tileContainer?.appendChild(newTile);

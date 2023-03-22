@@ -24,16 +24,17 @@ npm run dev
 
 ### Sounds
 
-[Hidden Folks Mouth Sounds](https://adriaan.itch.io/hidden-folks-mouth-sounds)
+- [Hidden Folks Mouth Sounds](https://adriaan.itch.io/hidden-folks-mouth-sounds)
 
 ### Icons
 
-[Tabler Icons](https://tablericons.com/)
+- [Tabler Icons](https://tablericons.com/)
 
 #### Colors
 
-[tailwind](https://tailwindcss.com/)
-[lospec](https://lospec.com/palette-list)
+- [tailwind](https://tailwindcss.com/)
+
+- [lospec](https://lospec.com/palette-list)
 
 ### Inspired by
 
@@ -46,3 +47,5 @@ npm run dev
 - [2048](https://play2048.co/)
 
 > Feel free to suggest more matching games 🟥
+
+> TODO: Match Sounds + Overflow on floatingtext (after match)

@@ -27,7 +27,6 @@ export const restartGame = async () => {
   const gameOverModal = document.getElementById("game-over") as HTMLElement;
 
   const tiles = document.querySelectorAll(`.tile:not(.next):not(.demo)`);
-  console.log("Disappear", tiles);
   tiles.forEach(async (tile) => {
     tile.innerHTML = "";
     await tile?.animate(animationConfig.keyframesDisappear, { duration: 0 })
