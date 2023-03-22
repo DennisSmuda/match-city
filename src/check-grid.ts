@@ -64,6 +64,7 @@ export const checkGrid = async (x: number, y: number) => {
     } else {
       playSound("comboSound");
     }
+    playSound("squishSound");
 
     for (const pos in gameStore.state.matches) {
       if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {

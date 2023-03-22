@@ -47,5 +47,3 @@ npm run dev
 - [2048](https://play2048.co/)
 
 > Feel free to suggest more matching games 🟥
-
-> TODO: Match Sounds + Overflow on floatingtext (after match)
