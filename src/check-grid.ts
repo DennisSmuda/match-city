@@ -60,9 +60,10 @@ export const checkGrid = async (x: number, y: number) => {
     }));
 
     let multiplier = 1;
+    if (matches === 3) multiplier = 2;
+    else if (multiplier >= 4) multiplier = 3;
 
     if (matches >= 3) {
-      playSound("combo2Sound");
       multiplier = 2;
     } else {
       playSound("comboSound");
