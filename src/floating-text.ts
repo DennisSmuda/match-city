@@ -1,10 +1,16 @@
 import { gameStore } from "./store";
 
-export const scoreCountAnimation = async (amount: number) => {
+export const scoreCountAnimation = async (
+  amount: number,
+  multiplier: number = 1
+) => {
   const scoreElement = document.getElementById("score") as HTMLElement;
   const scoreText = document.createElement("div");
   scoreText.classList.add("floating-text", "score");
-  scoreText.innerHTML = `+${amount.toString()}`;
+  scoreText.innerHTML = `${amount.toString()}`;
+  if (multiplier > 1) {
+    scoreText.innerHTML += ` <span class="multiplier">x${multiplier.toString()}</span>`;
+  }
   scoreElement?.appendChild(scoreText);
   await scoreText.animate(
     [

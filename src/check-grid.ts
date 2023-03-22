@@ -59,8 +59,11 @@ export const checkGrid = async (x: number, y: number) => {
       score: state.score + 1,
     }));
 
+    let multiplier = 1;
+
     if (matches >= 3) {
       playSound("combo2Sound");
+      multiplier = 2;
     } else {
       playSound("comboSound");
     }
@@ -73,7 +76,7 @@ export const checkGrid = async (x: number, y: number) => {
         ) as HTMLElement;
 
         gameStore.set((state) => ({
-          score: state.score + 1,
+          score: state.score + 1 * multiplier,
         }));
 
         scoreElement.innerHTML = gameStore.state.score.toString();
@@ -93,7 +96,7 @@ export const checkGrid = async (x: number, y: number) => {
 
     floatingText(`${getMatchCountDescription(matches)} match`);
     scoreElement.innerHTML = gameStore.state.score.toString();
-    scoreCountAnimation(matches + 1);
+    scoreCountAnimation(matches + 1, multiplier);
   }
 
   // reset matches

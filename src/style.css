@@ -139,6 +139,12 @@ h1 {
   font-weight: 900;
 }
 
+.score .multiplier {
+  font-weight: initial;
+  font-size: 0.75em;
+  color: var(--text-color);
+}
+
 #final-score,
 #score {
   font-weight: 900;
