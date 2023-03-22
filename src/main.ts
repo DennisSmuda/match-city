@@ -22,6 +22,7 @@ import { loadGame, saveGame } from "./save-load";
  */
 const initCells = async () => {
   await loadGame();
+  playSound("helloSound");
   const cells = document.querySelectorAll(".cell:not(.demo)");
   cells.forEach((cell: Element) => {
     const position = cell.getAttribute("data-grid-pos") || "0:0";
@@ -50,7 +51,6 @@ const initCells = async () => {
  */
 const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   // Cell is occupied
-  console.log("store", gameStore.state);
   if (gameStore.state.grid[`${x}:${y}`]) return;
 
   rippleEffect(x, y);

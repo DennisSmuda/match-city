@@ -1,3 +1,4 @@
+import { playSound } from "./audio";
 import { animationConfig } from "./config";
 import { floatingText, scoreCountAnimation } from "./floating-text";
 import { gameStore, numberOfMatches } from "./store";
@@ -55,29 +56,27 @@ export const checkGrid = async (x: number, y: number) => {
     const scoreElement = document.getElementById("score") as HTMLElement;
 
     gameStore.set((state) => ({
-      score: state.score + parseInt(currentTile.innerHTML),
+      score: state.score + 1,
     }));
 
-    let totalAddedScore = 1;
+    let multiplier = 1;
 
-    // if (matchCount >= 3) {
-    //   playSound("combo2Sound");
-    // } else {
-    //   playSound("comboSound");
-    // }
+    if (matches >= 3) {
+      playSound("combo2Sound");
+      multiplier = 2;
+    } else {
+      playSound("comboSound");
+    }
+    playSound("squishSound");
+
     for (const pos in gameStore.state.matches) {
       if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {
         const tile = document.querySelector(
           `[data-grid-pos="${pos}"] > .tile`
         ) as HTMLElement;
 
-        totalAddedScore += parseInt(tile.innerHTML);
-        const result =
-          parseInt(tile.innerHTML) + parseInt(currentTile.innerHTML);
-        currentTile.innerHTML = result.toString();
-
         gameStore.set((state) => ({
-          score: state.score + parseInt(tile.innerHTML),
+          score: state.score + 1 * multiplier,
         }));
 
         scoreElement.innerHTML = gameStore.state.score.toString();
@@ -97,7 +96,7 @@ export const checkGrid = async (x: number, y: number) => {
 
     floatingText(`${getMatchCountDescription(matches)} match`);
     scoreElement.innerHTML = gameStore.state.score.toString();
-    scoreCountAnimation(totalAddedScore);
+    scoreCountAnimation(matches + 1, multiplier);
   }
 
   // reset matches

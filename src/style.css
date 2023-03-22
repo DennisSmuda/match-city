@@ -49,6 +49,7 @@ html {
 
 body {
   margin: 0;
+  overflow: hidden;
 }
 
 #app {
@@ -136,6 +137,12 @@ h1 {
 .score {
   color: var(--score-color);
   font-weight: 900;
+}
+
+.score .multiplier {
+  font-weight: initial;
+  font-size: 0.75em;
+  color: var(--text-color);
 }
 
 #final-score,
@@ -385,7 +392,6 @@ button:active {
 }
 
 #audio-toggle {
-  display: none;
   position: fixed;
   top: 1rem;
   left: 1rem;
