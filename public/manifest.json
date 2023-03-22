@@ -1,0 +1,58 @@
+{
+  "name": "Match City",
+  "short_name": "Match City - Tile Matching Game",
+  "start_url": "https://dennissmuda.github.io/match-city/",
+  "display": "standalone",
+  "description": "A chill tile-matching game built by Dennis Smuda. Try to keep your board from filling up and combine tiles of the same colors! Supports fully customizable theming!",
+  "lang": "en",
+  "dir": "auto",
+  "theme_color": "#18181B",
+  "background_color": "#18181B",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "public/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "public/manifest-icon-192.maskable.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "public/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "public/manifest-icon-512.maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "public/screenshots/screenshots/1280x800-screenshot.png",
+      "sizes": "1280x800",
+      "type": "image/png"
+    },
+    {
+      "src": "public/screenshots/screenshots/750x1334-screenshot.png",
+      "sizes": "750x1334",
+      "type": "image/png"
+    }
+  ],
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Match City",
+      "url": "https://dennissmuda.github.io/match-city/",
+      "description": "Play Match City"
+    }
+  ]
+}

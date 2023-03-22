@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="notranslate" translate="no">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/icon.svg" />
@@ -17,6 +17,11 @@
       name="google-site-verification"
       content="dZ6cqjfoVlLUTD-VFaexYeqZuqvGZqxGA7irK0wVteU"
     />
+    <link rel="manifest" href="/manifest.json" />
+
+    <script>
+      navigator.serviceWorker.register("/service-worker.js");
+    </script>
   </head>
   <body>
     <h1 class="sr-only">Match City - a game by Dennis Smuda</h1>
@@ -213,13 +218,13 @@
       <div id="demo-container">
         <div id="demo-game-grid" class="demo-grid-row">
           <div class="cell demo">
-            <div class="tile" data-type="primary">1</div>
+            <div class="tile demo" data-type="primary">1</div>
           </div>
           <div class="cell demo">
-            <div class="tile" data-type="secondary">1</div>
+            <div class="tile demo" data-type="secondary">1</div>
           </div>
           <div class="cell demo">
-            <div class="tile" data-type="tertiary">1</div>
+            <div class="tile demo" data-type="tertiary">1</div>
           </div>
         </div>
       </div>
