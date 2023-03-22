@@ -1,3 +1,4 @@
+import { playSound } from "./audio";
 import { animationConfig } from "./config";
 import { floatingText, scoreCountAnimation } from "./floating-text";
 import { gameStore, numberOfMatches } from "./store";
@@ -60,11 +61,12 @@ export const checkGrid = async (x: number, y: number) => {
 
     let totalAddedScore = 1;
 
-    // if (matchCount >= 3) {
-    //   playSound("combo2Sound");
-    // } else {
-    //   playSound("comboSound");
-    // }
+    if (matches >= 3) {
+      playSound("combo2Sound");
+    } else {
+      playSound("comboSound");
+    }
+
     for (const pos in gameStore.state.matches) {
       if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {
         const tile = document.querySelector(
