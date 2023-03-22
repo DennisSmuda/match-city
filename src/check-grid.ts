@@ -3,25 +3,17 @@ import { floatingText, scoreCountAnimation } from "./floating-text";
 import { gameStore } from "./store";
 import { getMatchCountDescription } from "./utils";
 
-// var comboSound = new Audio("/sounds/Tap03.wav");
-// var combo2Sound = new Audio("/sounds/Woohoo05.wav");
-
-// comboSound.volume = 0.25;
-// combo2Sound.volume = 0.25;
-
 export const checkGrid = async (x: number, y: number) => {
   const currentType = gameStore.state.grid[`${x}:${y}`];
   const currentTile = document.querySelector(
     `[data-grid-pos="${x}:${y}"] > .tile`
   ) as HTMLElement;
   // Check grid in all orthogonal directions
-  let matchCount = 0; // TODO: can be computed out of matches{}
   for (let i = x - 1; i >= x - 4; i--) {
     // Matching to the left
     const checkingType = gameStore.state.grid[`${i}:${y}`];
     if (checkingType === currentType) {
       gameStore.state.matches[`${i}:${y}`] = true;
-      matchCount++;
     } else {
       break;
     }
@@ -32,7 +24,6 @@ export const checkGrid = async (x: number, y: number) => {
     const checkingType = gameStore.state.grid[`${i}:${y}`];
     if (checkingType === currentType) {
       gameStore.state.matches[`${i}:${y}`] = true;
-      matchCount++;
     } else {
       break;
     }
@@ -43,7 +34,6 @@ export const checkGrid = async (x: number, y: number) => {
     const checkingType = gameStore.state.grid[`${x}:${j}`];
     if (checkingType === currentType) {
       gameStore.state.matches[`${x}:${j}`] = true;
-      matchCount++;
     } else {
       break;
     }
@@ -54,14 +44,13 @@ export const checkGrid = async (x: number, y: number) => {
     const checkingType = gameStore.state.grid[`${x}:${j}`];
     if (checkingType === currentType) {
       gameStore.state.matches[`${x}:${j}`] = true;
-      matchCount++;
     } else {
       break;
     }
   }
 
   // If there are more than 2 other connecting tiles -> collapse
-  if (matchCount >= 2) {
+  if (gameStore.state.matches.length) {
     const scoreElement = document.getElementById("score") as HTMLElement;
 
     gameStore.set((state) => ({
@@ -105,7 +94,9 @@ export const checkGrid = async (x: number, y: number) => {
       }
     }
 
-    floatingText(`${getMatchCountDescription(matchCount)} match`);
+    floatingText(
+      `${getMatchCountDescription(gameStore.state.matches.length)} match`
+    );
     scoreElement.innerHTML = gameStore.state.score.toString();
     scoreCountAnimation(totalAddedScore);
   }
