@@ -1,19 +1,19 @@
 import { gameStore } from "./store";
 
-// const sounds = {
-//   clickSound: new Audio("/sounds/Toot02.wav"),
-//   randomTileSound: new Audio("/sounds/Tap01.wav"),
-//   comboSound: new Audio("/sounds/Tap03.wav"),
-//   combo2Sound: new Audio("/sounds/Woohoo05.wav"),
-// };
+const sounds = {
+  clickSound: new Audio("./sounds/Toot02.wav"),
+  randomTileSound: new Audio("./sounds/Tap01.wav"),
+  comboSound: new Audio("./sounds/Tap03.wav"),
+  combo2Sound: new Audio("./sounds/Woohoo05.wav"),
+};
 
 const soundToggle = document.getElementById("audio-toggle");
 
 export const setupAudio = () => {
-  // sounds.comboSound.volume = 0.125;
-  // sounds.combo2Sound.volume = 0.125;
-  // sounds.clickSound.volume = 0.125;
-  // sounds.randomTileSound.volume = 0.125;
+  sounds.comboSound.volume = 0.25;
+  sounds.combo2Sound.volume = 0.25;
+  sounds.clickSound.volume = 0.25;
+  sounds.randomTileSound.volume = 0.25;
 
   const audioEnabled = localStorage.getItem("audio-enabled") || "true";
 
@@ -32,11 +32,11 @@ export const setupAudio = () => {
   setupSoundToggle();
 };
 
-// export const playSound = async (name: keyof typeof sounds) => {
-//   if (!gameStore.state.isAudioEnabled) return;
+export const playSound = async (name: keyof typeof sounds) => {
+  if (!gameStore.state.isAudioEnabled) return;
 
-//   await sounds[name].play();
-// };
+  await sounds[name].play();
+};
 
 const setupSoundToggle = () => {
   soundToggle?.addEventListener("click", () => {
