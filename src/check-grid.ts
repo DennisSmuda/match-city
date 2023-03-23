@@ -64,14 +64,14 @@ export const checkGrid = async (x: number, y: number) => {
     else if (multiplier >= 4) multiplier = 3;
 
     if (matches >= 3) {
-      multiplier = 2;
+      playSound("combo2Sound");
     } else {
-      playSound("comboSound");
+      playSound("tootSound");
     }
-    playSound("squishSound");
 
     for (const pos in gameStore.state.matches) {
       if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {
+        const [localX, localY] = pos.split(":");
         const tile = document.querySelector(
           `[data-grid-pos="${pos}"] > .tile`
         ) as HTMLElement;
@@ -82,8 +82,25 @@ export const checkGrid = async (x: number, y: number) => {
 
         scoreElement.innerHTML = gameStore.state.score.toString();
 
-        tile?.animate(animationConfig.keyframesOut, animationConfig.timingShort)
-          .finished;
+        const xMovement = x - parseInt(localX);
+        const yMovement = y - parseInt(localY);
+        const fontSize = parseInt(
+          window.getComputedStyle(document.querySelector("html") as HTMLElement)
+            .fontSize
+        );
+
+        tile?.animate(
+          [
+            { transform: `translateX(0px) translateY(0px)` },
+            {
+              transform: `
+                translateX(${xMovement * 1.5 * fontSize * 2}px)
+                translateY(${yMovement * fontSize * 2}px)
+              `,
+            },
+          ],
+          animationConfig.timingShort
+        ).finished;
         await currentTile?.animate(
           animationConfig.keyframesIn,
           animationConfig.timingShort

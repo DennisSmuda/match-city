@@ -4,6 +4,7 @@ export type Color = "primary" | "secondary" | "tertiary";
 export const colors = ["primary", "secondary", "tertiary"];
 
 export const generateRandomColor = () => {
+  return "primary";
   return colors[Math.floor(Math.random() * colors.length)] as Color;
 };
 
