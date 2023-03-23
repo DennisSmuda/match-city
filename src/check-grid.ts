@@ -57,6 +57,7 @@ export const checkGrid = async (x: number, y: number) => {
 
     gameStore.set((state) => ({
       score: state.score + 1,
+      chain: state.chain + 1,
     }));
 
     let multiplier = 1;
@@ -95,7 +96,7 @@ export const checkGrid = async (x: number, y: number) => {
             {
               transform: `
                 translateX(${xMovement * 1.5 * fontSize * 2}px)
-                translateY(${yMovement * fontSize * 2}px)
+                translateY(${yMovement * 1.5 * fontSize * 2}px)
               `,
             },
           ],
@@ -115,6 +116,10 @@ export const checkGrid = async (x: number, y: number) => {
     floatingText(`${getMatchCountDescription(matches)} match`);
     scoreElement.innerHTML = gameStore.state.score.toString();
     scoreCountAnimation(matches + 1, multiplier);
+  } else {
+    gameStore.set(() => ({
+      chain: 0,
+    })); // TODO: display chain combo
   }
 
   // reset matches

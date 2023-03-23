@@ -3,6 +3,7 @@ import { AvailableThemes } from "./theming";
 
 export const gameStore = makeStore<{
   score: number;
+  chain: number;
   grid: { [key: string]: any };
   matches: { [key: string]: any };
   mouse: { x: number; y: number };
@@ -11,6 +12,7 @@ export const gameStore = makeStore<{
   isAudioEnabled: boolean;
 }>({
   score: 0,
+  chain: 0,
   grid: {},
   matches: {},
   mouse: { x: 0, y: 0 },
