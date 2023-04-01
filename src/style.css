@@ -344,6 +344,9 @@ button:active {
 #game-message {
   margin-top: 0.5rem;
   text-align: center;
+  animation: rainbow 10s linear alternate infinite;
+  font-weight: 600;
+  font-size: 0.8rem;
 }
 
 .highlight,
@@ -466,4 +469,44 @@ button:active {
   grid-gap: var(--cell-gap);
 
   transition: grid-gap 0.3s, width 0.3s, height 0.3s;
+}
+
+@keyframes rainbow {
+  100%,
+  0% {
+    color: rgb(255, 0, 0);
+  }
+  8% {
+    color: rgb(255, 127, 0);
+  }
+  16% {
+    color: rgb(255, 255, 0);
+  }
+  25% {
+    color: rgb(127, 255, 0);
+  }
+  33% {
+    color: rgb(0, 255, 0);
+  }
+  41% {
+    color: rgb(0, 255, 127);
+  }
+  50% {
+    color: rgb(0, 255, 255);
+  }
+  58% {
+    color: rgb(0, 127, 255);
+  }
+  66% {
+    color: rgb(0, 0, 255);
+  }
+  75% {
+    color: rgb(127, 0, 255);
+  }
+  83% {
+    color: rgb(255, 0, 255);
+  }
+  91% {
+    color: rgb(255, 0, 127);
+  }
 }

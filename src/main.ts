@@ -30,16 +30,8 @@ const initCells = async () => {
 
     cell.addEventListener(
       "click",
-      placeTileOnCell.bind(null, cell, parseInt(x), parseInt(y))
+      placeTileOnCell.bind(null, cell, parseInt(x), parseInt(y), true)
     );
-    // cell.addEventListener(
-    //   "mouseenter",
-    //   onMouseEnterCell.bind(null, parseInt(x), parseInt(y))
-    // );
-    // cell.addEventListener(
-    //   "mouseleave",
-    //   onMouseLeaveCell.bind(null, parseInt(x), parseInt(y))
-    // );
   });
 };
 
@@ -77,7 +69,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
   await moveNextTileToCell(cell, x, y);
 
   // Check Grid
-  await checkGrid(x, y);
+  await checkGrid(x, y, true);
 
   await sleep(350);
 

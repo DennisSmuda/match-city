@@ -203,7 +203,7 @@ const setupColorSwitchers = () => {
 };
 
 export const initUserTheme = () => {
-  const defaultTheme = localStorage.getItem("color-theme") || "black";
+  const defaultTheme = localStorage.getItem("color-theme") || "fancade";
   changeColorTheme(defaultTheme as AvailableThemes);
 
   const defaultGap = localStorage.getItem("--cell-gap") || "0.5rem";
