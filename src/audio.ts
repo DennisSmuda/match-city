@@ -5,6 +5,7 @@ const sounds = {
   squishSound: new Audio("./sounds/Squishy01.wav"),
   errorSound: new Audio("./sounds/Error01.wav"),
   clickSound: new Audio("./sounds/Toot02.wav"),
+  tootSound: new Audio("./sounds/Toot03.wav"),
   randomTileSound: new Audio("./sounds/Tap01.wav"),
   comboSound: new Audio("./sounds/Tap03.wav"),
   combo2Sound: new Audio("./sounds/Woohoo05.wav"),
@@ -16,6 +17,7 @@ export const setupAudio = () => {
   sounds.comboSound.volume = 0.25;
   sounds.combo2Sound.volume = 0.25;
   sounds.clickSound.volume = 0.25;
+  sounds.tootSound.volume = 0.25;
   sounds.randomTileSound.volume = 0.25;
   sounds.squishSound.volume = 0.125;
   sounds.errorSound.volume = 0.125;
@@ -40,7 +42,11 @@ export const setupAudio = () => {
 export const playSound = async (name: keyof typeof sounds) => {
   if (!gameStore.state.isAudioEnabled) return;
 
-  await sounds[name].play();
+  try {
+    await sounds[name].play();
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 const setupSoundToggle = () => {

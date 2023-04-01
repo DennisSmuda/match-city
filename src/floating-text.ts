@@ -17,7 +17,7 @@ export const scoreCountAnimation = async (
       { transform: "translateY(0)" },
       { transform: "translateY(-1rem)", opacity: 0 },
     ],
-    1000
+    2000
   ).finished;
 
   scoreText.remove();

@@ -2,9 +2,14 @@ import { playSound } from "./audio";
 import { animationConfig } from "./config";
 import { floatingText, scoreCountAnimation } from "./floating-text";
 import { gameStore, numberOfMatches } from "./store";
+import { tutorialSteps } from "./tutorial";
 import { getMatchCountDescription } from "./utils";
 
-export const checkGrid = async (x: number, y: number) => {
+export const checkGrid = async (
+  x: number,
+  y: number,
+  chainable: boolean = false
+) => {
   const currentType = gameStore.state.grid[`${x}:${y}`];
   const currentTile = document.querySelector(
     `[data-grid-pos="${x}:${y}"] > .tile`
@@ -56,34 +61,49 @@ export const checkGrid = async (x: number, y: number) => {
     const scoreElement = document.getElementById("score") as HTMLElement;
 
     gameStore.set((state) => ({
-      score: state.score + 1,
+      chain: chainable ? state.chain + 1 : state.chain,
     }));
 
     let multiplier = 1;
-    if (matches === 3) multiplier = 2;
-    else if (multiplier >= 4) multiplier = 3;
+    if (gameStore.state.chain >= 2) multiplier = gameStore.state.chain;
 
     if (matches >= 3) {
-      multiplier = 2;
+      playSound("combo2Sound");
     } else {
-      playSound("comboSound");
+      playSound("tootSound");
     }
-    playSound("squishSound");
+
+    gameStore.set((state) => ({
+      score: state.score + matches * multiplier,
+    }));
+    scoreElement.innerHTML = gameStore.state.score.toString();
 
     for (const pos in gameStore.state.matches) {
       if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {
+        const [localX, localY] = pos.split(":");
         const tile = document.querySelector(
           `[data-grid-pos="${pos}"] > .tile`
         ) as HTMLElement;
 
-        gameStore.set((state) => ({
-          score: state.score + 1 * multiplier,
-        }));
+        const xMovement = x - parseInt(localX);
+        const yMovement = y - parseInt(localY);
+        const fontSize = parseInt(
+          window.getComputedStyle(document.querySelector("html") as HTMLElement)
+            .fontSize
+        );
 
-        scoreElement.innerHTML = gameStore.state.score.toString();
-
-        tile?.animate(animationConfig.keyframesOut, animationConfig.timingShort)
-          .finished;
+        tile?.animate(
+          [
+            { transform: `translateX(0px) translateY(0px)` },
+            {
+              transform: `
+                translateX(${xMovement * 1.5 * fontSize * 2}px)
+                translateY(${yMovement * 1.5 * fontSize * 2}px)
+              `,
+            },
+          ],
+          animationConfig.timingShort
+        ).finished;
         await currentTile?.animate(
           animationConfig.keyframesIn,
           animationConfig.timingShort
@@ -97,11 +117,25 @@ export const checkGrid = async (x: number, y: number) => {
 
     floatingText(`${getMatchCountDescription(matches)} match`);
     scoreElement.innerHTML = gameStore.state.score.toString();
-    scoreCountAnimation(matches + 1, multiplier);
+    scoreCountAnimation(matches, multiplier);
+  } else {
+    gameStore.set((state) => ({
+      chain: chainable ? 0 : state.chain,
+    }));
   }
-
+  updateCombo();
   // reset matches
   gameStore.set(() => ({
     matches: {},
   }));
+};
+
+const updateCombo = () => {
+  if (gameStore.state.tutorialStep <= tutorialSteps) return;
+  const messageEl = document.getElementById("game-message") as HTMLElement;
+  if (gameStore.state.chain > 1) {
+    messageEl.innerHTML = `combo x ${gameStore.state.chain}`;
+  } else {
+    messageEl.innerHTML = "&nbsp;";
+  }
 };
