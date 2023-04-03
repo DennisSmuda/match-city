@@ -12,7 +12,7 @@ import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
 import { initUserTheme, setupThemeToggles } from "./theming";
 import { launchTutorial, tutorialSteps, updateTutorial } from "./tutorial";
-import { playSound, setupAudio } from "./audio";
+import { setupAudio } from "./audio";
 import { sleep } from "./utils";
 import { loadGame, saveGame } from "./save-load";
 

@@ -30,7 +30,8 @@ export const playSound = async (name: keyof typeof sounds) => {
   if (!gameStore.state.isAudioEnabled) return;
 
   try {
-    await sounds[name].play();
+    // await sounds[name].play();
+    console.log("Play", name);
   } catch (e) {
     console.log(e);
   }
