@@ -22,7 +22,6 @@ import { loadGame, saveGame } from "./save-load";
  */
 const initCells = async () => {
   await loadGame();
-  playSound("helloSound");
   const cells = document.querySelectorAll(".cell:not(.demo)");
   cells.forEach((cell: Element) => {
     const position = cell.getAttribute("data-grid-pos") || "0:0";
@@ -63,7 +62,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
       return;
     }
   }
-  await playSound("clickSound");
+  // await playSound("clickSound");
 
   // Move from next-container to clicked cell
   await moveNextTileToCell(cell, x, y);
@@ -79,7 +78,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
     gameStore.state.tutorialStep <= 3 === false
   ) {
     const { x: randomX, y: randomY } = await generateRandomTile();
-    playSound("randomTileSound");
+    // playSound("randomTileSound");
     await checkGrid(randomX, randomY);
   }
 

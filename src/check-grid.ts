@@ -67,12 +67,6 @@ export const checkGrid = async (
     let multiplier = 1;
     if (gameStore.state.chain >= 2) multiplier = gameStore.state.chain;
 
-    if (matches >= 3) {
-      playSound("combo2Sound");
-    } else {
-      playSound("tootSound");
-    }
-
     gameStore.set((state) => ({
       score: state.score + matches * multiplier,
     }));
