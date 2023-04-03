@@ -1,4 +1,3 @@
-import { playSound } from "./audio";
 import { animationConfig } from "./config";
 import { floatingText, scoreCountAnimation } from "./floating-text";
 import { gameStore, numberOfMatches } from "./store";
