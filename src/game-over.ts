@@ -1,9 +1,7 @@
-import { playSound } from "./audio";
 import { animationConfig } from "./config";
 import { gameStore } from "./store";
 
 export const gameOver = async () => {
-  playSound("errorSound");
   checkHighscore();
 
   const gameOverModal = document.getElementById("game-over") as HTMLElement;

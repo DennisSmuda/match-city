@@ -1,26 +1,13 @@
 import { gameStore } from "./store";
 
 const sounds = {
-  helloSound: new Audio("./sounds/Hallo.wav"),
-  squishSound: new Audio("./sounds/Squishy01.wav"),
-  errorSound: new Audio("./sounds/Error01.wav"),
-  clickSound: new Audio("./sounds/Toot02.wav"),
-  tootSound: new Audio("./sounds/Toot03.wav"),
-  randomTileSound: new Audio("./sounds/Tap01.wav"),
-  comboSound: new Audio("./sounds/Tap03.wav"),
-  combo2Sound: new Audio("./sounds/Woohoo05.wav"),
+  // test: new Audio("./sounds/test.wav"),
 };
 
 const soundToggle = document.getElementById("audio-toggle");
 
 export const setupAudio = () => {
-  sounds.comboSound.volume = 0.25;
-  sounds.combo2Sound.volume = 0.25;
-  sounds.clickSound.volume = 0.25;
-  sounds.tootSound.volume = 0.25;
-  sounds.randomTileSound.volume = 0.25;
-  sounds.squishSound.volume = 0.125;
-  sounds.errorSound.volume = 0.125;
+  // sounds.test.volume = 0.25;
 
   const audioEnabled = localStorage.getItem("audio-enabled") || "true";
 
