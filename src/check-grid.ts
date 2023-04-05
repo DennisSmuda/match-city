@@ -130,7 +130,7 @@ const updateCombo = () => {
   if (gameStore.state.tutorialStep <= tutorialSteps) return;
   const messageEl = document.getElementById("game-message") as HTMLElement;
   if (gameStore.state.chain > 1) {
-    messageEl.innerHTML = `combo x ${gameStore.state.chain}`;
+    messageEl.innerHTML = `x ${gameStore.state.chain}`;
   } else {
     messageEl.innerHTML = "&nbsp;";
   }
