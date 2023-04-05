@@ -1,13 +1,19 @@
 import { gameStore } from "./store";
 
 const sounds = {
-  // test: new Audio("./sounds/test.wav"),
+  clickSound: new Audio("./sounds/click_001.ogg"),
+  dropSound: new Audio("./sounds/drop_002.ogg"),
+  confirmationSound: new Audio("./sounds/confirmation_001.ogg"),
+  errorSound: new Audio("./sounds/error_003.ogg"),
 };
 
 const soundToggle = document.getElementById("audio-toggle");
 
 export const setupAudio = () => {
-  // sounds.test.volume = 0.25;
+  sounds.clickSound.volume = 0.25;
+  sounds.dropSound.volume = 0.25;
+  sounds.confirmationSound.volume = 0.25;
+  sounds.errorSound.volume = 0.25;
 
   const audioEnabled = localStorage.getItem("audio-enabled") || "true";
 
@@ -30,7 +36,7 @@ export const playSound = async (name: keyof typeof sounds) => {
   if (!gameStore.state.isAudioEnabled) return;
 
   try {
-    // await sounds[name].play();
+    await sounds[name].play();
     console.log("Play", name);
   } catch (e) {
     console.log(e);

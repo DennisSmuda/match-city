@@ -1,3 +1,4 @@
+import { playSound } from "./audio";
 import { animationConfig } from "./config";
 import { floatingText, scoreCountAnimation } from "./floating-text";
 import { gameStore, numberOfMatches } from "./store";
@@ -58,6 +59,8 @@ export const checkGrid = async (
   const matches = numberOfMatches(gameStore.state);
   if (matches >= 2) {
     const scoreElement = document.getElementById("score") as HTMLElement;
+
+    playSound("confirmationSound");
 
     gameStore.set((state) => ({
       chain: chainable ? state.chain + 1 : state.chain,

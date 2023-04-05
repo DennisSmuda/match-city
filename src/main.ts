@@ -12,7 +12,7 @@ import { gameOver } from "./game-over";
 import { checkGrid } from "./check-grid";
 import { initUserTheme, setupThemeToggles } from "./theming";
 import { launchTutorial, tutorialSteps, updateTutorial } from "./tutorial";
-import { setupAudio } from "./audio";
+import { playSound, setupAudio } from "./audio";
 import { sleep } from "./utils";
 import { loadGame, saveGame } from "./save-load";
 
@@ -62,7 +62,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
       return;
     }
   }
-  // await playSound("clickSound");
+  await playSound("clickSound");
 
   // Move from next-container to clicked cell
   await moveNextTileToCell(cell, x, y);
@@ -78,7 +78,7 @@ const placeTileOnCell = async (cell: Element, x: number, y: number) => {
     gameStore.state.tutorialStep <= 3 === false
   ) {
     const { x: randomX, y: randomY } = await generateRandomTile();
-    // playSound("randomTileSound");
+    playSound("dropSound");
     await checkGrid(randomX, randomY);
   }
 

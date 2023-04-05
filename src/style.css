@@ -395,7 +395,6 @@ button:active {
 }
 
 #audio-toggle {
-  display: none;
   position: fixed;
   top: 1rem;
   left: 1rem;
