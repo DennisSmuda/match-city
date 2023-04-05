@@ -24,7 +24,7 @@ npm run dev
 
 ### Sounds
 
-- [Hidden Folks Mouth Sounds](https://adriaan.itch.io/hidden-folks-mouth-sounds)
+- [Kenny Interface Sounds](https://www.kenney.nl/assets/interface-sounds)
 
 ### Icons
 
