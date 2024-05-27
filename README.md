@@ -45,7 +45,7 @@ npm run dev
 
 ### Inspired by
 
-- [THREES](https://dennissmuda.github.io/match-city/)
+- [THREES](http://play.threesgame.com/)
 
 - [Triple Town](https://spryfox.com/our-games/tripletown/)
 
