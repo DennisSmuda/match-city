@@ -20,6 +20,13 @@ npm run install
 npm run dev
 ```
 
+## How to Play
+
+- Try to match same-color tiles in all 4 directions
+- Combos increase the multiplier
+- A random tile gets placed after your tile!
+- Game is over when there is no more room to place new tiles
+
 ## Credits
 
 ### Sounds
