@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
-    "@vitest/coverage-c8": "^0.29.3",
+    "@vitest/coverage-v8": "^3.0.8",
     "jsdom": "^26.0.0",
     "typescript": "^5.8.2",
     "vite": "^6.2.1",
