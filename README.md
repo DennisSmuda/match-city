@@ -1,6 +1,6 @@
 # Match City
 
-![deployment](https://github.com/DennisSmuda/match-city/actions/workflows/gh-pages.yml/badge.svg)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/00246668-23c3-4948-a354-78a33fe5eecf/deploy-status)](https://app.netlify.com/sites/match-city/deploys)
 
 Web Game about matching tiles! Supports multiple color-schemes and persistent theme settings.
 
