@@ -29,7 +29,7 @@ const initCells = async () => {
 
     cell.addEventListener(
       "click",
-      placeTileOnCell.bind(null, cell, parseInt(x), parseInt(y), true)
+      placeTileOnCell.bind(null, cell, parseInt(x), parseInt(y))
     );
   });
 };
