@@ -11,12 +11,11 @@
     "coverage": "vitest run --coverage"
   },
   "devDependencies": {
-    "@testing-library/dom": "^10.1.0",
-    "@vitest/coverage-c8": "^0.29.3",
+    "@testing-library/dom": "^10.4.0",
     "jsdom": "^24.1.0",
-    "typescript": "^5.4.5",
-    "vite": "^5.2.11",
-    "vitest": "^1.6.0"
+    "typescript": "^5.8.2",
+    "vite": "^6.2.2",
+    "vitest": "^3.0.9"
   },
   "dependencies": {
     "statery": "^0.7.1"
