@@ -15,7 +15,7 @@
     "jsdom": "^26.1.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.3",
-    "vitest": "^3.0.9"
+    "vitest": "^3.2.0"
   },
   "dependencies": {
     "statery": "^0.7.1"
