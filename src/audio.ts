@@ -39,10 +39,10 @@ export async function playSound(name: keyof typeof sounds) {
 
   try {
     await sounds[name].play()
-    console.log('Play', name)
+    console.warn('Play', name)
   }
   catch (e) {
-    console.log(e)
+    console.warn(e)
   }
 }
 

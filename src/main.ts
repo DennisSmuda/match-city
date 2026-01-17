@@ -77,7 +77,7 @@ async function placeTileOnCell(cell: Element, x: number, y: number) {
   // Spawn a random tile if enough room
   if (
     Object.keys(gameStore.state.grid).length <= 23
-    && gameStore.state.tutorialStep <= 3 === false
+    && (gameStore.state.tutorialStep <= 3) === false
   ) {
     const { x: randomX, y: randomY } = await generateRandomTile()
     playSound('dropSound')
@@ -106,11 +106,11 @@ async function placeTileOnCell(cell: Element, x: number, y: number) {
  */
 document.onmousemove = onMouseMove
 document.body.onkeyup = function (e) {
-  if (e.key == 'z' || e.code == 'z') {
+  if (e.key === 'z' || e.code === 'z') {
     // Trigger events for debugging puproses
     floatingText('hadsjklf')
   }
-  if (e.key == 'r' || e.code == 'r') {
+  if (e.key === 'r' || e.code === 'r') {
     gameOver()
   }
 }

@@ -53,6 +53,7 @@ export async function generateTile(type: Color, x: number, y: number) {
 
 export async function moveNextTileToCell(cell: Element, x: number, y: number) {
   const tile = document.querySelectorAll('.tile.next')[0] as HTMLElement
+  // eslint-disable-next-line ts/no-unused-expressions
   tile.animate(animationConfig.keyframesOut, animationConfig.timing).finished
 
   cell.appendChild(tile)

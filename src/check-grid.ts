@@ -89,6 +89,7 @@ export async function checkGrid(x: number, y: number, chainable: boolean = false
             .fontSize,
         )
 
+        // eslint-disable-next-line ts/no-unused-expressions
         tile?.animate(
           [
             { transform: `translateX(0px) translateY(0px)` },
