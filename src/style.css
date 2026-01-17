@@ -38,7 +38,7 @@
 
 @media screen and (min-width: 520px) {
   :root {
-    font-size: 18px;
+    font-size: 15px;
   }
 }
 
@@ -120,6 +120,14 @@ h1 {
   justify-content: center;
   margin: auto;
   margin-top: 1rem;
+}
+
+@media screen and (min-width: 520px) {
+  .game-footer {
+    position: absolute;
+    top: 11rem;
+    right: 1rem;
+  }
 }
 
 .game-footer > div {
@@ -313,12 +321,11 @@ button:active {
 
   align-items: center;
   justify-content: center;
-  margin-bottom: 2rem;
 }
 
 #next-tile-container {
-  position: relative;
-  margin-top: 1rem;
+  display: flex;
+
   width: var(--cell-size);
   height: var(--cell-size);
 
@@ -329,6 +336,19 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media screen and (min-width: 520px) {
+  #next-tile-container {
+    position: absolute;
+    top: calc(var(--cell-size) * 3.5);
+    left: 0rem;
+    border-top-right-radius: var(--tile-border-radius);
+    border-bottom-left-radius: 0;
+  }
+  #next-tile-container:before {
+    display: none;
+  }
 }
 
 #next-tile-container:before {
@@ -342,7 +362,7 @@ button:active {
 }
 
 #game-message {
-  margin-top: 0.5rem;
+  margin: 1rem 0;
   text-align: center;
   animation: rainbow 10s linear alternate infinite;
   font-weight: 700;
