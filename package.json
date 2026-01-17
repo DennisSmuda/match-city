@@ -1,23 +1,27 @@
 {
   "name": "matchcity",
-  "private": true,
-  "version": "0.0.0",
   "type": "module",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
     "test": "vitest",
     "coverage": "vitest run --coverage"
   },
+  "dependencies": {
+    "statery": "^0.7.1"
+  },
   "devDependencies": {
+    "@antfu/eslint-config": "^7.0.1",
     "@testing-library/dom": "^10.4.1",
+    "eslint": "^9.39.2",
     "jsdom": "^26.1.0",
     "typescript": "^5.9.2",
     "vite": "^7.1.4",
     "vitest": "^3.2.4"
-  },
-  "dependencies": {
-    "statery": "^0.7.1"
   }
 }

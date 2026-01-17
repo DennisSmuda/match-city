@@ -1,43 +1,43 @@
-import { gameStore } from "./store";
+import { gameStore } from './store'
 
-export type Color = "primary" | "secondary" | "tertiary";
-export const colors = ["primary", "secondary", "tertiary"];
+export type Color = 'primary' | 'secondary' | 'tertiary'
+export const colors = ['primary', 'secondary', 'tertiary']
 
-export const generateRandomColor = () => {
-  return colors[Math.floor(Math.random() * colors.length)] as Color;
-};
+export function generateRandomColor() {
+  return colors[Math.floor(Math.random() * colors.length)] as Color
+}
 
-export const getRandomGridPosition = () => {
-  let randomPos = null;
+export function getRandomGridPosition() {
+  let randomPos = null
   while (!randomPos) {
-    let x = Math.floor(Math.random() * 5);
-    let y = Math.floor(Math.random() * 5);
+    const x = Math.floor(Math.random() * 5)
+    const y = Math.floor(Math.random() * 5)
     if (!gameStore.state.grid[`${x}:${y}`]) {
-      randomPos = { x, y };
+      randomPos = { x, y }
     }
   }
 
   return {
     x: randomPos.x,
     y: randomPos.y,
-  };
-};
+  }
+}
 
-export const getMatchCountDescription = (matchCount: number) => {
+export function getMatchCountDescription(matchCount: number) {
   switch (matchCount) {
     case 2:
-      return "double";
+      return 'double'
     case 3:
-      return "triple";
+      return 'triple'
     case 4:
-      return "quadruple";
+      return 'quadruple'
     case 5:
-      return "quintuple";
+      return 'quintuple'
     default:
-      return "";
+      return ''
   }
-};
+}
 
-export const sleep = async (timeout: number) => {
-  await new Promise((resolve) => setTimeout(resolve, timeout));
-};
+export async function sleep(timeout: number) {
+  await new Promise(resolve => setTimeout(resolve, timeout))
+}
