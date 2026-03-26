@@ -20,7 +20,7 @@ export async function loadGame() {
   scoreElement.innerHTML = loadedScore
 
   for (const tilePos in grid) {
-    if (Object.prototype.hasOwnProperty.call(gameStore.state.grid, tilePos)) {
+    if (Object.hasOwn(gameStore.state.grid, tilePos)) {
       const [x, y] = tilePos.split(':')
       generateTile(grid[tilePos], Number.parseInt(x), Number.parseInt(y))
     }
