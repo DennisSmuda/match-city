@@ -76,7 +76,7 @@ export async function checkGrid(x: number, y: number, chainable: boolean = false
     scoreElement.innerHTML = gameStore.state.score.toString()
 
     for (const pos in gameStore.state.matches) {
-      if (Object.prototype.hasOwnProperty.call(gameStore.state.matches, pos)) {
+      if (Object.hasOwn(gameStore.state.matches, pos)) {
         const [localX, localY] = pos.split(':')
         const tile = document.querySelector(
           `[data-grid-pos="${pos}"] > .tile`,
