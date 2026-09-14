@@ -13,7 +13,7 @@
     "coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "react": "^19.2.8",
+    "react": "^19.3.0",
     "statery": "^0.7.1"
   },
   "devDependencies": {
@@ -22,7 +22,7 @@
     "eslint": "^10.10.0",
     "jsdom": "^30.0.1",
     "typescript": "^6.0.3",
-    "vite": "^8.2.2",
+    "vite": "^8.3.0",
     "vitest": "^5.0.0"
   }
 }
